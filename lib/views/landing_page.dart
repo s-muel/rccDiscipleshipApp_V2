@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rcc_discipleship_app_v2/views/message_page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -26,29 +27,33 @@ class _LandingPageState extends State<LandingPage> {
             const SizedBox(
               height: 60,
             ),
-            Card(
-              elevation: 10,
-              child: Container(
-                width: 300,
-                height: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    // color: Colors.black,
-                    image: const DecorationImage(
-                      image: AssetImage('assets/images/preach.jpeg'),
-                      fit: BoxFit.cover,
+            InkWell(
+              onTap: (() => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const MessagesPage()))),
+              child: Card(
+                elevation: 10,
+                child: Container(
+                  width: 300,
+                  height: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      // color: Colors.black,
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/preach.jpeg'),
+                        fit: BoxFit.cover,
+                      ),
+                      color: Colors.black),
+                  child: const Center(
+                    child: Text(
+                      'Messages',
+                      //style: GoogleFonts.lato(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OoohBaby',
+                          fontStyle: FontStyle.italic),
                     ),
-                    color: Colors.black),
-                child: const Center(
-                  child: Text(
-                    'Messages',
-                    //style: GoogleFonts.lato(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'OoohBaby',
-                        fontStyle: FontStyle.italic),
                   ),
                 ),
               ),
