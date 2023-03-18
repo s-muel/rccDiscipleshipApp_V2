@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'views/landing_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -12,12 +14,30 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LandingPage(),
     );
   }
 }
+
+// class LandingPage extends StatelessWidget {
+//   const LandingPage({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: Column(
+//           children: const [
+//             Card(),
+//             Card(),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
