@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reapers_app/logins/api_calls.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class AddMemberPage extends StatefulWidget {
   final String token;
@@ -35,6 +37,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
     if (_formKey.currentState!.validate()) {
       try {
         await api.addMember(
+          context: context,
           token: token,
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
@@ -53,8 +56,8 @@ class _AddMemberPageState extends State<AddMemberPage> {
           _successMessage = 'Data updated successfully';
           _errorMessage = '';
         });
-        _firstNameController.clear();
-        _lastNameController.clear();
+        // _firstNameController.clear();
+        // _lastNameController.clear();
       } catch (error) {
         setState(() {
           _errorMessage = 'Failed to update data: $error';
@@ -76,290 +79,341 @@ class _AddMemberPageState extends State<AddMemberPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Form(
-        key: _formKey,
-        child:
+          key: _formKey,
+          child: Stepper(
+            type: StepperType.horizontal,
+            currentStep: _currentStep,
+            onStepContinue: () {
+              setState(() {
+                // if (_formKey.currentState!.validate()) {
+                //   if (_currentStep < 2) {
+                //     _currentStep += 1;
+                //   } else {
+                //      _formCompleted = true;
+                //   }
+                // }
 
-            // Stepper(
-            //   type: StepperType.horizontal,
-            //   currentStep: _currentStep,
-            //   onStepContinue: () {
-            //     setState(() {
-            //       // if (_formKey.currentState!.validate()) {
-            //       //   if (_currentStep < 2) {
-            //       //     _currentStep += 1;
-            //       //   } else {
-            //       //      _formCompleted = true;
-            //       //   }
-            //       // }
-
-            //       if (_currentStep < 2) {
-            //         _currentStep += 1;
-            //       } else {
-            //         _formCompleted = true;
-            //       }
-            //     });
-            //   },
-            //   onStepCancel: () {
-            //     setState(() {
-            //       if (_currentStep > 0) {
-            //         _currentStep--;
-            //       }
-            //     });
-            //   },
-            //   steps: [
-            //     //step 1 person details
-
-            //     Step(
-            //       isActive: _currentStep >= 0,
-            //       title: const Text("Personal"),
-            //       content: Column(
-            //         children: [
-            //           TextFormField(
-            //             controller: _firstNameController,
-            //             decoration: const InputDecoration(
-            //               labelText: 'First Name',
-            //             ),
-            //             validator: (value) {
-            //               if (value!.isEmpty) {
-            //                 return 'Please enter a first name';
-            //               }
-            //               return null;
-            //             },
-            //           ),
-            //           TextFormField(
-            //             controller: _lastNameController,
-            //             decoration: const InputDecoration(
-            //               labelText: 'Last Name',
-            //             ),
-            //             validator: (value) {
-            //               if (value!.isEmpty) {
-            //                 return 'Please enter a last name';
-            //               }
-            //               return null;
-            //             },
-            //           ),
-            //           TextFormField(
-            //             controller: _phoneNumberController,
-            //             decoration:
-            //                 const InputDecoration(labelText: 'Phone Number'),
-            //             validator: (value) {
-            //               if (value == null || value.isEmpty) {
-            //                 return 'Please enter phone number';
-            //               }
-            //               return null;
-            //             },
-            //           )
-            //         ],
-            //       ),
-            //     ),
-
-            //     //2 Church details
-            //     Step(
-            //       isActive: _currentStep >= 1,
-            //       title: const Text("Church "),
-            //       content: Column(
-            //         children: [
-            //           TextFormField(
-            //             controller: _auxiliaryController,
-            //             decoration: const InputDecoration(labelText: 'Auxiliary'),
-            //           ),
-            //           Row(
-            //             children: [
-            //               Text('Is Mentor'),
-            //               Checkbox(
-            //                 value: _isMentor,
-            //                 onChanged: (value) {
-            //                   setState(() {
-            //                     _isMentor = value!;
-            //                   });
-            //                 },
-            //               ),
-            //             ],
-            //           ),
-            //           if (_isMentor)
-            //             TextFormField(
-            //               controller: _mentorNameController,
-            //               decoration: InputDecoration(labelText: 'Mentor Name'),
-            //               validator: (value) {
-            //                 if (value == null || value.isEmpty) {
-            //                   return 'Please enter mentor name';
-            //                 }
-            //                 return null;
-            //               },
-            //             ),
-            //           Row(
-            //             children: [
-            //               const TextField(
-            //                 enabled: false,
-
-            //               ),
-            //               DropdownButton<String>(
-            //                 value: _selectedValue.toString(),
-            //                 items: const [
-            //                   DropdownMenuItem(
-            //                     value: 'true',
-            //                     child: Text('Yes'),
-            //                   ),
-            //                   DropdownMenuItem(
-            //                     value: 'false',
-            //                     child: Text('No'),
-            //                   ),
-            //                 ],
-            //                 onChanged: (value) {
-            //                   setState(() {
-            //                     _selectedValue = value as bool;
-            //                   });
-            //                 },
-            //               ),
-            //             ],
-            //           )
-            //         ],
-            //       ),
-            //     ),
-
-            //     //3 Other Details
-            //     Step(
-            //       isActive: _currentStep >= 2,
-            //       title: const Text("Other"),
-            //       content: Column(
-            //         children: [
-            //           TextFormField(
-            //             controller: _emailController,
-            //             decoration: const InputDecoration(labelText: 'Email'),
-            //             validator: (value) {
-            //               if (value == null || value.isEmpty) {
-            //                 return 'Please enter email';
-            //               }
-            //               return null;
-            //             },
-            //           ),
-            //         ],
-            //       ),
-            //     )
-            //   ],
-            // )
-
-            Column(
-          children: [
-            TextFormField(
-              controller: _firstNameController,
-              decoration: InputDecoration(
-                labelText: 'First Name',
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a first name';
+                if (_currentStep < 2) {
+                  _currentStep += 1;
+                } else {
+                  _formCompleted = true;
                 }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _lastNameController,
-              decoration: InputDecoration(
-                labelText: 'Last Name',
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a last name';
+                if (_currentStep >= 3) {
+                  _submitForm();
                 }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter email';
+              });
+            },
+            onStepCancel: () {
+              setState(() {
+                if (_currentStep > 0) {
+                  _currentStep--;
                 }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _phoneNumberController,
-              decoration: InputDecoration(labelText: 'Phone Number'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter phone number';
-                }
-                return null;
-              },
-            ),
-            Row(
-              children: [
-                Text('Is Mentor'),
-                Checkbox(
-                  value: _isMentor,
-                  onChanged: (value) {
-                    setState(() {
-                      _isMentor = value!;
-                    });
-                  },
+              });
+            },
+            steps: [
+              //step 1 person details
+
+              Step(
+                isActive: _currentStep >= 0,
+                title: const Text("Personal"),
+                content: Column(
+                  children: [
+                    TextFormField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                        labelText: 'First Name',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a first name';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Last Name',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a last name';
+                        }
+                        return null;
+                      },
+                    ),
+                    InkWell(
+                      onTap: () {
+                        DatePicker.showDatePicker(
+                          context,
+                          showTitleActions: true,
+                          minTime: DateTime(1900, 1, 1),
+                          maxTime: DateTime.now(),
+                          onChanged: (date) {
+                            // Do something with the selected date
+                          },
+                          onConfirm: (date) {
+                            setState(() {
+                              _dateOfBirthController.text =
+                                  DateFormat('yyyy-MM-dd').format(date);
+                            });
+                          },
+                          currentTime: DateTime.now(),
+                          locale: LocaleType.en,
+                        );
+                      },
+                      child: AbsorbPointer(
+                        child: TextField(
+                          controller: _dateOfBirthController,
+                          decoration: const InputDecoration(
+                            labelText: 'Date of Birth',
+                            suffixIcon: Icon(Icons.calendar_today),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      decoration:
+                          const InputDecoration(labelText: 'Phone Number'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter phone number';
+                        }
+                        return null;
+                      },
+                    )
+                  ],
                 ),
-              ],
-            ),
-            if (_isMentor)
-              TextFormField(
-                controller: _mentorNameController,
-                decoration: InputDecoration(labelText: 'Mentor Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter mentor name';
-                  }
-                  return null;
-                },
               ),
-            TextFormField(
-              controller: _workController,
-              decoration: InputDecoration(labelText: 'Work'),
-            ),
-            TextFormField(
-              controller: _homeAddressController,
-              decoration: InputDecoration(labelText: 'Home Address'),
-            ),
-            TextFormField(
-              controller: _languageController,
-              decoration: InputDecoration(labelText: 'Language'),
-            ),
-            TextFormField(
-              controller: _auxiliaryController,
-              decoration: InputDecoration(labelText: 'Auxiliary'),
-            ),
-            Row(
-              children: [
-                Text('Baptized'),
-                Checkbox(
-                  value: _baptized,
-                  onChanged: (value) {
-                    setState(() {
-                      _baptized = value!;
-                    });
-                  },
+
+              //2 Church details
+              Step(
+                isActive: _currentStep >= 1,
+                title: const Text("Church "),
+                content: Column(
+                  children: [
+                    TextFormField(
+                      controller: _auxiliaryController,
+                      decoration: const InputDecoration(labelText: 'Auxiliary'),
+                    ),
+                    Row(
+                      children: [
+                        const Text('Add as mentor'),
+                        Checkbox(
+                          value: _isMentor,
+                          onChanged: (value) {
+                            setState(() {
+                              _isMentor = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    if (_isMentor)
+                      TextFormField(
+                        controller: _mentorNameController,
+                        decoration: InputDecoration(labelText: 'Mentor Name'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter mentor name';
+                          }
+                          return null;
+                        },
+                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _dateOfBirthController,
+                            decoration:
+                                const InputDecoration(labelText: 'Baptized '),
+                          ),
+                        ),
+                        const Expanded(
+                          child: TextField(
+                            enabled: false,
+                          ),
+                        ),
+                        DropdownButton<bool>(
+                          value: _selectedValue,
+                          items: const [
+                            DropdownMenuItem(
+                              value: true,
+                              child: Text('Yes'),
+                            ),
+                            DropdownMenuItem(
+                              value: false,
+                              child: Text('No'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                _selectedValue = value!;
+                              },
+                            );
+                          },
+                          hint: const Text("Select Status"),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-              ],
-            ),
-            TextFormField(
-              controller: _dateOfBirthController,
-              decoration: InputDecoration(labelText: 'Date of Birth'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _submitForm,
-              child: Text('Submit'),
-            ),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: TextStyle(color: Colors.red),
               ),
-            if (_successMessage.isNotEmpty)
-              Text(
-                _successMessage,
-                style: TextStyle(color: Colors.green),
-              ),
-          ],
-        ),
-      ),
+
+              //3 Other Details
+              Step(
+                isActive: _currentStep >= 2,
+                title: const Text("Other"),
+                content: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(labelText: 'Email'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter email';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _homeAddressController,
+                      decoration:
+                          const InputDecoration(labelText: 'Home Address'),
+                    ),
+                    TextFormField(
+                      controller: _workController,
+                      decoration: const InputDecoration(labelText: 'Work'),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+
+          //     Column(
+          //   children: [
+          //     TextFormField(
+          //       controller: _firstNameController,
+          //       decoration: InputDecoration(
+          //         labelText: 'First Name',
+          //       ),
+          //       validator: (value) {
+          //         if (value!.isEmpty) {
+          //           return 'Please enter a first name';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     TextFormField(
+          //       controller: _lastNameController,
+          //       decoration: InputDecoration(
+          //         labelText: 'Last Name',
+          //       ),
+          //       validator: (value) {
+          //         if (value!.isEmpty) {
+          //           return 'Please enter a last name';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     TextFormField(
+          //       controller: _emailController,
+          //       decoration: InputDecoration(labelText: 'Email'),
+          //       validator: (value) {
+          //         if (value == null || value.isEmpty) {
+          //           return 'Please enter email';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     TextFormField(
+          //       controller: _phoneNumberController,
+          //       decoration: InputDecoration(labelText: 'Phone Number'),
+          //       validator: (value) {
+          //         if (value == null || value.isEmpty) {
+          //           return 'Please enter phone number';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     Row(
+          //       children: [
+          //         Text('Is Mentor'),
+          //         Checkbox(
+          //           value: _isMentor,
+          //           onChanged: (value) {
+          //             setState(() {
+          //               _isMentor = value!;
+          //             });
+          //           },
+          //         ),
+          //       ],
+          //     ),
+          //     if (_isMentor)
+          //       TextFormField(
+          //         controller: _mentorNameController,
+          //         decoration: InputDecoration(labelText: 'Mentor Name'),
+          //         validator: (value) {
+          //           if (value == null || value.isEmpty) {
+          //             return 'Please enter mentor name';
+          //           }
+          //           return null;
+          //         },
+          //       ),
+          //     TextFormField(
+          //       controller: _workController,
+          //       decoration: InputDecoration(labelText: 'Work'),
+          //     ),
+          //     TextFormField(
+          //       controller: _homeAddressController,
+          //       decoration: InputDecoration(labelText: 'Home Address'),
+          //     ),
+          //     TextFormField(
+          //       controller: _languageController,
+          //       decoration: InputDecoration(labelText: 'Language'),
+          //     ),
+          //     TextFormField(
+          //       controller: _auxiliaryController,
+          //       decoration: InputDecoration(labelText: 'Auxiliary'),
+          //     ),
+          //     Row(
+          //       children: [
+          //         Text('Baptized'),
+          //         Checkbox(
+          //           value: _baptized,
+          //           onChanged: (value) {
+          //             setState(() {
+          //               _baptized = value!;
+          //             });
+          //           },
+          //         ),
+          //       ],
+          //     ),
+          //     TextFormField(
+          //       controller: _dateOfBirthController,
+          //       decoration: InputDecoration(labelText: 'Date of Birth'),
+          //     ),
+          //     SizedBox(height: 16),
+          //     ElevatedButton(
+          //       onPressed: _submitForm,
+          //       child: Text('Submit'),
+          //     ),
+          //     if (_errorMessage.isNotEmpty)
+          //       Text(
+          //         _errorMessage,
+          //         style: TextStyle(color: Colors.red),
+          //       ),
+          //     if (_successMessage.isNotEmpty)
+          //       Text(
+          //         _successMessage,
+          //         style: TextStyle(color: Colors.green),
+          //       ),
+          //   ],
+          // ),
+          ),
     );
   }
 }

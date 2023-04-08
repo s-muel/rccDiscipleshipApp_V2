@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 class ApiCalls {
   Future<Map<String, dynamic>> login(
       String username, String email, String password, String baseUrl) async {
@@ -75,6 +75,10 @@ class ApiCalls {
     required String auxiliary,
     required bool baptized,
     required String dateOfBirth,
+
+      required BuildContext context,
+
+     // required GlobalKey<ScaffoldState> scaffoldKey
   }) async {
     // Create a map of the updated data
     Map<String, dynamic> updatedData = {
@@ -107,7 +111,12 @@ class ApiCalls {
     );
 
     // Check the response status code
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
+       ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('User created successfully!'),
+    ),
+  );
       print('Data updated successfully');
       print(jsonData);
       // Handle success, e.g. show a success message to the user
