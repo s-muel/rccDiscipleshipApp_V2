@@ -37,7 +37,9 @@ class _MyFormState extends State<MyForm> {
   late String token;
   final TextEditingController _mentorNameController2 = TextEditingController();
   late int mentor;
+  late dynamic data;
   int _selectedValue = 1;
+  String _selectedItemText = "";
 
   @override
   void initState() {
@@ -63,6 +65,7 @@ class _MyFormState extends State<MyForm> {
     _isMentor =
         TextEditingController(text: widget.initialData['is_mentor'].toString());
     token = widget.token;
+    data = widget.initialData;
   }
 
   @override
@@ -119,10 +122,13 @@ class _MyFormState extends State<MyForm> {
                   final List<dynamic> data = snapshot.data!;
 
                   final int dataLength = data.length;
-                  int iDValue = widget.initialData['mentor'];
+                  //int iDValue = widget.initialData['mentor'];
+
+                  int iDValue = widget.initialData['mentor'] ?? 1;
 
                   return DropdownButton<int>(
-                    value: iDValue,
+                    // value: iDValue,
+                    hint: const Text("Select Discipler"),
                     items: snapshot.data!
                         .map((option) => DropdownMenuItem<int>(
                             value: option['id'],
@@ -130,8 +136,13 @@ class _MyFormState extends State<MyForm> {
                         .toList(),
                     onChanged: (newValue) {
                       setState(() {
+                        _selectedItemText = snapshot.data?.firstWhere(
+                            (item) => item['id'] == newValue)['username'];
                         iDValue = newValue!;
+                        _mentorNameController.text = _selectedItemText;
                         _selectedValue = newValue;
+
+                        print(_selectedItemText);
                       });
                     },
                   );
@@ -175,7 +186,11 @@ class _MyFormState extends State<MyForm> {
             //     });
             //   },
             // ),
-            Text(_mentorNameController.text),
+            if (_mentorNameController.text.isEmpty)
+              Text('Please enter a mentor name'),
+            if (_mentorNameController.text.isNotEmpty)
+              Text('Mentor name: ${_mentorNameController.text}'),
+            // Text(_mentorNameController.text),
             // TextField(
             //   controller: _mentorNameController,
             //   decoration: InputDecoration(labelText: 'Mentor Name'),
