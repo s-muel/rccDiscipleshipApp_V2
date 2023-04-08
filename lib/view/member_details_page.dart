@@ -35,7 +35,9 @@ class _MyFormState extends State<MyForm> {
   late TextEditingController _dateOfBirthController;
   late TextEditingController _isMentor;
   late String token;
-  TextEditingController _mentorNameController2 = TextEditingController();
+  final TextEditingController _mentorNameController2 = TextEditingController();
+  late int mentor;
+  int _selectedValue = 1;
 
   @override
   void initState() {
@@ -115,24 +117,44 @@ class _MyFormState extends State<MyForm> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final List<dynamic> data = snapshot.data!;
+
                   final int dataLength = data.length;
-                  return DropdownButtonFormField<String>(
-                    items: snapshot.data!.map((option) {
-                      return DropdownMenuItem<String>(
-                        value: option[
-                            'username'], // Assuming 'mentor_name' is the field name for mentor name in the API response
-                        child: Text(option[
-                            'username']), // Assuming 'mentor_name' is the field name for mentor name in the API response
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      _mentorNameController2.text = value!;
+                  int iDValue = widget.initialData['mentor'];
+
+                  return DropdownButton<int>(
+                    value: iDValue,
+                    items: snapshot.data!
+                        .map((option) => DropdownMenuItem<int>(
+                            value: option['id'],
+                            child: Text(option['username'])))
+                        .toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        iDValue = newValue!;
+                        _selectedValue = newValue;
+                      });
                     },
-                    decoration: InputDecoration(
-                      labelText: 'Select a mentor',
-                      border: OutlineInputBorder(),
-                    ),
                   );
+                  // DropdownButtonFormField<String>(
+                  //   items: snapshot.data!.map((option) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: option['id']
+                  //           .toString(), // Assuming 'mentor_name' is the field name for mentor name in the API response
+                  //       child: Text(option[
+                  //           'username']), // Assuming 'mentor_name' is the field name for mentor name in the API response
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (value) {
+                  //     _mentorNameController2.text = value!;
+                  //     mentor = value as int;
+
+                  //     print(_mentorNameController2.text);
+                  //   },
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Select a mentor',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // );
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text('Error: ${snapshot.error}'),
@@ -241,6 +263,7 @@ class _MyFormState extends State<MyForm> {
                     email,
                     phoneNumber,
                     isMentor,
+                    _selectedValue,
                     mentorName,
                     work,
                     homeAddress,
@@ -284,6 +307,7 @@ class _MyFormState extends State<MyForm> {
       String email,
       String phoneNumber,
       bool isMentor,
+      int mentor,
       String mentorName,
       String work,
       String homeAddress,
@@ -301,6 +325,7 @@ class _MyFormState extends State<MyForm> {
       'email': email,
       'phone_number': phoneNumber,
       'is_mentor': isMentor,
+      'mentor': mentor,
       'mentor_name': mentorName,
       'work': work,
       'home_address': homeAddress,
@@ -311,7 +336,7 @@ class _MyFormState extends State<MyForm> {
     };
 
     // Convert the map to JSON
-    //String jsonData = jsonEncode(updatedData);
+    String jsonData = jsonEncode(updatedData);
 
     // Make an HTTP PATCH request to update the data in the API
     Uri uri = Uri.parse(
@@ -323,25 +348,19 @@ class _MyFormState extends State<MyForm> {
         'Authorization': 'Token  $token',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode(updatedData),
-
-      //  {
-      //   'Content-Type': 'application/json'
-      //   },
+      //  body: jsonEncode(updatedData),
+      body: jsonData,
     );
 
     // Check the response status code
     if (response.statusCode == 200) {
       print('Data updated successfully');
+      print(jsonData);
       // Handle success, e.g. show a success message to the user
     } else {
       // throw Exception('Failed to load data');
       print('Failed to update data');
-
-      print(token);
-      print(response.statusCode);
-      print('zzzzzzzzz $memberID');
-      print(response.body);
+      print(jsonData);
 
       // Handle error, e.g. show an error message to the user
     }

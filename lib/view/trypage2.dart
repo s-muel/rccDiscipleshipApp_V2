@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reapers_app/view/add_member.dart';
 
 import '../logins/api_calls.dart';
+import 'add_mem.dart';
 import 'admin_mentor.dart';
 import 'all_members.dart';
 
@@ -101,6 +103,14 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigator.of(context).pop();
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    // AddMember()
+                    AddMemberPage(token: token),
+              ));
         },
         tooltip: 'Increment',
         //insert_chart
@@ -197,25 +207,37 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            height: 30,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Text(
-                'Add Member',
-                style: TextStyle(
-                    color: Colors.green,
-                    // Color.fromARGB(255, 177, 22, 234),
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
-        )
+        // InkWell(
+        //   onTap: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) =>
+        //             // AddMember()
+        //             AddMemberPage(token: token),
+        //       ),
+        //     );
+        //   },
+        //   child: Expanded(
+        //     flex: 1,
+        //     child: Container(
+        //       height: 30,
+        //       decoration: BoxDecoration(
+        //         color: Colors.white,
+        //         borderRadius: BorderRadius.circular(10),
+        //       ),
+        //       child: const Center(
+        //         child: Text(
+        //           'Add Member',
+        //           style: TextStyle(
+        //               color: Colors.green,
+        //               // Color.fromARGB(255, 177, 22, 234),
+        //               fontWeight: FontWeight.w500),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // )
       ],
     );
   }
