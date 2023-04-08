@@ -92,14 +92,15 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 //      _formCompleted = true;
                 //   }
                 // }
-
+                print(_currentStep);
                 if (_currentStep < 2) {
                   _currentStep += 1;
                 } else {
                   _formCompleted = true;
                 }
-                if (_currentStep >= 3) {
+                if (_currentStep == 2) {
                   _submitForm();
+                  
                 }
               });
             },

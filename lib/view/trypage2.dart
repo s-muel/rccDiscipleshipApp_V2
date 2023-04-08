@@ -207,6 +207,36 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
+        SizedBox(
+          height: 30,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      // AddMember()
+                      AddMemberPage(token: token),
+                ),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Text(
+                  'Add Member',
+                  style: TextStyle(
+                      color: Colors.green,
+                      // Color.fromARGB(255, 177, 22, 234),
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+          ),
+        )
         // InkWell(
         //   onTap: () {
         //     Navigator.push(
