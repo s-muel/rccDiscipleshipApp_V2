@@ -21,6 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool loginIndicator = false;
+  bool _isLoading = true;
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
@@ -34,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
 
       try {
         final Map<String, dynamic> data =
-            await api.login(username, email, password, url);
+            await api.login(context, username, email, password, url);
         // await login(username, email, password, url);
         print("am pressed");
         final String token = data['token'] as String;
@@ -52,6 +53,19 @@ class _LoginFormState extends State<LoginForm> {
         print('Failed to login: $e');
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startLoading();
+  }
+
+  Future<void> _startLoading() async {
+    await Future.delayed(const Duration(seconds: 4));
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -119,12 +133,12 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   Visibility(
-                      visible: loginIndicator,
-                      child: CircularProgressIndicator()),
+                      visible: _isLoading, child: CircularProgressIndicator()),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      const CircularProgressIndicator();
+                      // const CircularProgressIndicator();
+                      _startLoading();
                       _submit();
                     },
                     child: const Text('Login'),

@@ -28,8 +28,8 @@ class _AllMembersPageState extends State<AllMembersPage> {
       appBar: AppBar(
         title: const Text("All Members"),
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: api.get(
+      body: StreamBuilder<List<dynamic>>(
+        stream: api.stream(
             token, "https://rcc-discipleship.up.railway.app/api/members/"),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -56,8 +56,8 @@ class _AllMembersPageState extends State<AllMembersPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          MyForm(initialData: item,token: token),
+                                      builder: (context) => MyForm(
+                                          initialData: item, token: token),
                                     ),
                                   );
                                 },

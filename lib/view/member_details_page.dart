@@ -114,8 +114,8 @@ class _MyFormState extends State<MyForm> {
               decoration: InputDecoration(labelText: 'Is mentor'),
             ),
 
-            FutureBuilder<List<dynamic>>(
-              future: api.get(token,
+            StreamBuilder<List<dynamic>>(
+              stream: api.stream(token,
                   "https://rcc-discipleship.up.railway.app/api/mentors/"),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -369,13 +369,16 @@ class _MyFormState extends State<MyForm> {
 
     // Check the response status code
     if (response.statusCode == 200) {
-      print('Data updated successfully');
-      print(jsonData);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Update was successfully!')));
       // Handle success, e.g. show a success message to the user
     } else {
       // throw Exception('Failed to load data');
-      print('Failed to update data');
-      print(jsonData);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('An error occurred try again',
+              style: TextStyle(
+                color: Colors.red,
+              ))));
 
       // Handle error, e.g. show an error message to the user
     }

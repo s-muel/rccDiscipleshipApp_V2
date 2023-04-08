@@ -1,9 +1,10 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+
 class ApiCalls {
-  Future<Map<String, dynamic>> login(
-      String username, String email, String password, String baseUrl) async {
+  Future<Map<String, dynamic>> login(BuildContext context, String username,
+      String email, String password, String baseUrl) async {
     final http.Response response = await http.post(
       Uri.parse('$baseUrl/login'),
       headers: <String, String>{
@@ -21,6 +22,11 @@ class ApiCalls {
       final String token = data['token'] as String;
       return data;
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Check Login Credentials'),
+        ),
+      );
       throw Exception('Failed to login');
     }
   }
@@ -75,10 +81,9 @@ class ApiCalls {
     required String auxiliary,
     required bool baptized,
     required String dateOfBirth,
+    required BuildContext context,
 
-      required BuildContext context,
-
-     // required GlobalKey<ScaffoldState> scaffoldKey
+    // required GlobalKey<ScaffoldState> scaffoldKey
   }) async {
     // Create a map of the updated data
     Map<String, dynamic> updatedData = {
@@ -112,20 +117,40 @@ class ApiCalls {
 
     // Check the response status code
     if (response.statusCode == 201) {
-       ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('User created successfully!'),
-    ),
-  );
-      print('Data updated successfully');
-      print(jsonData);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Member created successfully!'),
+        ),
+      );
+   
       // Handle success, e.g. show a success message to the user
     } else {
-      print('Failed to update data');
+    
       // Handle error, e.g. show an error message to the user
       print(jsonData);
       print(response.statusCode);
       print(response.body);
+    }
+  }
+
+  // stream building
+  Stream<List<Map<String, dynamic>>> stream(String token, String Url) async* {
+    while (true) {
+      final http.Response response = await http.get(
+        Uri.parse('$Url'),
+        headers: <String, String>{
+          'Authorization': 'Token  $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+        List<Map<String, dynamic>> result =
+            data.map((e) => e as Map<String, dynamic>).toList();
+        yield result;
+      } else {
+        throw Exception('Check Internet Connection');
+      }
+      await Future.delayed(Duration(seconds: 5));
     }
   }
 }

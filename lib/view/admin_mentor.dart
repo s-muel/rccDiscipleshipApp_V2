@@ -65,7 +65,6 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                                 title: Text(item['first_name'].toString()),
                                 subtitle: Text(item['email']),
                                 trailing: TextButton(
-                                  
                                     onPressed: () {},
                                     child: const Text("Details")),
                               ),
@@ -100,9 +99,8 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
           minChildSize: 0.25,
           maxChildSize: 0.75,
           builder: (BuildContext context, ScrollController scrollController) {
-            return
-             FutureBuilder<List<dynamic>>(
-              future: api.get(token,
+            return StreamBuilder<List<dynamic>>(
+              stream: api.stream(token,
                   'https://rcc-discipleship.up.railway.app/api/mentors/$mentorID/mentees/$menteeID/report/'),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {

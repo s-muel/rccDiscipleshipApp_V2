@@ -100,7 +100,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 }
                 if (_currentStep == 2) {
                   _submitForm();
-                  
                 }
               });
             },
@@ -229,11 +228,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
                             controller: _dateOfBirthController,
                             decoration:
                                 const InputDecoration(labelText: 'Baptized '),
-                          ),
-                        ),
-                        const Expanded(
-                          child: TextField(
-                            enabled: false,
                           ),
                         ),
                         DropdownButton<bool>(

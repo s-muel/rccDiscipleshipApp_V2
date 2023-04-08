@@ -32,8 +32,8 @@ class _AdminPageState extends State<AdminPage> {
       appBar: AppBar(
         title: const Text("Admin Dashboard"),
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: api.get(
+      body: StreamBuilder<List<dynamic>>(
+        stream: api.stream(
             token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -52,8 +52,8 @@ class _AdminPageState extends State<AdminPage> {
                         ),
                       ),
                     ),
-                    FutureBuilder<List<dynamic>>(
-                      future: api.get(token,
+                    StreamBuilder<List<dynamic>>(
+                      stream: api.stream(token,
                           "https://rcc-discipleship.up.railway.app/api/members/"),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
