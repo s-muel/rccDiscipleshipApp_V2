@@ -32,6 +32,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
   int _currentStep = 0;
   bool _formCompleted = false;
   bool _selectedValue = false;
+  String _selectedItemText = "";
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -85,6 +86,13 @@ class _AddMemberPageState extends State<AddMemberPage> {
             currentStep: _currentStep,
             onStepContinue: () {
               setState(() {
+                if (_currentStep <  - 1) {
+                  // If the current step is not the last step, move to the next step
+                  _currentStep++;
+                } else {
+                  // If the current step is the last step, call the _submit function
+                  _submitForm();
+                }
                 // if (_formKey.currentState!.validate()) {
                 //   if (_currentStep < 2) {
                 //     _currentStep += 1;
@@ -92,15 +100,15 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 //      _formCompleted = true;
                 //   }
                 // }
-                print(_currentStep);
-                if (_currentStep < 2) {
-                  _currentStep += 1;
-                } else {
-                  _formCompleted = true;
-                }
-                if (_currentStep == 2) {
-                  _submitForm();
-                }
+                // print(_currentStep);
+                // if (_currentStep < 2) {
+                //   _currentStep += 1;
+                // } else {
+                //   _formCompleted = true;
+                // }
+                // if (_currentStep == 2) {
+                //   _submitForm();
+                // }
               });
             },
             onStepCancel: () {
@@ -197,6 +205,88 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       controller: _auxiliaryController,
                       decoration: const InputDecoration(labelText: 'Auxiliary'),
                     ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    Row(
+                      children: [
+                        if (_mentorNameController.text.isEmpty) const Text(''),
+                        if (_mentorNameController.text.isNotEmpty)
+                          Expanded(
+                            child: TextFormField(
+                              enabled: false,
+                              controller: _mentorNameController,
+                            ),
+                          ),
+                        Expanded(
+                          child: StreamBuilder<List<dynamic>>(
+                            stream: api.stream(token,
+                                "https://rcc-discipleship.up.railway.app/api/mentors/"),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                final List<dynamic> data = snapshot.data!;
+
+                                final int dataLength = data.length;
+                                int iDValue = 1;
+
+                                //   int iDValue = widget.initialData['mentor'] ?? 1;
+
+                                return DropdownButton<int>(
+                                  // value: iDValue,
+                                  hint: const Text("Select Discipler"),
+                                  items: snapshot.data!
+                                      .map((option) => DropdownMenuItem<int>(
+                                          value: option['id'],
+                                          child: Text(option['username'])))
+                                      .toList(),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _selectedItemText = snapshot.data
+                                          ?.firstWhere((item) =>
+                                              item['id'] ==
+                                              newValue)['username'];
+                                      iDValue = newValue!;
+                                      _mentorNameController.text =
+                                          _selectedItemText;
+                                      //_selectedValue = newValue;
+                                    });
+                                  },
+                                );
+                                // DropdownButtonFormField<String>(
+                                //   items: snapshot.data!.map((option) {
+                                //     return DropdownMenuItem<String>(
+                                //       value: option['id']
+                                //           .toString(), // Assuming 'mentor_name' is the field name for mentor name in the API response
+                                //       child: Text(option[
+                                //           'username']), // Assuming 'mentor_name' is the field name for mentor name in the API response
+                                //     );
+                                //   }).toList(),
+                                //   onChanged: (value) {
+                                //     _mentorNameController2.text = value!;
+                                //     mentor = value as int;
+
+                                //     print(_mentorNameController2.text);
+                                //   },
+                                //   decoration: InputDecoration(
+                                //     labelText: 'Select a mentor',
+                                //     border: OutlineInputBorder(),
+                                //   ),
+                                // );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Error: ${snapshot.error}'),
+                                );
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                     Row(
                       children: [
                         const Text('Add as mentor'),
@@ -210,17 +300,39 @@ class _AddMemberPageState extends State<AddMemberPage> {
                         ),
                       ],
                     ),
-                    if (_isMentor)
-                      TextFormField(
-                        controller: _mentorNameController,
-                        decoration: InputDecoration(labelText: 'Mentor Name'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter mentor name';
-                          }
-                          return null;
-                        },
-                      ),
+
+                    // if (_mentorNameController.text.isEmpty)
+                    //   const Text('Please assign a Discipler'),
+                    // if (_mentorNameController.text.isNotEmpty)
+                    //   TextFormField(
+                    //     enabled: false,
+                    //     controller: _mentorNameController,
+                    //   ),
+
+                    // Row(
+                    //   children: [
+                    //     const Text('Add as mentor'),
+                    //     Checkbox(
+                    //       value: _isMentor,
+                    //       onChanged: (value) {
+                    //         setState(() {
+                    //           _isMentor = value!;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
+                    // if (_isMentor)
+                    //   TextFormField(
+                    //     controller: _mentorNameController,
+                    //     decoration: InputDecoration(labelText: 'Mentor Name'),
+                    //     validator: (value) {
+                    //       if (value == null || value.isEmpty) {
+                    //         return 'Please enter mentor name';
+                    //       }
+                    //       return null;
+                    //     },
+                    //   ),
                     Row(
                       children: [
                         Expanded(

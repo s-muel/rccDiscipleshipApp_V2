@@ -187,7 +187,7 @@ class _MyFormState extends State<MyForm> {
             //   },
             // ),
             if (_mentorNameController.text.isEmpty)
-              Text('Please enter a mentor name'),
+              const Text('Please assign a Discipler'),
             if (_mentorNameController.text.isNotEmpty)
               Text('Mentor name: ${_mentorNameController.text}'),
             // Text(_mentorNameController.text),
