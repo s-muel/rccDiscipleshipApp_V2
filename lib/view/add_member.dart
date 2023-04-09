@@ -33,6 +33,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
   bool _formCompleted = false;
   bool _selectedValue = false;
   String _selectedItemText = "";
+  int mentorID = 0;
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -45,12 +46,13 @@ class _AddMemberPageState extends State<AddMemberPage> {
           email: _emailController.text,
           phoneNumber: _phoneNumberController.text,
           mentorName: _mentorNameController.text,
+          //mentor: mentorID,
           work: _workController.text,
           homeAddress: _homeAddressController.text,
           language: _languageController.text,
           auxiliary: _auxiliaryController.text,
           dateOfBirth: _dateOfBirthController.text,
-          baptized: _baptized,
+          baptized: _selectedValue,
           isMentor: _isMentor,
         );
         setState(() {
@@ -86,13 +88,13 @@ class _AddMemberPageState extends State<AddMemberPage> {
             currentStep: _currentStep,
             onStepContinue: () {
               setState(() {
-                if (_currentStep <  - 1) {
-                  // If the current step is not the last step, move to the next step
-                  _currentStep++;
-                } else {
-                  // If the current step is the last step, call the _submit function
-                  _submitForm();
-                }
+                // if (_currentStep < steps.length - 1) {
+                //   // If the current step is not the last step, move to the next step
+                //   _currentStep++;
+                // } else {
+                //   // If the current step is the last step, call the _submit function
+                //   _submitForm();
+                // }
                 // if (_formKey.currentState!.validate()) {
                 //   if (_currentStep < 2) {
                 //     _currentStep += 1;
@@ -100,15 +102,17 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 //      _formCompleted = true;
                 //   }
                 // }
-                // print(_currentStep);
-                // if (_currentStep < 2) {
-                //   _currentStep += 1;
-                // } else {
+
+                if (_currentStep < 2) {
+                  _currentStep += 1;
+                }
+                // else {
                 //   _formCompleted = true;
                 // }
-                // if (_currentStep == 2) {
-                //   _submitForm();
-                // }
+                if (_currentStep == 3) {
+                  print(_currentStep);
+                  // _submitForm();
+                }
               });
             },
             onStepCancel: () {
@@ -118,7 +122,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 }
               });
             },
-            steps: [
+            steps: <Step>[
               //step 1 person details
 
               Step(
@@ -246,7 +250,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                           ?.firstWhere((item) =>
                                               item['id'] ==
                                               newValue)['username'];
-                                      iDValue = newValue!;
+                                      mentorID = newValue!;
                                       _mentorNameController.text =
                                           _selectedItemText;
                                       //_selectedValue = newValue;
@@ -337,7 +341,8 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: _dateOfBirthController,
+                            enabled: false,
+                            readOnly: true,
                             decoration:
                                 const InputDecoration(labelText: 'Baptized '),
                           ),
@@ -378,12 +383,12 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(labelText: 'Email'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter email';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return 'Please enter email';
+                      //   }
+                      //   return null;
+                      // },
                     ),
                     TextFormField(
                       controller: _homeAddressController,
@@ -394,6 +399,14 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       controller: _workController,
                       decoration: const InputDecoration(labelText: 'Work'),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          _submitForm();
+                        },
+                        child: const Text("Submit")),
                   ],
                 ),
               )

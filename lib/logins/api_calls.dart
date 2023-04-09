@@ -74,6 +74,7 @@ class ApiCalls {
     required String email,
     required String phoneNumber,
     required bool isMentor,
+    //required int mentor,
     required String mentorName,
     required String work,
     required String homeAddress,
@@ -92,6 +93,7 @@ class ApiCalls {
       'email': email,
       'phone_number': phoneNumber,
       'is_mentor': isMentor,
+      //"mentor": mentor,
       'mentor_name': mentorName,
       'work': work,
       'home_address': homeAddress,
@@ -122,12 +124,12 @@ class ApiCalls {
           content: Text('Member created successfully!'),
         ),
       );
-   
+      print(jsonData);
+
       // Handle success, e.g. show a success message to the user
     } else {
-    
       // Handle error, e.g. show an error message to the user
-      print(jsonData);
+
       print(response.statusCode);
       print(response.body);
     }

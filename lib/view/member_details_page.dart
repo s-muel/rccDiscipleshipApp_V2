@@ -33,7 +33,7 @@ class _MyFormState extends State<MyForm> {
   late TextEditingController _languageController;
   late TextEditingController _auxiliaryController;
   late TextEditingController _dateOfBirthController;
-  late TextEditingController _isMentor;
+  late bool _isMentor;
   late String token;
   final TextEditingController _mentorNameController2 = TextEditingController();
   late int mentor;
@@ -62,8 +62,9 @@ class _MyFormState extends State<MyForm> {
         TextEditingController(text: widget.initialData['axilliary']);
     _dateOfBirthController =
         TextEditingController(text: widget.initialData['date_of_birth']);
-    _isMentor =
-        TextEditingController(text: widget.initialData['is_mentor'].toString());
+    // _isMentor =
+    //     TextEditingController(text: widget.initialData['is_mentor'].toString());
+    _isMentor = widget.initialData['is_mentor'];
     token = widget.token;
     data = widget.initialData;
   }
@@ -80,7 +81,7 @@ class _MyFormState extends State<MyForm> {
     _languageController.dispose();
     _auxiliaryController.dispose();
     _dateOfBirthController.dispose();
-    _isMentor.dispose();
+    // _isMentor.dispose();
     super.dispose();
   }
 
@@ -94,88 +95,113 @@ class _MyFormState extends State<MyForm> {
           children: [
             TextField(
               controller: _firstNameController,
-              decoration: InputDecoration(labelText: 'First Name'),
+              decoration: const InputDecoration(labelText: 'First Name'),
             ),
             TextField(
               controller: _lastNameController,
-              decoration: InputDecoration(labelText: 'Last Name'),
+              decoration: const InputDecoration(labelText: 'Last Name'),
             ),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextField(
               controller: _phoneNumberController,
-              decoration: InputDecoration(labelText: 'Phone Number'),
+              decoration: const InputDecoration(labelText: 'Phone Number'),
             ),
             //
-            TextField(
-              controller: _isMentor,
-              decoration: InputDecoration(labelText: 'Is mentor'),
+            // TextField(
+            //   controller: _isMentor,
+            //   decoration: const InputDecoration(labelText: 'Is mentor'),
+            // ),
+            Row(
+              children: [
+                const Text('Add as mentor'),
+                Checkbox(
+                  value: _isMentor,
+                  onChanged: (value) {
+                    setState(() {
+                      _isMentor = value!;
+                    });
+                  },
+                ),
+              ],
             ),
 
-            StreamBuilder<List<dynamic>>(
-              stream: api.stream(token,
-                  "https://rcc-discipleship.up.railway.app/api/mentors/"),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final List<dynamic> data = snapshot.data!;
+            Row(
+              children: [
+                if (_mentorNameController.text.isEmpty)
+                  const Expanded(child: Text('Discipler not assigned')),
+                if (_mentorNameController.text.isNotEmpty)
+                  Expanded(
+                      child: Text(
+                          'Discipler name: ${_mentorNameController.text}')),
+                StreamBuilder<List<dynamic>>(
+                  stream: api.stream(token,
+                      "https://rcc-discipleship.up.railway.app/api/mentors/"),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final List<dynamic> data = snapshot.data!;
 
-                  final int dataLength = data.length;
-                  //int iDValue = widget.initialData['mentor'];
+                      final int dataLength = data.length;
+                      //int iDValue = widget.initialData['mentor'];
 
-                  int iDValue = widget.initialData['mentor'] ?? 1;
+                      int iDValue = widget.initialData['mentor'] ?? 1;
 
-                  return DropdownButton<int>(
-                    // value: iDValue,
-                    hint: const Text("Select Discipler"),
-                    items: snapshot.data!
-                        .map((option) => DropdownMenuItem<int>(
-                            value: option['id'],
-                            child: Text(option['username'])))
-                        .toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedItemText = snapshot.data?.firstWhere(
-                            (item) => item['id'] == newValue)['username'];
-                        iDValue = newValue!;
-                        _mentorNameController.text = _selectedItemText;
-                        _selectedValue = newValue;
+                      return Expanded(
+                        child: DropdownButton<int>(
+                          // value: iDValue,
+                          hint: const Text("Select Discipler"),
+                          items: snapshot.data!
+                              .map((option) => DropdownMenuItem<int>(
+                                  value: option['id'],
+                                  child: Text(option['username'])))
+                              .toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedItemText = snapshot.data?.firstWhere(
+                                  (item) => item['id'] == newValue)['username'];
+                              iDValue = newValue!;
+                              _mentorNameController.text = _selectedItemText;
+                              _selectedValue = newValue;
 
-                        print(_selectedItemText);
-                      });
-                    },
-                  );
-                  // DropdownButtonFormField<String>(
-                  //   items: snapshot.data!.map((option) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: option['id']
-                  //           .toString(), // Assuming 'mentor_name' is the field name for mentor name in the API response
-                  //       child: Text(option[
-                  //           'username']), // Assuming 'mentor_name' is the field name for mentor name in the API response
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (value) {
-                  //     _mentorNameController2.text = value!;
-                  //     mentor = value as int;
+                              print(_selectedItemText);
+                            });
+                          },
+                        ),
+                      );
+                      // DropdownButtonFormField<String>(
+                      //   items: snapshot.data!.map((option) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: option['id']
+                      //           .toString(), // Assuming 'mentor_name' is the field name for mentor name in the API response
+                      //       child: Text(option[
+                      //           'username']), // Assuming 'mentor_name' is the field name for mentor name in the API response
+                      //     );
+                      //   }).toList(),
+                      //   onChanged: (value) {
+                      //     _mentorNameController2.text = value!;
+                      //     mentor = value as int;
 
-                  //     print(_mentorNameController2.text);
-                  //   },
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select a mentor',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+                      //     print(_mentorNameController2.text);
+                      //   },
+                      //   decoration: InputDecoration(
+                      //     labelText: 'Select a mentor',
+                      //     border: OutlineInputBorder(),
+                      //   ),
+                      // );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
             // CheckboxListTile(
             //   title: Text('Is Mentor'),
@@ -186,10 +212,7 @@ class _MyFormState extends State<MyForm> {
             //     });
             //   },
             // ),
-            if (_mentorNameController.text.isEmpty)
-              const Text('Please assign a Discipler'),
-            if (_mentorNameController.text.isNotEmpty)
-              Text('Mentor name: ${_mentorNameController.text}'),
+
             // Text(_mentorNameController.text),
             // TextField(
             //   controller: _mentorNameController,
@@ -197,22 +220,22 @@ class _MyFormState extends State<MyForm> {
             // ),
             TextField(
               controller: _workController,
-              decoration: InputDecoration(labelText: 'Work'),
+              decoration: const InputDecoration(labelText: 'Work'),
             ),
             TextField(
               controller: _homeAddressController,
-              decoration: InputDecoration(labelText: 'Home Address'),
+              decoration: const InputDecoration(labelText: 'Home Address'),
             ),
             TextField(
               controller: _languageController,
-              decoration: InputDecoration(labelText: 'Language'),
+              decoration: const InputDecoration(labelText: 'Language'),
             ),
             TextField(
               controller: _auxiliaryController,
-              decoration: InputDecoration(labelText: 'Auxiliary'),
+              decoration: const InputDecoration(labelText: 'Auxiliary'),
             ),
             CheckboxListTile(
-              title: Text('Baptized'),
+              title: const Text('Baptized'),
               value: widget.initialData['baptised'],
               onChanged: (bool? value) {
                 setState(() {
@@ -244,7 +267,7 @@ class _MyFormState extends State<MyForm> {
               child: AbsorbPointer(
                 child: TextField(
                   controller: _dateOfBirthController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Date of Birth',
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
@@ -258,7 +281,7 @@ class _MyFormState extends State<MyForm> {
                 String lastName = _lastNameController.text;
                 String email = _emailController.text;
                 String phoneNumber = _phoneNumberController.text;
-                bool isMentor = widget.initialData['is_mentor'];
+                bool isMentor = _isMentor;
                 String mentorName = _mentorNameController2.text;
                 String work = _workController.text;
                 String homeAddress = _homeAddressController.text;
@@ -372,6 +395,8 @@ class _MyFormState extends State<MyForm> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Update was successfully!')));
       // Handle success, e.g. show a success message to the user
+      print('outside setstate $_isMentor');
+      print(jsonData);
     } else {
       // throw Exception('Failed to load data');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
