@@ -5,6 +5,7 @@ import '../logins/api_calls.dart';
 import 'add_mem.dart';
 import 'admin_mentor.dart';
 import 'all_members.dart';
+import 'unassigned_members.dart';
 
 class Home extends StatefulWidget {
   final String token;
@@ -77,7 +78,7 @@ class _HomeState extends State<Home> {
                               ),
                               leading: const CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                    'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
+                                    'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
                               ),
                               trailing: const Icon(Icons.arrow_forward),
                             ),
@@ -107,10 +108,12 @@ class _HomeState extends State<Home> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    // AddMember()
-                    AddMemberPage(token: token),
-              ));
+                  builder: (context) =>
+                      // AddMember()
+                      // AddMemberPage(token: token),
+                      UnassignedMembersPage(
+                        token: token,
+                      )));
         },
         tooltip: 'Increment',
         //insert_chart
@@ -183,7 +186,7 @@ class _HomeState extends State<Home> {
   Widget _userAvatar() {
     return const CircleAvatar(
       backgroundImage: NetworkImage(
-          'https://scontent.facc5-2.fna.fbcdn.net/v/t39.30808-6/271922208_4485465008247648_4210291738365209830_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=7B4wb3Gzg-QAX_usODE&_nc_ht=scontent.facc5-2.fna&oh=00_AfAEMjpHDp6pGFU7kr0mVS3fGlR99TNwwI2Ru5ehg1JS3A&oe=64335EC8'),
+          'https://scontent.facc6-1.fna.fbcdn.net/v/t39.30808-6/271922208_4485465008247648_4210291738365209830_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHAj4TZAk9IAFQnOr6GKj40Xnt6DeiViuxee3oN6JWK7ODJJ96pMP5E6VGooIP8h13WfezANtM9WDeuQMT2qITI&_nc_ohc=YGYEJzte4AMAX8ADZjr&_nc_zt=23&_nc_ht=scontent.facc6-1.fna&oh=00_AfDGi1N2TJymcFc2w-QAFnwm-XDm40Q61JSDgXEboN29Cw&oe=64394D88'),
       radius: 35,
     );
   }

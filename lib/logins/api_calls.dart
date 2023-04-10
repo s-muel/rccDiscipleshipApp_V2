@@ -135,6 +135,53 @@ class ApiCalls {
     }
   }
 
+  // adding a member
+  Future<void> assignMentor({
+    required String token,
+    required int mentor,
+    required int memberID,
+    required BuildContext context,
+
+    // required GlobalKey<ScaffoldState> scaffoldKey
+  }) async {
+    // Create a map of the updated data
+    Map<String, dynamic> updatedData = {
+      "mentor": mentor,
+    };
+
+    // Convert the map to JSON
+    String jsonData = jsonEncode(updatedData);
+
+    // Make an HTTP PUT request to update the data in the API
+    Uri uri = Uri.parse(
+        'https://rcc-discipleship.up.railway.app/api/unassigned-members/$memberID/');
+    http.Response response = await http.patch(
+      uri,
+      headers: {
+        'Authorization': 'Token  $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    );
+
+    // Check the response status code
+    if (response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Member created successfully!'),
+        ),
+      );
+      print(jsonData);
+
+      // Handle success, e.g. show a success message to the user
+    } else {
+      // Handle error, e.g. show an error message to the user
+
+      print(response.statusCode);
+      print(response.body);
+    }
+  }
+
   // stream building
   Stream<List<Map<String, dynamic>>> stream(String token, String Url) async* {
     while (true) {
@@ -150,7 +197,7 @@ class ApiCalls {
             data.map((e) => e as Map<String, dynamic>).toList();
         yield result;
       } else {
-        throw Exception('Check Internet Connection');
+        throw Exception('Failed to load Data ');
       }
       await Future.delayed(Duration(seconds: 5));
     }
