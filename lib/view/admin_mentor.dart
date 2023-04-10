@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../logins/api_calls.dart';
+import 'member_details_page.dart';
 
 class MentorManagementPage extends StatefulWidget {
   final String token;
@@ -65,8 +66,18 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                                 title: Text(item['first_name'].toString()),
                                 subtitle: Text(item['email']),
                                 trailing: TextButton(
-                                    onPressed: () {},
-                                    child: const Text("Details")),
+                                    onPressed: () {
+                                      trackerSheet(context, menteeID);
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //     MyForm(
+                                      //         initialData: item, token: token),
+                                      //   ),
+                                      // );
+                                    },
+                                    child: const Text("View Reports")),
                               ),
                             ),
                           );

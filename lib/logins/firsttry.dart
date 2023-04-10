@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:reapers_app/disciplerViews/discipler_main_page.dart';
 import 'dart:convert';
 
 import 'package:reapers_app/logins/api_calls.dart';
@@ -39,13 +40,23 @@ class _LoginFormState extends State<LoginForm> {
         // await login(username, email, password, url);
         print("am pressed");
         final String token = data['token'] as String;
+        final int id = data['user']['id'] as int;
+        print('this is $id');
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Home(token: token),
+            builder: (context) => DisciplerMainPage(token: token, mentor: id),
           ),
         );
+
+        // ignore: use_build_context_synchronously
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Home(token: token),
+        //   ),
+        // );
 
         print("This is token $token");
         // Do something with the token, such as save it to shared preferences

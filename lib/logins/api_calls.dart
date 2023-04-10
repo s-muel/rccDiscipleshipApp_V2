@@ -20,6 +20,7 @@ class ApiCalls {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final String token = data['token'] as String;
+      final int id = data['user']['id'] as int;
       return data;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -169,6 +170,55 @@ class ApiCalls {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Member created successfully!'),
+        ),
+      );
+      print(jsonData);
+
+      // Handle success, e.g. show a success message to the user
+    } else {
+      // Handle error, e.g. show an error message to the user
+
+      print(response.statusCode);
+      print(response.body);
+    }
+  }
+
+  //submiting report
+  Future<void> submitReport({
+    required String token,
+    required int memberID,
+    required String report,
+    required BuildContext context,
+
+    // required GlobalKey<ScaffoldState> scaffoldKey
+  }) async {
+    // Create a map of the updated data
+    Map<String, dynamic> updatedData = {
+      "mentee": memberID,
+      "report_text": report
+    };
+
+    // Convert the map to JSON
+    String jsonData = jsonEncode(updatedData);
+
+    // Make an HTTP PUT request to update the data in the API
+    Uri uri = Uri.parse(
+        'https://rcc-discipleship.up.railway.app/api/weekly-reports/');
+    http.Response response = await http.post(
+      uri,
+      headers: {
+        'Authorization': 'Token  $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    );
+
+    // Check the response status code
+    if (response.statusCode == 201) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Report Submitted'),
         ),
       );
       print(jsonData);
