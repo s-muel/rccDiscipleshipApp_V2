@@ -20,10 +20,20 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
   late String token;
   late dynamic mentor;
   late int mentorID = mentor;
-  bool _option1 = true;
-  bool _option2 = true;
-  bool _option3 = true;
+  bool wednesday = false;
+  bool friday = false;
+  bool sunday = false;
   bool _value = false;
+
+  //resetting the form
+  void resetForm() {
+    setState(() {
+      wednesday = false;
+      friday = false;
+      sunday = false;
+      reportTextController.text = '';
+    });
+  }
 
   @override
   void initState() {
@@ -86,7 +96,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                       //   ),
                                       // );
                                     },
-                                    child: const Text("View Reports")),
+                                    child: const Text("Details")),
                               ),
                             ),
                           );
@@ -196,44 +206,63 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                     children: [
                                       const SizedBox(height: 10),
                                       const Text("Church Attendance"),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: const [
+                                          Expanded(
+                                            child: Text(
+                                              'Wednesday',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              'Friday',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              'Sunday',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                       Row(
                                         children: [
-                                          Flexible(
-                                            child: CheckboxListTile(
-                                              title: const Text('Option 1'),
-                                              value: _option1,
+                                          Expanded(
+                                            child: Checkbox(
+                                              value: wednesday,
                                               onChanged: (bool? value) {
                                                 setState(() {
-                                                  _option1 = value!;
+                                                  wednesday = value!;
                                                 });
                                               },
                                             ),
                                           ),
-                                          Flexible(
-                                            child: CheckboxListTile(
-                                              title: const Text('Option 2'),
-                                              value: _option2,
+                                          Expanded(
+                                            child: Checkbox(
+                                              value: friday,
                                               onChanged: (bool? value) {
                                                 setState(() {
-                                                  _option2 = value!;
+                                                  friday = value!;
                                                 });
                                               },
                                             ),
                                           ),
-                                          Flexible(
-                                            child: CheckboxListTile(
-                                              title: const Text('Option 3'),
-                                              value: _option3,
+                                          Expanded(
+                                            child: Checkbox(
+                                              value: sunday,
                                               onChanged: (bool? value) {
                                                 setState(() {
-                                                  _option3 = value!;
+                                                  sunday = value!;
                                                 });
                                               },
                                             ),
                                           ),
                                         ],
                                       ),
-                                      Text("$_option1"),
                                       TextFormField(
                                         maxLines: null,
                                         textAlignVertical:
@@ -242,7 +271,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                         decoration: InputDecoration(
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always,
-                                          labelText: 'Weekly Checkup',
+                                          labelText: 'Weekly Report',
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -269,6 +298,9 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                               report: reportTextController.text,
                                               context: context,
                                             );
+                                            setState(() {});
+
+                                            resetForm();
                                           }
                                         },
                                         child: const Text('Submit Report'),

@@ -39,26 +39,28 @@ class _LoginFormState extends State<LoginForm> {
             await api.login(context, username, email, password, url);
         // await login(username, email, password, url);
         print("am pressed");
+
         final String token = data['token'] as String;
         final int id = data['user']['id'] as int;
-        print('this is $id');
+        final bool isDiscipler = data['user']['is_staff'];
         // ignore: use_build_context_synchronously
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DisciplerMainPage(token: token, mentor: id),
-          ),
-        );
-
-        // ignore: use_build_context_synchronously
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => Home(token: token),
-        //   ),
-        // );
-
-        print("This is token $token");
+        if (isDiscipler) {
+          //  ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home(token: token),
+            ),
+          );
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DisciplerMainPage(token: token, mentor: id),
+            ),
+          );
+        }
         // Do something with the token, such as save it to shared preferences
       } catch (e) {
         print('Failed to login: $e');
