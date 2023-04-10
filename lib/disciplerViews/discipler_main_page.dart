@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 
 import '../logins/api_calls.dart';
+import '../view/member_details_page.dart';
 
 class DisciplerMainPage extends StatefulWidget {
   final String token;
@@ -86,15 +88,15 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                 subtitle: Text(item['email']),
                                 trailing: TextButton(
                                     onPressed: () {
-                                      // trackerSheet(context, menteeID);
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //     MyForm(
-                                      //         initialData: item, token: token),
-                                      //   ),
-                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              DiscipleDetailsPage(
+                                                  initialData: item,
+                                                  token: token),
+                                        ),
+                                      );
                                     },
                                     child: const Text("Details")),
                               ),
