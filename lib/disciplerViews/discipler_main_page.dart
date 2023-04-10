@@ -5,6 +5,7 @@ import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 
 import '../logins/api_calls.dart';
 import '../view/member_details_page.dart';
+import 'checkup_history.dart';
 
 class DisciplerMainPage extends StatefulWidget {
   final String token;
@@ -59,8 +60,8 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
             )
           ],
         ),
-        body: FutureBuilder<List<dynamic>>(
-          future: api.get(
+        body: StreamBuilder<List<dynamic>>(
+          stream: api.stream(
               token, 'https://rcc-discipleship.up.railway.app/api/members/'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -85,7 +86,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                             child: Card(
                               child: ListTile(
                                 title: Text(item['first_name'].toString()),
-                                subtitle: Text(item['email']),
+                                subtitle: Text(item['phone_number']),
                                 trailing: TextButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -178,25 +179,34 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                   const Spacer(),
                                   TextButton(
                                       onPressed: () {
-                                        //
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text('Coming Soon'),
-                                              content: const Text(
-                                                  'This feature is coming soon.'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('OK'),
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReportHistoryPage(
+                                                    menteeID: memberID,
+                                                    token: token),
+                                          ),
                                         );
+                                        //
+                                        // showDialog(
+                                        //   context: context,
+                                        //   builder: (BuildContext context) {
+                                        //     return AlertDialog(
+                                        //       title: const Text('Coming Soon'),
+                                        //       content: const Text(
+                                        //           'This feature is coming soon.'),
+                                        //       actions: [
+                                        //         TextButton(
+                                        //           onPressed: () {
+                                        //             Navigator.pop(context);
+                                        //           },
+                                        //           child: const Text('OK'),
+                                        //         ),
+                                        //       ],
+                                        //     );
+                                        //   },
+                                        // );
                                         //
                                       },
                                       child: const Text("History"))
@@ -265,6 +275,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                           ),
                                         ],
                                       ),
+                                      const SizedBox(height: 10),
                                       TextFormField(
                                         maxLines: null,
                                         textAlignVertical:
