@@ -34,34 +34,41 @@ class _AllMembersPageState extends State<AllMembersPage> {
         ),
         body: Column(
           children: [
-            TextField(
-              
-              onTapOutside: (value) {
-                setState(() {
-                  _isSearching = false;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _isSearching = true;
-                });
-              },
-
-              onSubmitted: (value) {
-                _isSearching = false;
-              },
-              // onChanged: (value) {
-              //   setState(() {
-              //     _isSearching = true;
-              //   });
-              // },
-              controller: _searchController,
-              decoration: const InputDecoration(
-                  hintText: 'Search by name, phone number, or email'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                onTapOutside: (value) {
+                  setState(() {
+                    _isSearching = false;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _isSearching = true;
+                  });
+                },
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search Member',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                ),
+              ),
             ),
             Visibility(
               visible: _isSearching,
-              child: const LinearProgressIndicator(),
+              child: const SizedBox(
+                  width: 300,
+                  child: LinearProgressIndicator(
+                    minHeight: 1,
+                  )),
             ),
             Expanded(
               child: StreamBuilder<List<dynamic>>(
@@ -109,22 +116,46 @@ class _AllMembersPageState extends State<AllMembersPage> {
                       itemCount: filteredData.length,
                       itemBuilder: (context, index) {
                         final item = filteredData[index];
-                        return Card(
-                          child: ListTile(
-                            title: Text(
-                                '${item['first_name']} ${item['last_name']}'),
-                            subtitle: Text(item['email']),
-                            trailing: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        MyForm(initialData: item, token: token),
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            elevation: 4,
+                            child: ListTile(
+                              title: Text(
+                                  '${item['first_name']} ${item['last_name']}'),
+                              subtitle: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.call,
+                                    color: Colors.green,
+                                    size: 15,
                                   ),
-                                );
-                              },
-                              child: const Text("Details"),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    '${item['phone_number']}',
+                                    style: const TextStyle(
+                                        fontSize: 13, color: Colors.green),
+                                  ),
+                                ],
+                              ),
+                              leading: const CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
+                              ),
+                              trailing: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MyForm(
+                                          initialData: item, token: token),
+                                    ),
+                                  );
+                                },
+                                child: const Text("Details"),
+                              ),
                             ),
                           ),
                         );

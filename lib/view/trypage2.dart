@@ -68,19 +68,24 @@ class _HomeState extends State<Home> {
                               ),
                             );
                           },
-                          child: Card(
-                            child: ListTile(
-                              tileColor: const Color.fromARGB(31, 35, 219, 11),
-                              title: Text(
-                                  '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
-                              subtitle: Text(
-                                mentor['member']['phone_number'],
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Card(
+                              elevation: 2,
+                              child: ListTile(
+                                tileColor:
+                                    const Color.fromARGB(31, 35, 219, 11),
+                                title: Text(
+                                    '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
+                                subtitle: Text(
+                                  mentor['member']['phone_number'],
+                                ),
+                                leading: const CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
+                                ),
+                                trailing: const Icon(Icons.arrow_forward),
                               ),
-                              leading: const CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
-                              ),
-                              trailing: const Icon(Icons.arrow_forward),
                             ),
                           ),
                         );
