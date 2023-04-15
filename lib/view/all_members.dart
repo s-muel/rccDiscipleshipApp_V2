@@ -105,7 +105,7 @@ class _AllMembersPageState extends State<AllMembersPage> {
                               .toString()
                               .toLowerCase()
                               .contains(searchText.toLowerCase()) ||
-                          item['phone'].toString().contains(searchText) ||
+                          item['phone_number'].toString().contains(searchText) ||
                           item['email']
                               .toString()
                               .toLowerCase()

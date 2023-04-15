@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:reapers_app/Pages/view.dart';
+import 'package:reapers_app/view/camera_test.dart';
 import 'package:reapers_app/view/try_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const LoginForm(),
+      home: CameraTestPage(),
+      // const LoginForm(),
       // home: const Home(),
     );
   }

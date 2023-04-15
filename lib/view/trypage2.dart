@@ -77,8 +77,17 @@ class _HomeState extends State<Home> {
                                     const Color.fromARGB(31, 35, 219, 11),
                                 title: Text(
                                     '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
-                                subtitle: Text(
-                                  mentor['member']['phone_number'],
+                                subtitle: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.call,
+                                      color: Colors.green,
+                                      size: 15,
+                                    ),
+                                    Text(
+                                      mentor['member']['phone_number'],
+                                    ),
+                                  ],
                                 ),
                                 leading: const CircleAvatar(
                                   backgroundImage: NetworkImage(
