@@ -43,8 +43,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: CameraTestPage(),
-      // const LoginForm(),
+      home:
+          //CameraTestPage(),
+          const LoginForm(),
       // home: const Home(),
     );
   }

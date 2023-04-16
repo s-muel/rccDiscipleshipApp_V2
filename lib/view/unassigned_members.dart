@@ -47,16 +47,16 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final item = data[index];
+                        String imageURL = item['photo'];
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ExpansionTile(
                             collapsedBackgroundColor:
                                 Color.fromARGB(31, 41, 151, 21),
                             collapsedIconColor: Colors.green,
-                            leading: const CircleAvatar(
+                            leading: CircleAvatar(
                               radius: 20,
-                              backgroundImage: NetworkImage(
-                                  "https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/99294387_2785350708244208_8544346941536862208_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHcj_1VPmwhxtoaUVHMD0KwXWnmu-TqwuRdaea75OrC5IefOb5ZAYgoB_0BQOOAPg6pgDXmPvCw50b4iw8Vw2A1&_nc_ohc=kIU9ZmLN_MIAX89FFst&_nc_ht=scontent.facc6-1.fna&oh=00_AfAVYWwvfPPP8TdDfWxDTIap1j-LEnKR3cGXVEOzwFA3DQ&oe=645A787A"),
+                              backgroundImage: NetworkImage(imageURL),
                             ),
                             title: Text(
                                 '${item['first_name']} ${item['last_name']}'),

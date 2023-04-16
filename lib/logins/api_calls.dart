@@ -20,7 +20,7 @@ class ApiCalls {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final String token = data['token'] as String;
-      final int id = data['user']['id'] as int;
+      // final int id = data['user']['id'] as int;
       final bool isDiscipler = data['user']['is_staff'] as bool;
       print('api call $isDiscipler');
       return data;
@@ -71,6 +71,7 @@ class ApiCalls {
     required bool baptized,
     required String dateOfBirth,
     required BuildContext context,
+    String? photo,
 
     // required GlobalKey<ScaffoldState> scaffoldKey
   }) async {
@@ -88,7 +89,8 @@ class ApiCalls {
       'language': language,
       'axilliary': auxiliary,
       'baptised': baptized,
-      'date_of_birth': dateOfBirth
+      'date_of_birth': dateOfBirth,
+      'photo':photo
     };
 
     // Convert the map to JSON

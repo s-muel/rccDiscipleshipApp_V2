@@ -105,7 +105,9 @@ class _AllMembersPageState extends State<AllMembersPage> {
                               .toString()
                               .toLowerCase()
                               .contains(searchText.toLowerCase()) ||
-                          item['phone_number'].toString().contains(searchText) ||
+                          item['phone_number']
+                              .toString()
+                              .contains(searchText) ||
                           item['email']
                               .toString()
                               .toLowerCase()
@@ -116,6 +118,13 @@ class _AllMembersPageState extends State<AllMembersPage> {
                       itemCount: filteredData.length,
                       itemBuilder: (context, index) {
                         final item = filteredData[index];
+                        String imageURL = item['photo'];
+                        bool hasImage = true;
+                        if (imageURL == null) {
+                          setState(() {
+                            hasImage = false;
+                          });
+                        }
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
@@ -140,9 +149,8 @@ class _AllMembersPageState extends State<AllMembersPage> {
                                   ),
                                 ],
                               ),
-                              leading: const CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(imageURL),
                               ),
                               trailing: TextButton(
                                 onPressed: () {

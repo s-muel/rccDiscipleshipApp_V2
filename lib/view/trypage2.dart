@@ -19,6 +19,12 @@ class _HomeState extends State<Home> {
   ApiCalls api = ApiCalls();
   int total = 0;
   late String token;
+  bool isActive = false;
+
+  int totalDisciplers = 0;
+  int totalMembers = 0;
+
+  //Color isActive = Color.fromARGB(255, 50, 236, 50);
   @override
   void initState() {
     super.initState();
@@ -28,93 +34,208 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<dynamic>>(
-        future: api.get(
-            token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final List<dynamic> data = snapshot.data!;
-            final int dataLength = data.length;
-            return Column(
-              children: [
-                CustomPaint(
-                    painter: LogoPainter(),
-                    size: const Size(400, 195),
-                    child: _appBarContent(dataLength)),
-                const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Disciplers List",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    )),
-                Expanded(
-                  child: SizedBox(
-                    height: 500,
-                    child: ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        final mentor = data[index];
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MentorManagementPage(
-                                    token: token, mentor: mentor),
+      body: Column(
+        children: [
+          CustomPaint(
+              painter: LogoPainter(),
+              size: const Size(400, 195),
+              child: Container(
+                height: 130,
+                width: 400,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                child: Column(
+                  children: [
+                    const ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                        ),
+                        title: Text("FRANCIS CLASS PETERS",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                        trailing: Icon(
+                          Icons.add_circle,
+                          size: 45,
+                          color: Colors.white,
+                        ),
+                        subtitle: Text("Admin",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold))),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          color: isActive
+                              ? Color.fromARGB(255, 11, 153, 11)
+                              : Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(children: [
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            Text("Disciplers",
+                                style: TextStyle(
+                                    color: isActive
+                                        ? Colors.white
+                                        : Colors.green)),
+                            ElevatedButton(
+
+                              style: ButtonStyle(
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(30, 30)
+                                    ),
+                                 // backgroundColor: ,
+                                // padding: MaterialStateProperty.all(
+                                //   EdgeInsets.symmetric(horizontal: 1),
+                                // ),
                               ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Card(
-                              elevation: 2,
-                              child: ListTile(
-                                tileColor:
-                                    const Color.fromARGB(31, 35, 219, 11),
-                                title: Text(
-                                    '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
-                                subtitle: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.call,
-                                      color: Colors.green,
-                                      size: 15,
-                                    ),
-                                    Text(
-                                      mentor['member']['phone_number'],
-                                    ),
-                                  ],
-                                ),
-                                leading: const CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
-                                ),
-                                trailing: const Icon(Icons.arrow_forward),
+                              onPressed: () {
+                                bool color = true;
+                                setState(() {
+                                  isActive = color;
+                                });
+                              },
+                              child: Text(
+                                totalDisciplers.toString(),
                               ),
                             ),
+                          ]),
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        Card(
+                          color: !isActive
+                              ? Color.fromARGB(255, 11, 153, 11)
+                              : Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                          child: Row(children: [
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            Text("Members",
+                                style: TextStyle(
+                                    color: !isActive
+                                        ? Colors.white
+                                        : Colors.green)),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(10, 30)),
+                              ),
+                              onPressed: () {
+                                bool color = false;
+                                setState(() {
+                                  isActive = color;
+                                });
+                              },
+                              child: Text(
+                                totalMembers.toString(),
+                              ),
+                            ),
+                          ]),
+                        )
+                      ],
+                    )
+                  ],
                 ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+              )),
+          Expanded(child: ListView())
+        ],
       ),
+      // FutureBuilder<List<dynamic>>(
+      //   future: api.get(
+      //       token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       final List<dynamic> data = snapshot.data!;
+      //       final int dataLength = data.length;
+      //       return Column(
+      //         children: [
+      //           CustomPaint(
+      //               painter: LogoPainter(),
+      //               size: const Size(400, 195),
+      //               child: _appBarContent(dataLength)),
+      //           const Align(
+      //               alignment: Alignment.topLeft,
+      //               child: Text(
+      //                 "Disciplers List",
+      //                 style: TextStyle(
+      //                   fontSize: 18,
+      //                   fontFamily: 'Lato',
+      //                   fontWeight: FontWeight.w700,
+      //                 ),
+      //               )),
+      //           Expanded(
+      //             child: SizedBox(
+      //               height: 500,
+      //               child: ListView.builder(
+      //                 itemCount: data.length,
+      //                 itemBuilder: (context, index) {
+      //                   final mentor = data[index];
+      //                   return InkWell(
+      //                     onTap: () {
+      //                       Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                           builder: (context) => MentorManagementPage(
+      //                               token: token, mentor: mentor),
+      //                         ),
+      //                       );
+      //                     },
+      //                     child: Padding(
+      //                       padding: const EdgeInsets.all(3.0),
+      //                       child: Card(
+      //                         elevation: 2,
+      //                         child: ListTile(
+      //                           tileColor:
+      //                               const Color.fromARGB(31, 35, 219, 11),
+      //                           title: Text(
+      //                               '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
+      //                           subtitle: Row(
+      //                             children: [
+      //                               const Icon(
+      //                                 Icons.call,
+      //                                 color: Colors.green,
+      //                                 size: 15,
+      //                               ),
+      //                               Text(
+      //                                 mentor['member']['phone_number'],
+      //                               ),
+      //                             ],
+      //                           ),
+      //                           leading: const CircleAvatar(
+      //                             backgroundImage: NetworkImage(
+      //                                 'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
+      //                           ),
+      //                           trailing: const Icon(Icons.arrow_forward),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                   );
+      //                 },
+      //               ),
+      //             ),
+      //           ),
+      //         ],
+      //       );
+      //     } else if (snapshot.hasError) {
+      //       return Center(
+      //         child: Text('Error: ${snapshot.error}'),
+      //       );
+      //     } else {
+      //       return const Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }
+      //   },
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigator.of(context).pop();
@@ -149,7 +270,7 @@ class _HomeState extends State<Home> {
           const SizedBox(
             height: 20,
           ),
-          _userInfo(dataLength)
+          //  _userInfo(dataLength)
         ],
       ),
     );
@@ -185,7 +306,7 @@ class _HomeState extends State<Home> {
           flex: 1,
           child: Column(
             children: [
-              _userPersonalInfo(),
+              //   _userPersonalInfo(),
               const SizedBox(
                 height: 25,
               ),
@@ -200,8 +321,8 @@ class _HomeState extends State<Home> {
   Widget _userAvatar() {
     return const CircleAvatar(
       backgroundImage: NetworkImage(
-          'https://scontent.facc6-1.fna.fbcdn.net/v/t39.30808-6/271922208_4485465008247648_4210291738365209830_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHAj4TZAk9IAFQnOr6GKj40Xnt6DeiViuxee3oN6JWK7ODJJ96pMP5E6VGooIP8h13WfezANtM9WDeuQMT2qITI&_nc_ohc=YGYEJzte4AMAX8ADZjr&_nc_zt=23&_nc_ht=scontent.facc6-1.fna&oh=00_AfDGi1N2TJymcFc2w-QAFnwm-XDm40Q61JSDgXEboN29Cw&oe=64394D88'),
-      radius: 35,
+          'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
+      radius: 25,
     );
   }
 
@@ -214,6 +335,13 @@ class _HomeState extends State<Home> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
+              Text(
+                'Admin',
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 28,
+                    color: Colors.white),
+              ),
               Text(
                 'Admin',
                 style: TextStyle(
@@ -254,37 +382,6 @@ class _HomeState extends State<Home> {
             ),
           ),
         )
-        // InkWell(
-        //   onTap: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) =>
-        //             // AddMember()
-        //             AddMemberPage(token: token),
-        //       ),
-        //     );
-        //   },
-        //   child: Expanded(
-        //     flex: 1,
-        //     child: Container(
-        //       height: 30,
-        //       decoration: BoxDecoration(
-        //         color: Colors.white,
-        //         borderRadius: BorderRadius.circular(10),
-        //       ),
-        //       child: const Center(
-        //         child: Text(
-        //           'Add Member',
-        //           style: TextStyle(
-        //               color: Colors.green,
-        //               // Color.fromARGB(255, 177, 22, 234),
-        //               fontWeight: FontWeight.w500),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // )
       ],
     );
   }
@@ -315,28 +412,7 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: const [
-        //     Text(
-        //       '7',
-        //       style: TextStyle(
-        //           color: Colors.white,
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 17),
-        //     ),
-        //     SizedBox(
-        //       height: 15,
-        //     ),
-        //     Text(
-        //       'Bucket',
-        //       style: TextStyle(
-        //           color: Colors.white,
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 11),
-        //     ),
-        //   ],
-        // ),
+
         FutureBuilder<List<dynamic>>(
           future: api.get(
               token, "https://rcc-discipleship.up.railway.app/api/members/"),
@@ -402,10 +478,10 @@ class LogoPainter extends CustomPainter {
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
-        Color.fromARGB(255, 87, 241, 40),
-        Color.fromARGB(255, 12, 168, 12)
-        // Color.fromARGB(255, 242, 101, 197),
-        // Color.fromARGB(255, 154, 76, 237),
+        Colors.green,
+        Colors.green
+        // Color.fromARGB(255, 87, 241, 40),
+        // Color.fromARGB(255, 12, 168, 12)
       ],
     ).createShader(rect);
     path.lineTo(0, size.height - size.height / 8);

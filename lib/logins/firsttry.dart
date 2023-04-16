@@ -41,7 +41,7 @@ class _LoginFormState extends State<LoginForm> {
         print("am pressed");
 
         final String token = data['token'] as String;
-        final int id = data['user']['id'] as int;
+        //final int id = data['user']['id'] as int;
         final bool isDiscipler = data['user']['is_staff'];
         // ignore: use_build_context_synchronously
         if (isDiscipler) {
@@ -54,10 +54,18 @@ class _LoginFormState extends State<LoginForm> {
           );
         } else {
           // ignore: use_build_context_synchronously
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => DisciplerMainPage(token: token, mentor: id),
+          //   ),
+          // );
+
+          // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DisciplerMainPage(token: token, mentor: id),
+              builder: (context) => Home(token: token),
             ),
           );
         }
@@ -91,7 +99,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           const CircleAvatar(
             backgroundImage: NetworkImage(
-                'https://scontent.facc6-1.fna.fbcdn.net/v/t39.30808-6/271922208_4485465008247648_4210291738365209830_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHAj4TZAk9IAFQnOr6GKj40Xnt6DeiViuxee3oN6JWK7ODJJ96pMP5E6VGooIP8h13WfezANtM9WDeuQMT2qITI&_nc_ohc=YGYEJzte4AMAX8ADZjr&_nc_zt=23&_nc_ht=scontent.facc6-1.fna&oh=00_AfDGi1N2TJymcFc2w-QAFnwm-XDm40Q61JSDgXEboN29Cw&oe=64394D88'),
+                'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
             radius: 50,
           ),
           Center(
@@ -174,7 +182,7 @@ Future<Map<String, dynamic>> login(
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, dynamic>{
-      'username': username,
+      //'username': username,
       'email': email,
       'password': password,
     }),
@@ -185,6 +193,7 @@ Future<Map<String, dynamic>> login(
     final String token = data['token'] as String;
     return data;
   } else {
+    print(response.statusCode);
     throw Exception('Failed to login');
   }
 }

@@ -75,17 +75,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:cloudinary_flutter/cloudinary_flutter.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Base64 Image Demo',
-      home: CameraTestPage(),
-    );
-  }
-}
 
 class CameraTestPage extends StatefulWidget {
   @override
@@ -102,10 +91,7 @@ class _CameraTestPageState extends State<CameraTestPage> {
     apiKey: '295462655464473',
     cloudName: 'dekhxk5wg',
     apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
-    //  apiUrl: 'https://api.cloudinary.com/v1_1',
-    // cloudinaryApiKey: 'YOUR_API_KEY',
-    // cloudinaryApiSecret: 'YOUR_API_SECRET',
-    // cloudinaryApiUrl: 'YOUR_CLOUDINARY_URL',
+  
   );
   Future _uploadImage() async {
     final response = await cloudinary.uploadResource(CloudinaryUploadResource(

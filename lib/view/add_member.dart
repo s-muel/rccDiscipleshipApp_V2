@@ -1,7 +1,10 @@
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:reapers_app/logins/api_calls.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AddMemberPage extends StatefulWidget {
   final String token;
@@ -35,26 +38,86 @@ class _AddMemberPageState extends State<AddMemberPage> {
   String _selectedItemText = "";
   int mentorID = 0;
 
+  //adding pictures functions
+  //File _image = File('');
+  File? _image = File('');
+  XFile? _DBimage;
+  String? _imageURL;
+  bool isUploadImage = false;
+
+  //sending image to cloud storage
+  final cloudinary = Cloudinary.full(
+    apiKey: '295462655464473',
+    cloudName: 'dekhxk5wg',
+    apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
+  );
+  //function for uploading
+  Future _uploadImage(File imageFile) async {
+    final response = await cloudinary.uploadResource(CloudinaryUploadResource(
+      filePath: imageFile.path,
+    ));
+    setState(() {
+      _imageURL = response.secureUrl;
+    });
+    if (response.isSuccessful) {
+      print('Get your image from with ${response.secureUrl}');
+    } else {
+      print(response.error);
+    }
+  }
+
+  final picker = ImagePicker();
+
+  Future getImageFromCamera() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+
+    if (pickedFile != null) {
+      await _uploadImage(File(pickedFile.path));
+    }
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        isUploadImage = true;
+      }
+    });
+  }
+
+  Future getImageFromGallery() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if (pickedFile != null) {
+      await _uploadImage(File(pickedFile.path));
+    }
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        isUploadImage = true;
+      }
+    });
+  }
+  //
+
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
         await api.addMember(
-          context: context,
-          token: token,
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          email: _emailController.text,
-          phoneNumber: _phoneNumberController.text,
-          mentorName: _mentorNameController.text,
-          //mentor: mentorID,
-          work: _workController.text,
-          homeAddress: _homeAddressController.text,
-          language: _languageController.text,
-          auxiliary: _auxiliaryController.text,
-          dateOfBirth: _dateOfBirthController.text,
-          baptized: _selectedValue,
-          isMentor: _isMentor,
-        );
+            context: context,
+            token: token,
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            email: _emailController.text,
+            phoneNumber: _phoneNumberController.text,
+            mentorName: _mentorNameController.text,
+            //mentor: mentorID,
+            work: _workController.text,
+            homeAddress: _homeAddressController.text,
+            language: _languageController.text,
+            auxiliary: _auxiliaryController.text,
+            dateOfBirth: _dateOfBirthController.text,
+            baptized: _selectedValue,
+            isMentor: _isMentor,
+            photo: _imageURL);
         setState(() {
           _successMessage = 'Data updated successfully';
           _errorMessage = '';
@@ -88,21 +151,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
             currentStep: _currentStep,
             onStepContinue: () {
               setState(() {
-                // if (_currentStep < steps.length - 1) {
-                //   // If the current step is not the last step, move to the next step
-                //   _currentStep++;
-                // } else {
-                //   // If the current step is the last step, call the _submit function
-                //   _submitForm();
-                // }
-                // if (_formKey.currentState!.validate()) {
-                //   if (_currentStep < 2) {
-                //     _currentStep += 1;
-                //   } else {
-                //      _formCompleted = true;
-                //   }
-                // }
-
                 if (_currentStep < 2) {
                   _currentStep += 1;
                 }
@@ -123,13 +171,67 @@ class _AddMemberPageState extends State<AddMemberPage> {
               });
             },
             steps: <Step>[
-              //step 1 person details
-
               Step(
                 isActive: _currentStep >= 0,
                 title: const Text("Personal"),
                 content: Column(
                   children: [
+                    Visibility(
+                      visible: isUploadImage,
+                      child: CircleAvatar(
+                        backgroundImage: FileImage(_image!),
+                        radius: 50,
+                      ),
+                    ),
+                    Visibility(
+                      visible: !isUploadImage,
+                      child: const CircleAvatar(
+                        radius: 50,
+                        child: Icon(Icons.person, size: 80),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                  height: 150.0,
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      //const Text("Select Image from"),
+
+                                      ListTile(
+                                        leading: const Icon(Icons.camera_alt),
+                                        title: const Text('Take a picture'),
+                                        onTap: () async {
+                                          await getImageFromCamera();
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(context, _image);
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.image),
+                                        title:
+                                            const Text('Choose from gallery'),
+                                        onTap: () async {
+                                          await getImageFromGallery();
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(context, _image);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
+                        },
+                        child: const Text("Upload Picture")),
+
+                    //  Row(),
+
                     TextFormField(
                       controller: _firstNameController,
                       decoration: const InputDecoration(
@@ -212,7 +314,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     const SizedBox(
                       height: 5,
                     ),
-
                     Row(
                       children: [
                         if (_mentorNameController.text.isEmpty) const Text(''),
@@ -223,53 +324,52 @@ class _AddMemberPageState extends State<AddMemberPage> {
                               controller: _mentorNameController,
                             ),
                           ),
-                        Expanded(
-                          child: StreamBuilder<List<dynamic>>(
-                            stream: api.stream(token,
-                                "https://rcc-discipleship.up.railway.app/api/mentors/"),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                final List<dynamic> data = snapshot.data!;
+                        // Expanded(
+                        //   child: StreamBuilder<List<dynamic>>(
+                        //     stream: api.stream(token,
+                        //         "https://rcc-discipleship.up.railway.app/api/mentors/"),
+                        //     builder: (context, snapshot) {
+                        //       if (snapshot.hasData) {
+                        //         final List<dynamic> data = snapshot.data!;
 
-                                final int dataLength = data.length;
-                                int iDValue = 1;
+                        //         final int dataLength = data.length;
+                        //         int iDValue = 1;
 
-                                //   int iDValue = widget.initialData['mentor'] ?? 1;
+                        //         //   int iDValue = widget.initialData['mentor'] ?? 1;
 
-                                return DropdownButton<int>(
-                                  // value: iDValue,
-                                  hint: const Text("Select Discipler"),
-                                  items: snapshot.data!
-                                      .map((option) => DropdownMenuItem<int>(
-                                          value: option['id'],
-                                          child: Text(option['username'])))
-                                      .toList(),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      _selectedItemText = snapshot.data
-                                          ?.firstWhere((item) =>
-                                              item['id'] ==
-                                              newValue)['username'];
-                                      mentorID = newValue!;
-                                      _mentorNameController.text =
-                                          _selectedItemText;
-                                      //_selectedValue = newValue;
-                                    });
-                                  },
-                                );
-               
-                              } else if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Error: ${snapshot.error}'),
-                                );
-                              } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            },
-                          ),
-                        ),
+                        //         return DropdownButton<int>(
+                        //           // value: iDValue,
+                        //           hint: const Text("Select Discipler"),
+                        //           items: snapshot.data!
+                        //               .map((option) => DropdownMenuItem<int>(
+                        //                   value: option['id'],
+                        //                   child: Text(option['username'])))
+                        //               .toList(),
+                        //           onChanged: (newValue) {
+                        //             setState(() {
+                        //               _selectedItemText = snapshot.data
+                        //                   ?.firstWhere((item) =>
+                        //                       item['id'] ==
+                        //                       newValue)['username'];
+                        //               mentorID = newValue!;
+                        //               _mentorNameController.text =
+                        //                   _selectedItemText;
+                        //               //_selectedValue = newValue;
+                        //             });
+                        //           },
+                        //         );
+                        //       } else if (snapshot.hasError) {
+                        //         return Center(
+                        //           child: Text('Error: ${snapshot.error}'),
+                        //         );
+                        //       } else {
+                        //         return const Center(
+                        //           child: CircularProgressIndicator(),
+                        //         );
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     ),
                     Row(
@@ -285,39 +385,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
                         ),
                       ],
                     ),
-
-                    // if (_mentorNameController.text.isEmpty)
-                    //   const Text('Please assign a Discipler'),
-                    // if (_mentorNameController.text.isNotEmpty)
-                    //   TextFormField(
-                    //     enabled: false,
-                    //     controller: _mentorNameController,
-                    //   ),
-
-                    // Row(
-                    //   children: [
-                    //     const Text('Add as mentor'),
-                    //     Checkbox(
-                    //       value: _isMentor,
-                    //       onChanged: (value) {
-                    //         setState(() {
-                    //           _isMentor = value!;
-                    //         });
-                    //       },
-                    //     ),
-                    //   ],
-                    // ),
-                    // if (_isMentor)
-                    //   TextFormField(
-                    //     controller: _mentorNameController,
-                    //     decoration: InputDecoration(labelText: 'Mentor Name'),
-                    //     validator: (value) {
-                    //       if (value == null || value.isEmpty) {
-                    //         return 'Please enter mentor name';
-                    //       }
-                    //       return null;
-                    //     },
-                    //   ),
                     Row(
                       children: [
                         Expanded(
@@ -392,129 +459,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 ),
               )
             ],
-          )
-
-          //     Column(
-          //   children: [
-          //     TextFormField(
-          //       controller: _firstNameController,
-          //       decoration: InputDecoration(
-          //         labelText: 'First Name',
-          //       ),
-          //       validator: (value) {
-          //         if (value!.isEmpty) {
-          //           return 'Please enter a first name';
-          //         }
-          //         return null;
-          //       },
-          //     ),
-          //     TextFormField(
-          //       controller: _lastNameController,
-          //       decoration: InputDecoration(
-          //         labelText: 'Last Name',
-          //       ),
-          //       validator: (value) {
-          //         if (value!.isEmpty) {
-          //           return 'Please enter a last name';
-          //         }
-          //         return null;
-          //       },
-          //     ),
-          //     TextFormField(
-          //       controller: _emailController,
-          //       decoration: InputDecoration(labelText: 'Email'),
-          //       validator: (value) {
-          //         if (value == null || value.isEmpty) {
-          //           return 'Please enter email';
-          //         }
-          //         return null;
-          //       },
-          //     ),
-          //     TextFormField(
-          //       controller: _phoneNumberController,
-          //       decoration: InputDecoration(labelText: 'Phone Number'),
-          //       validator: (value) {
-          //         if (value == null || value.isEmpty) {
-          //           return 'Please enter phone number';
-          //         }
-          //         return null;
-          //       },
-          //     ),
-          //     Row(
-          //       children: [
-          //         Text('Is Mentor'),
-          //         Checkbox(
-          //           value: _isMentor,
-          //           onChanged: (value) {
-          //             setState(() {
-          //               _isMentor = value!;
-          //             });
-          //           },
-          //         ),
-          //       ],
-          //     ),
-          //     if (_isMentor)
-          //       TextFormField(
-          //         controller: _mentorNameController,
-          //         decoration: InputDecoration(labelText: 'Mentor Name'),
-          //         validator: (value) {
-          //           if (value == null || value.isEmpty) {
-          //             return 'Please enter mentor name';
-          //           }
-          //           return null;
-          //         },
-          //       ),
-          //     TextFormField(
-          //       controller: _workController,
-          //       decoration: InputDecoration(labelText: 'Work'),
-          //     ),
-          //     TextFormField(
-          //       controller: _homeAddressController,
-          //       decoration: InputDecoration(labelText: 'Home Address'),
-          //     ),
-          //     TextFormField(
-          //       controller: _languageController,
-          //       decoration: InputDecoration(labelText: 'Language'),
-          //     ),
-          //     TextFormField(
-          //       controller: _auxiliaryController,
-          //       decoration: InputDecoration(labelText: 'Auxiliary'),
-          //     ),
-          //     Row(
-          //       children: [
-          //         Text('Baptized'),
-          //         Checkbox(
-          //           value: _baptized,
-          //           onChanged: (value) {
-          //             setState(() {
-          //               _baptized = value!;
-          //             });
-          //           },
-          //         ),
-          //       ],
-          //     ),
-          //     TextFormField(
-          //       controller: _dateOfBirthController,
-          //       decoration: InputDecoration(labelText: 'Date of Birth'),
-          //     ),
-          //     SizedBox(height: 16),
-          //     ElevatedButton(
-          //       onPressed: _submitForm,
-          //       child: Text('Submit'),
-          //     ),
-          //     if (_errorMessage.isNotEmpty)
-          //       Text(
-          //         _errorMessage,
-          //         style: TextStyle(color: Colors.red),
-          //       ),
-          //     if (_successMessage.isNotEmpty)
-          //       Text(
-          //         _successMessage,
-          //         style: TextStyle(color: Colors.green),
-          //       ),
-          //   ],
-          // ),
-          ),
+          )),
     );
   }
 }
