@@ -19,12 +19,6 @@ class _HomeState extends State<Home> {
   ApiCalls api = ApiCalls();
   int total = 0;
   late String token;
-  bool isActive = false;
-
-  int totalDisciplers = 0;
-  int totalMembers = 0;
-
-  //Color isActive = Color.fromARGB(255, 50, 236, 50);
   @override
   void initState() {
     super.initState();
@@ -34,208 +28,93 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          CustomPaint(
-              painter: LogoPainter(),
-              size: const Size(400, 195),
-              child: Container(
-                height: 130,
-                width: 400,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                child: Column(
-                  children: [
-                    const ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                        ),
-                        title: Text("FRANCIS CLASS PETERS",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                        trailing: Icon(
-                          Icons.add_circle,
-                          size: 45,
-                          color: Colors.white,
-                        ),
-                        subtitle: Text("Admin",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold))),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          color: isActive
-                              ? Color.fromARGB(255, 11, 153, 11)
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(children: [
-                            const SizedBox(
-                              width: 2,
-                            ),
-                            Text("Disciplers",
-                                style: TextStyle(
-                                    color: isActive
-                                        ? Colors.white
-                                        : Colors.green)),
-                            ElevatedButton(
-
-                              style: ButtonStyle(
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(30, 30)
+      body: FutureBuilder<List<dynamic>>(
+        future: api.get(
+            token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final List<dynamic> data = snapshot.data!;
+            final int dataLength = data.length;
+            return Column(
+              children: [
+                CustomPaint(
+                    painter: LogoPainter(),
+                    size: const Size(400, 195),
+                    child: _appBarContent(dataLength)),
+                const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Disciplers List",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )),
+                Expanded(
+                  child: SizedBox(
+                    height: 500,
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final mentor = data[index];
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MentorManagementPage(
+                                    token: token, mentor: mentor),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Card(
+                              elevation: 2,
+                              child: ListTile(
+                                tileColor:
+                                    const Color.fromARGB(31, 35, 219, 11),
+                                title: Text(
+                                    '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
+                                subtitle: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.call,
+                                      color: Colors.green,
+                                      size: 15,
                                     ),
-                                 // backgroundColor: ,
-                                // padding: MaterialStateProperty.all(
-                                //   EdgeInsets.symmetric(horizontal: 1),
-                                // ),
-                              ),
-                              onPressed: () {
-                                bool color = true;
-                                setState(() {
-                                  isActive = color;
-                                });
-                              },
-                              child: Text(
-                                totalDisciplers.toString(),
+                                    Text(
+                                      mentor['member']['phone_number'],
+                                    ),
+                                  ],
+                                ),
+                                leading: const CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
+                                ),
+                                trailing: const Icon(Icons.arrow_forward),
                               ),
                             ),
-                          ]),
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Card(
-                          color: !isActive
-                              ? Color.fromARGB(255, 11, 153, 11)
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Row(children: [
-                            const SizedBox(
-                              width: 2,
-                            ),
-                            Text("Members",
-                                style: TextStyle(
-                                    color: !isActive
-                                        ? Colors.white
-                                        : Colors.green)),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(10, 30)),
-                              ),
-                              onPressed: () {
-                                bool color = false;
-                                setState(() {
-                                  isActive = color;
-                                });
-                              },
-                              child: Text(
-                                totalMembers.toString(),
-                              ),
-                            ),
-                          ]),
-                        )
-                      ],
-                    )
-                  ],
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              )),
-          Expanded(child: ListView())
-        ],
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
-      // FutureBuilder<List<dynamic>>(
-      //   future: api.get(
-      //       token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.hasData) {
-      //       final List<dynamic> data = snapshot.data!;
-      //       final int dataLength = data.length;
-      //       return Column(
-      //         children: [
-      //           CustomPaint(
-      //               painter: LogoPainter(),
-      //               size: const Size(400, 195),
-      //               child: _appBarContent(dataLength)),
-      //           const Align(
-      //               alignment: Alignment.topLeft,
-      //               child: Text(
-      //                 "Disciplers List",
-      //                 style: TextStyle(
-      //                   fontSize: 18,
-      //                   fontFamily: 'Lato',
-      //                   fontWeight: FontWeight.w700,
-      //                 ),
-      //               )),
-      //           Expanded(
-      //             child: SizedBox(
-      //               height: 500,
-      //               child: ListView.builder(
-      //                 itemCount: data.length,
-      //                 itemBuilder: (context, index) {
-      //                   final mentor = data[index];
-      //                   return InkWell(
-      //                     onTap: () {
-      //                       Navigator.push(
-      //                         context,
-      //                         MaterialPageRoute(
-      //                           builder: (context) => MentorManagementPage(
-      //                               token: token, mentor: mentor),
-      //                         ),
-      //                       );
-      //                     },
-      //                     child: Padding(
-      //                       padding: const EdgeInsets.all(3.0),
-      //                       child: Card(
-      //                         elevation: 2,
-      //                         child: ListTile(
-      //                           tileColor:
-      //                               const Color.fromARGB(31, 35, 219, 11),
-      //                           title: Text(
-      //                               '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
-      //                           subtitle: Row(
-      //                             children: [
-      //                               const Icon(
-      //                                 Icons.call,
-      //                                 color: Colors.green,
-      //                                 size: 15,
-      //                               ),
-      //                               Text(
-      //                                 mentor['member']['phone_number'],
-      //                               ),
-      //                             ],
-      //                           ),
-      //                           leading: const CircleAvatar(
-      //                             backgroundImage: NetworkImage(
-      //                                 'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
-      //                           ),
-      //                           trailing: const Icon(Icons.arrow_forward),
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   );
-      //                 },
-      //               ),
-      //             ),
-      //           ),
-      //         ],
-      //       );
-      //     } else if (snapshot.hasError) {
-      //       return Center(
-      //         child: Text('Error: ${snapshot.error}'),
-      //       );
-      //     } else {
-      //       return const Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //   },
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigator.of(context).pop();
@@ -270,7 +149,7 @@ class _HomeState extends State<Home> {
           const SizedBox(
             height: 20,
           ),
-          //  _userInfo(dataLength)
+          _userInfo(dataLength)
         ],
       ),
     );
@@ -306,7 +185,7 @@ class _HomeState extends State<Home> {
           flex: 1,
           child: Column(
             children: [
-              //   _userPersonalInfo(),
+              _userPersonalInfo(),
               const SizedBox(
                 height: 25,
               ),
@@ -335,13 +214,6 @@ class _HomeState extends State<Home> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Text(
-                'Admin',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 28,
-                    color: Colors.white),
-              ),
               Text(
                 'Admin',
                 style: TextStyle(
@@ -478,10 +350,10 @@ class LogoPainter extends CustomPainter {
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
-        Colors.green,
-        Colors.green
-        // Color.fromARGB(255, 87, 241, 40),
-        // Color.fromARGB(255, 12, 168, 12)
+        Color.fromARGB(255, 87, 241, 40),
+        Color.fromARGB(255, 12, 168, 12)
+        // Color.fromARGB(255, 242, 101, 197),
+        // Color.fromARGB(255, 154, 76, 237),
       ],
     ).createShader(rect);
     path.lineTo(0, size.height - size.height / 8);

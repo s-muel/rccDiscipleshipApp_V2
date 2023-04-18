@@ -118,7 +118,8 @@ class _AllMembersPageState extends State<AllMembersPage> {
                       itemCount: filteredData.length,
                       itemBuilder: (context, index) {
                         final item = filteredData[index];
-                        String imageURL = item['photo'];
+
+                        String imageURL = item['photo'] ?? "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
                         bool hasImage = true;
                         if (imageURL == null) {
                           setState(() {

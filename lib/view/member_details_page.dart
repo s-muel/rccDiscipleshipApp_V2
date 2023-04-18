@@ -155,12 +155,13 @@ class _MyFormState extends State<MyForm> {
                           items: snapshot.data!
                               .map((option) => DropdownMenuItem<int>(
                                   value: option['id'],
-                                  child: Text(option['username'])))
+                                  child: Text(option["member"]['first_name'])))
                               .toList(),
                           onChanged: (newValue) {
                             setState(() {
                               _selectedItemText = snapshot.data?.firstWhere(
-                                  (item) => item['id'] == newValue)['username'];
+                                  (item) =>
+                                      item['id'] == newValue)["member"]['first_name'];
                               iDValue = newValue!;
                               _mentorNameController.text = _selectedItemText;
                               _selectedValue = newValue;

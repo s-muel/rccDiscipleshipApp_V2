@@ -47,12 +47,13 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final item = data[index];
-                        String imageURL = item['photo'];
+                        String imageURL = item['photo'] ??
+                            "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ExpansionTile(
                             collapsedBackgroundColor:
-                                Color.fromARGB(31, 41, 151, 21),
+                                const Color.fromARGB(31, 41, 151, 21),
                             collapsedIconColor: Colors.green,
                             leading: CircleAvatar(
                               radius: 20,
@@ -164,15 +165,17 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                                                     DropdownMenuItem<int>(
                                                         value: option['id'],
                                                         child: Text(option[
-                                                            'username'])))
+                                                                "member"]
+                                                            ['first_name'])))
                                                 .toList(),
                                             onChanged: (newValue) {
                                               setState(() {
                                                 _selectedItemText = snapshot
-                                                    .data
-                                                    ?.firstWhere((item) =>
-                                                        item['id'] ==
-                                                        newValue)['username'];
+                                                        .data
+                                                        ?.firstWhere((item) =>
+                                                            item['id'] ==
+                                                            newValue)["member"]
+                                                    ['first_name'];
                                                 mentorID = newValue!;
                                                 _mentorNameController.text =
                                                     _selectedItemText;

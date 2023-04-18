@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:reapers_app/disciplerViews/discipler_main_page.dart';
 import 'dart:convert';
@@ -92,69 +93,179 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
           const SizedBox(
-            height: 100,
+            height: 150,
           ),
-          const CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
-            radius: 50,
-          ),
+          // const CircleAvatar(
+          //   backgroundImage: NetworkImage(
+          //       'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
+          //   radius: 50,
+          // ),
           Center(
             child: Form(
               key: _formKey,
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _usernameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a username';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Enter your username',
+                  const Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.green,
                     ),
                   ),
-                  TextFormField(
-                    controller: _emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter an email';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        left: 35.0, right: 35.0, top: 8.0, bottom: 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Email / Phone Number",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.green,
+                        ),
+                      ),
                     ),
                   ),
-                  TextFormField(
-                    controller: _passwordController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      }
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 35.0, right: 35.0, top: 8.0, bottom: 8.0),
+                    child: TextFormField(
+                      controller: _emailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter an email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'E.g l****@gmail.com',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 0),
+                      ),
                     ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        left: 35.0, right: 35.0, top: 8.0, bottom: 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Password",
+                        style: TextStyle(fontSize: 15, color: Colors.green),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 35.0, right: 35.0, top: 8.0, bottom: 8.0),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: '●●●●●●',
+                        suffixIcon: const Icon(Icons.remove_red_eye),
+                        hintStyle: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        // filled: true,
+                        // fillColor: Colors.grey[200],
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Container(
+                            height: 1,
+                            color: Colors.grey,
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            // padding: const EdgeInsets.only(left: 100),
+                          ),
+                        ),
+                      ),
+                      const Text('or'),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: Container(
+                            height: 1,
+                            color: Colors.grey,
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        left: 35.0, right: 35.0, top: 8.0, bottom: 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    child: Row(children: const [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://cdn.freebiesupply.com/logos/large/2x/google-g-2015-logo-png-transparent.png"),
+                        backgroundColor: Colors.white,
+                      ),
+                      // Icon(
+                      //   FontAwesomeIcons.google,
+                      // ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Continue with google",
+                        style: TextStyle(color: Colors.green),
+                      )
+                    ]),
                   ),
                   Visibility(
-                      visible: _isLoading, child: CircularProgressIndicator()),
+                      visible: _isLoading,
+                      child: const CircularProgressIndicator()),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
