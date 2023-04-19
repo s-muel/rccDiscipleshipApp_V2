@@ -23,7 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool loginIndicator = false;
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
@@ -96,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
       body: ListView(
         children: [
           const SizedBox(
-            height: 150,
+            height: 280,
           ),
           // const CircleAvatar(
           //   backgroundImage: NetworkImage(
@@ -115,6 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                       color: Colors.green,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   const Padding(
                     padding: EdgeInsets.only(
                         left: 35.0, right: 35.0, top: 8.0, bottom: 0),
@@ -131,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 35.0, right: 35.0, top: 8.0, bottom: 8.0),
+                        left: 35.0, right: 35.0, top: 8.0, bottom: 20.0),
                     child: TextFormField(
                       controller: _emailController,
                       validator: (value) {
@@ -200,6 +201,28 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(
                     height: 10,
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      //const CircularProgressIndicator();
+                      _startLoading();
+                      _submit();
+                    },
+                    child: const Text('Login'),
+                  ),
+
+                  Visibility(
+                    visible: _isLoading,
+                    child: const SizedBox(
+                      width: 60,
+                      child: LinearProgressIndicator(
+                        minHeight: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       Expanded(
@@ -227,7 +250,7 @@ class _LoginFormState extends State<LoginForm> {
                     ],
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   const Padding(
                     padding: EdgeInsets.only(
@@ -244,37 +267,42 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
                   ),
-                  Card(
-                    child: Row(children: const [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://cdn.freebiesupply.com/logos/large/2x/google-g-2015-logo-png-transparent.png"),
-                        backgroundColor: Colors.white,
-                      ),
-                      // Icon(
-                      //   FontAwesomeIcons.google,
-                      // ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Continue with google",
-                        style: TextStyle(color: Colors.green),
-                      )
-                    ]),
+
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 35.0, right: 35.0, top: 20.0, bottom: 0),
+                    child: Card(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  "https://cdn.freebiesupply.com/logos/large/2x/google-g-2015-logo-png-transparent.png"),
+                              backgroundColor: Colors.white,
+                            ),
+                            // Icon(
+                            //   FontAwesomeIcons.google,
+                            // ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Continue with google",
+                              style: TextStyle(color: Colors.green),
+                            )
+                          ]),
+                    ),
                   ),
-                  Visibility(
-                      visible: _isLoading,
-                      child: const CircularProgressIndicator()),
+
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      // const CircularProgressIndicator();
-                      _startLoading();
-                      _submit();
-                    },
-                    child: const Text('Login'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // const CircularProgressIndicator();
+                  //     _startLoading();
+                  //     _submit();
+                  //   },
+                  //   child: const Text('Login'),
+                  // ),
                 ],
               ),
             ),
