@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:reapers_app/logins/api_calls.dart';
 import 'package:reapers_app/logins/mentee_page.dart';
 import 'package:reapers_app/view/admin_main_page.dart';
+import 'package:reapers_app/view/sign_up_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
 class LoginForm extends StatefulWidget {
@@ -42,8 +43,17 @@ class _LoginFormState extends State<LoginForm> {
         print("am pressed");
 
         final String token = data['token'] as String;
-        //final int id = data['user']['id'] as int;
+        final int id = data['user']['id'] as int;
         final bool isDiscipler = data['user']['is_staff'];
+
+        //
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => DisciplerMainPage(token: token, mentor: id),
+        //   ),
+        // );
+        //
         // ignore: use_build_context_synchronously
         if (isDiscipler) {
           //  ignore: use_build_context_synchronously
@@ -54,21 +64,17 @@ class _LoginFormState extends State<LoginForm> {
             ),
           );
         } else {
-          // ignore: use_build_context_synchronously
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => DisciplerMainPage(token: token, mentor: id),
-          //   ),
-          // );
 
           // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Home(token: token),
+              builder: (context) => DisciplerMainPage(token: token, mentor: id),
             ),
           );
+
+     
+       
         }
         // Do something with the token, such as save it to shared preferences
       } catch (e) {
@@ -95,8 +101,23 @@ class _LoginFormState extends State<LoginForm> {
     return Scaffold(
       body: ListView(
         children: [
-          const SizedBox(
-            height: 280,
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 50.0, right: 50.0, top: 70.0, bottom: 20.0),
+            child: SizedBox(
+              height: 200,
+              width: 50,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(80),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1682120332/appFeatureImages/RCC_App_tag_Logo_cieaqz.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
           ),
           // const CircleAvatar(
           //   backgroundImage: NetworkImage(
@@ -111,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
                   const Text(
                     "Login",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                       color: Colors.green,
                     ),
                   ),
@@ -122,7 +143,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Email / Phone Number",
+                        "Email",
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.green,
@@ -252,17 +273,27 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                         left: 35.0, right: 35.0, top: 8.0, bottom: 0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     ),
@@ -293,8 +324,12 @@ class _LoginFormState extends State<LoginForm> {
                           ]),
                     ),
                   ),
-
                   const SizedBox(height: 16),
+                  const Text(
+                    "We Believe There Is More",
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  // const SizedBox(height: 16),
                   // ElevatedButton(
                   //   onPressed: () {
                   //     // const CircularProgressIndicator();
