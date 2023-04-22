@@ -30,12 +30,30 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(mentor['member']['first_name']),
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 87, 241, 40),
+                  Color.fromARGB(255, 12, 168, 12)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          title: Text(mentor['member']['first_name'] +
+              " " +
+              mentor['member']['last_name']),
           actions: const [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72487060_2328979970547953_1059076473484214272_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHYWnqRyV7k0Kffy0dcjo0yopQhhopr3OqilCGGimvc6uOKHS208NfW0zebRGOhA0iVwLABN24FSd33-AJWqFHL&_nc_ohc=A9SBL2wZeeAAX_tWqyD&_nc_ht=scontent.facc6-1.fna&oh=00_AfAnnFnyzOO_uqMrUjSlA-v6986u7KXlgSSyRlyOHiliOg&oe=645D3BF9'),
-              radius: 50,
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72487060_2328979970547953_1059076473484214272_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHYWnqRyV7k0Kffy0dcjo0yopQhhopr3OqilCGGimvc6uOKHS208NfW0zebRGOhA0iVwLABN24FSd33-AJWqFHL&_nc_ohc=A9SBL2wZeeAAX_tWqyD&_nc_ht=scontent.facc6-1.fna&oh=00_AfAnnFnyzOO_uqMrUjSlA-v6986u7KXlgSSyRlyOHiliOg&oe=645D3BF9'),
+                radius: 50,
+              ),
             )
           ],
         ),
@@ -62,7 +80,8 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                               trackerSheet(context, menteeID);
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 3, top: 6),
                               child: Card(
                                 elevation: 3,
                                 child: ListTile(

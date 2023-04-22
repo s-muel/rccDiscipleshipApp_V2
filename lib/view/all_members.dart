@@ -30,12 +30,28 @@ class _AllMembersPageState extends State<AllMembersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("All Members"),
+          centerTitle: true,
+          title: const Text('All Members'),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 87, 241, 40),
+                  Color.fromARGB(255, 12, 168, 12)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
         ),
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15, bottom: 8, top: 10),
               child: TextFormField(
                 onTapOutside: (value) {
                   setState(() {
@@ -119,7 +135,8 @@ class _AllMembersPageState extends State<AllMembersPage> {
                       itemBuilder: (context, index) {
                         final item = filteredData[index];
 
-                        String imageURL = item['photo'] ?? "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+                        String imageURL = item['photo'] ??
+                            "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
                         bool hasImage = true;
                         if (imageURL == null) {
                           setState(() {
@@ -127,9 +144,10 @@ class _AllMembersPageState extends State<AllMembersPage> {
                           });
                         }
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 15, bottom: 8, top: 2),
                           child: Card(
-                            elevation: 4,
+                            elevation: 3,
                             child: ListTile(
                               title: Text(
                                   '${item['first_name']} ${item['last_name']}'),

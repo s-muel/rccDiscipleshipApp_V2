@@ -143,7 +143,23 @@ class _AddMemberPageState extends State<AddMemberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('My AppBar'),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 87, 241, 40),
+                Color.fromARGB(255, 12, 168, 12)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -650,10 +666,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 child: SizedBox(
                   height: 45,
                   child: ElevatedButton(
-                      onPressed: () {
-                        _submitForm();
-                      },
-                      child: const Text("Submit")),
+                    onPressed: () {
+                      _submitForm();
+                    },
+                    child: const Text("Submit"),
+                  ),
                 ),
               ),
             ],

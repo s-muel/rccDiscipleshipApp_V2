@@ -43,12 +43,15 @@ class _HomeState extends State<Home> {
                     child: _appBarContent(dataLength)),
                 const Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
-                      "Disciplers List",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.w700,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        "Disciplers List",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     )),
                 Expanded(
@@ -69,12 +72,13 @@ class _HomeState extends State<Home> {
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(3.0),
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 8, top: 2),
                             child: Card(
-                              elevation: 2,
+                              elevation: 3,
                               child: ListTile(
                                 tileColor:
-                                    const Color.fromARGB(31, 35, 219, 11),
+                                    const Color.fromARGB(255, 255, 255, 255),
                                 title: Text(
                                     '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
                                 subtitle: Row(
@@ -129,7 +133,7 @@ class _HomeState extends State<Home> {
                         token: token,
                       )));
         },
-        tooltip: 'Increment',
+        tooltip: 'Unassigned Members',
         //insert_chart
         child: const Icon(Icons.people),
         // backgroundColor: Colors.blue,
