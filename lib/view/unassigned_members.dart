@@ -35,10 +35,7 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 87, 241, 40),
-                Color.fromARGB(255, 12, 168, 12)
-              ],
+              colors: [Colors.green, Colors.green],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

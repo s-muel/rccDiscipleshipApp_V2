@@ -144,16 +144,14 @@ class _AddMemberPageState extends State<AddMemberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My AppBar'),
+        centerTitle: true,
+        title: const Text('Add Member Page'),
         elevation: 0,
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 87, 241, 40),
-                Color.fromARGB(255, 12, 168, 12)
-              ],
+              colors: [Colors.green, Colors.green],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
