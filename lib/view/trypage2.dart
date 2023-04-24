@@ -28,8 +28,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<List<dynamic>>(
-          future: api.get(
+        body: StreamBuilder<List<dynamic>>(
+          stream: api.stream(
               token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -286,8 +286,8 @@ class _HomeState extends State<Home> {
                       ]),
                     ),
                   ),
-                  FutureBuilder<List<dynamic>>(
-                    future: api.get(token,
+                  StreamBuilder<List<dynamic>>(
+                    stream: api.stream(token,
                         "https://rcc-discipleship.up.railway.app/api/members/"),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -492,8 +492,8 @@ class _HomeState extends State<Home> {
         //   ],
         // ),
 
-        FutureBuilder<List<dynamic>>(
-          future: api.get(
+        StreamBuilder<List<dynamic>>(
+          stream: api.stream(
               token, "https://rcc-discipleship.up.railway.app/api/members/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {

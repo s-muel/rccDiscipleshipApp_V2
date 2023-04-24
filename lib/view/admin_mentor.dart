@@ -54,8 +54,8 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
             )
           ],
         ),
-        body: FutureBuilder<List<dynamic>>(
-          future: api.get(token,
+        body: StreamBuilder<List<dynamic>>(
+          stream: api.stream(token,
               'https://rcc-discipleship.up.railway.app/api/mentors/$mentorID/mentees/'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {

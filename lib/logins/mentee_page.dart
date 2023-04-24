@@ -47,8 +47,8 @@ class _UsersListPageState extends State<UsersListPage> {
         appBar: AppBar(
           title: Text(token),
         ),
-        body: FutureBuilder<List<dynamic>>(
-          future: api.get(
+        body: StreamBuilder<List<dynamic>>(
+          stream: api.stream(
               token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -67,8 +67,8 @@ class _UsersListPageState extends State<UsersListPage> {
                           ),
                         ),
                       ),
-                      FutureBuilder<List<dynamic>>(
-                        future: api.get(token,
+                      StreamBuilder<List<dynamic>>(
+                        stream: api.stream(token,
                             "https://rcc-discipleship.up.railway.app/api/members/"),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {

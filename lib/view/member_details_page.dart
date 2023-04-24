@@ -310,9 +310,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _firstNameController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _firstNameController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             Padding(
@@ -327,9 +330,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _lastNameController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _lastNameController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             Padding(
@@ -344,9 +350,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _emailController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _emailController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             Padding(
@@ -361,9 +370,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _phoneNumberController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _phoneNumberController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             //
@@ -431,7 +443,7 @@ class _MyFormState extends State<MyForm> {
                             ),
                             elevation: 0,
                             child: SizedBox(
-                                height: 50,
+                                height: 47,
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.only(left: 10, top: 15),
@@ -552,9 +564,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _workController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _workController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             Padding(
@@ -569,9 +584,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: TextField(
-                controller: _homeAddressController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _homeAddressController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             Padding(
@@ -586,9 +604,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _languageController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _languageController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
             Padding(
@@ -603,9 +624,12 @@ class _MyFormState extends State<MyForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _auxiliaryController,
-                decoration: inputDeco(),
+              child: SizedBox(
+                height: 47,
+                child: TextField(
+                  controller: _auxiliaryController,
+                  decoration: inputDeco(),
+                ),
               ),
             ),
 
@@ -672,17 +696,20 @@ class _MyFormState extends State<MyForm> {
               child: AbsorbPointer(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                      controller: _dateOfBirthController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          suffixIcon: const Icon(Icons.calendar_today,
-                              color: Colors.green),
-                          filled: true,
-                          fillColor: Colors.grey[200])),
+                  child: SizedBox(
+                    height: 47,
+                    child: TextField(
+                        controller: _dateOfBirthController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            suffixIcon: const Icon(Icons.calendar_today,
+                                color: Colors.green),
+                            filled: true,
+                            fillColor: Colors.grey[200])),
+                  ),
                 ),
               ),
             ),

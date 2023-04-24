@@ -161,7 +161,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: ListView(
             children: [
               //   _formCompleted = true;
@@ -325,21 +325,24 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _firstNameController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200]),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a first name';
-                    }
-                    return null;
-                  },
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                    controller: _firstNameController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a first name';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
               const Padding(
@@ -357,21 +360,24 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _lastNameController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200]),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a last name';
-                    }
-                    return null;
-                  },
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                    controller: _lastNameController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a last name';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
               const Padding(
@@ -410,17 +416,20 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 child: AbsorbPointer(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      controller: _dateOfBirthController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          suffixIcon: const Icon(Icons.calendar_today,
-                              color: Colors.green),
-                          filled: true,
-                          fillColor: Colors.grey[200]),
+                    child: SizedBox(
+                      height: 45,
+                      child: TextField(
+                        controller: _dateOfBirthController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            suffixIcon: const Icon(Icons.calendar_today,
+                                color: Colors.green),
+                            filled: true,
+                            fillColor: Colors.grey[200]),
+                      ),
                     ),
                   ),
                 ),
@@ -440,22 +449,25 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _phoneNumberController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      suffixIcon: const Icon(Icons.call, color: Colors.green),
-                      filled: true,
-                      fillColor: Colors.grey[200]),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter phone number';
-                    }
-                    return null;
-                  },
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                    controller: _phoneNumberController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: const Icon(Icons.call, color: Colors.green),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phone number';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
 
@@ -476,15 +488,18 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _auxiliaryController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200]),
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                    controller: _auxiliaryController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -590,21 +605,24 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200]),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Please enter email';
-                  //   }
-                  //   return null;
-                  // },
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter email';
+                    //   }
+                    //   return null;
+                    // },
+                  ),
                 ),
               ),
               //const SizedBox(height: 10),
@@ -623,15 +641,18 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                    controller: _homeAddressController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[200])),
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                      controller: _homeAddressController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200])),
+                ),
               ),
               // const SizedBox(height: 10),
               const Padding(
@@ -649,25 +670,31 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                    controller: _workController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[200])),
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                      controller: _workController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200])),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _submitForm();
-                    },
-                    child: const Text("Submit"),
+                child: Center(
+                  child: SizedBox(
+                    height: 40,
+                    width: 100,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _submitForm();
+                      },
+                      child: const Text("Submit"),
+                    ),
                   ),
                 ),
               ),
