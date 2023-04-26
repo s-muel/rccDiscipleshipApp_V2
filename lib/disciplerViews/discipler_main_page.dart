@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
+import 'package:reapers_app/view/trypage2.dart';
 
 import '../logins/api_calls.dart';
+import '../view/add_member.dart';
+import '../view/all_members.dart';
 import '../view/member_details_page.dart';
 import 'checkup_history.dart';
+import 'dis_all_members.dart';
 
 class DisciplerMainPage extends StatefulWidget {
   final String token;
@@ -27,6 +31,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
   bool friday = false;
   bool sunday = false;
   bool _value = false;
+  // late String mentorName;
 
   //resetting the form
   void resetForm() {
@@ -43,23 +48,22 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
     super.initState();
     token = widget.token;
     mentor = widget.mentor;
+    // mentorName = "loading";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(""
-              // mentor['member']['first_name']
-              ),
-          actions: const [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://e1.pngegg.com/pngimages/444/382/png-clipart-frost-pro-for-os-x-icon-set-now-free-contacts-male-profile.png'),
-              radius: 50,
-            )
-          ],
-        ),
+        // appBar: AppBar(
+        //   title: Text(mentorName),
+        //   actions: const [
+        //     CircleAvatar(
+        //       backgroundImage: NetworkImage(
+        //           'https://e1.pngegg.com/pngimages/444/382/png-clipart-frost-pro-for-os-x-icon-set-now-free-contacts-male-profile.png'),
+        //       radius: 50,
+        //     )
+        //   ],
+        // ),
         body: StreamBuilder<List<dynamic>>(
           stream: api.stream(
               token, 'https://rcc-discipleship.up.railway.app/api/members/'),
@@ -67,9 +71,177 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
               final int dataLength = data.length;
+              String firstName = "";
+              // Map<String, dynamic> user = data.firstWhere((user) => user['id'] == 6,
+              //     orElse: () => Map<String, dynamic>());
+
+              // if (user != null) {
+              //   firstName = user['first_name'];
+              // }
+              // for (var user in data) {
+              //   if (user['id'] == mentor) {
+              //     firstName = user['first_name'];
+              //     print(user['id']);
+              //     break;
+              //   }
+              // }
+
+              print('The first name of user with ID $mentor is $firstName');
+
+              // String? mentorName;
+              // if(data['id']==mentor){
+              // String firstName = data['first_name'];
+              // }
+              // for (var item in data) {
+              //   if (item['id'] == mentor) {
+              //     mentorName = item["first_name"].toString();
+              //     print(item);
+
+              //     break; // Stop searching after finding the first match
+              //   }
+              // }
 
               return Column(
                 children: [
+                  CustomPaint(
+                    painter: LogoPainter(),
+                    size: const Size(400, 105),
+                    child: Container(
+                      height: 120,
+                      width: 400,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 20),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const CircleAvatar(
+                                radius: 25,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      'Discipler Name',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17,
+                                          color: Colors.white),
+                                    ),
+                                    Text(
+                                      'Discipler',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 10,
+                                          color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            // AddMember()
+                                            AddMemberPage(token: token),
+                                      ),
+                                    );
+                                  },
+                                  child: const Icon(
+                                      Icons.admin_panel_settings_rounded,
+                                      color: Colors.white,
+                                      size: 40),
+
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.white,
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //   ),
+                                  //   child: const Center(
+                                  //     child: Text(
+                                  //       'Add Member',
+                                  //       style: TextStyle(
+                                  //           color: Colors.green,
+                                  //           // Color.fromARGB(255, 177, 22, 234),
+                                  //           fontWeight: FontWeight.w500),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 120, right: 120),
+                            child: Card(
+                              color: const Color.fromARGB(199, 6, 146, 60),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Disciplers",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      DecoratedBox(
+                                        decoration: const BoxDecoration(
+                                          color:
+                                              Color.fromARGB(255, 87, 204, 91),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(2)),
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 2),
+                                          child: Text(
+                                            " $dataLength ",
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 17),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20, top: 10),
+                      child: Text(
+                        "Disciple List",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: SizedBox(
                       height: 500,
@@ -78,28 +250,53 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                         itemBuilder: (context, index) {
                           final item = data[index];
                           final menteeID = item['id'];
-                          final String name = item['first_name'];
+                          final String name =
+                              item['first_name'] + " " + item['last_name'];
                           return InkWell(
                             onTap: () {
-                              trackerSheet(context, menteeID, name);
+                              trackerSheet(context, menteeID, name, item);
                             },
-                            child: Card(
-                              child: ListTile(
-                                title: Text(item['first_name'].toString()),
-                                subtitle: Text(item['phone_number']),
-                                trailing: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DiscipleDetailsPage(
-                                                  initialData: item,
-                                                  token: token),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text("Details")),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 8, top: 2),
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(
+                                      "${item['first_name']} ${item['last_name']}"),
+                                  subtitle: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.call,
+                                        color: Colors.green,
+                                        size: 15,
+                                      ),
+                                      Text(
+                                        item['phone_number'],
+                                      ),
+                                    ],
+                                  ),
+
+                                  // Text(item['phone_number'])
+
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(item[
+                                            'photo'] ??
+                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                  ),
+                                  trailing: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DiscipleDetailsPage(
+                                                    initialData: item,
+                                                    token: token),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text("Details")),
+                                ),
                               ),
                             ),
                           );
@@ -119,10 +316,58 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
               );
             }
           },
-        ));
+        ),
+        bottomNavigationBar: BottomAppBar(
+          notchMargin: 10,
+          shape: const CircularNotchedRectangle(),
+          child: Row(
+            children: [
+              IconButton(
+                  icon: const Icon(Icons.group_rounded, color: Colors.green),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DisAllMembersPage(
+                        token: token,
+                      );
+                    }));
+                  }),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DisAllMembersPage(
+                        token: token,
+                      );
+                    }));
+                  },
+                  child: const Text(
+                    "All members",
+                    style: TextStyle(fontSize: 10),
+                  )),
+              const Spacer(),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Navigator.of(context).pop();
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddMemberPage(
+                          token: token,
+                        )));
+          },
+          tooltip: 'Add Members',
+          //insert_chart
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked);
   }
 
-  Future<dynamic> trackerSheet(BuildContext context, int memberID, name) {
+  Future<dynamic> trackerSheet(BuildContext context, int memberID, name, item) {
     return showModalBottomSheet(
         backgroundColor: Colors.white.withOpacity(0.2),
         context: context,
@@ -172,45 +417,31 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Row(
-                                children: [
-                                  const Icon(Icons.people, color: Colors.green),
-                                  Text("$name"),
-                                  const Spacer(),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ReportHistoryPage(
-                                                    menteeID: memberID,
-                                                    token: token),
-                                          ),
-                                        );
-                                        //
-                                        // showDialog(
-                                        //   context: context,
-                                        //   builder: (BuildContext context) {
-                                        //     return AlertDialog(
-                                        //       title: const Text('Coming Soon'),
-                                        //       content: const Text(
-                                        //           'This feature is coming soon.'),
-                                        //       actions: [
-                                        //         TextButton(
-                                        //           onPressed: () {
-                                        //             Navigator.pop(context);
-                                        //           },
-                                        //           child: const Text('OK'),
-                                        //         ),
-                                        //       ],
-                                        //     );
-                                        //   },
-                                        // );
-                                        //
-                                      },
-                                      child: const Text("History"))
-                                ],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.person,
+                                        color: Colors.green),
+                                    Text("$name"),
+                                    const Spacer(),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReportHistoryPage(
+                                                      menteeID: memberID,
+                                                      token: token,
+                                                      data: item),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text("History"))
+                                  ],
+                                ),
                               ),
                               Form(
                                   key: _formKey,
@@ -276,29 +507,33 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                         ],
                                       ),
                                       const SizedBox(height: 10),
-                                      TextFormField(
-                                        maxLines: null,
-                                        textAlignVertical:
-                                            TextAlignVertical.top,
-                                        controller: reportTextController,
-                                        decoration: InputDecoration(
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          labelText: 'Weekly Report',
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 25, right: 25, bottom: 30),
+                                        child: TextFormField(
+                                          maxLines: null,
+                                          textAlignVertical:
+                                              TextAlignVertical.top,
+                                          controller: reportTextController,
+                                          decoration: InputDecoration(
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.always,
+                                            labelText: 'Weekly Report',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 20.0),
                                           ),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 20.0),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter a report';
+                                            }
+                                            return null;
+                                          },
                                         ),
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter a report';
-                                          }
-                                          return null;
-                                        },
                                       ),
                                       ElevatedButton(
                                         onPressed: () {

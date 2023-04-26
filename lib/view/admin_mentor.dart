@@ -43,12 +43,14 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
           title: Text(mentor['member']['first_name'] +
               " " +
               mentor['member']['last_name']),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(5.0),
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                    'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72487060_2328979970547953_1059076473484214272_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHYWnqRyV7k0Kffy0dcjo0yopQhhopr3OqilCGGimvc6uOKHS208NfW0zebRGOhA0iVwLABN24FSd33-AJWqFHL&_nc_ohc=A9SBL2wZeeAAX_tWqyD&_nc_ht=scontent.facc6-1.fna&oh=00_AfAnnFnyzOO_uqMrUjSlA-v6986u7KXlgSSyRlyOHiliOg&oe=645D3BF9'),
+                  mentor['member']['photo'] ??
+                      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png",
+                ),
                 radius: 50,
               ),
             )
@@ -84,9 +86,10 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                                 child: ListTile(
                                   title: Text(item['first_name'].toString()),
                                   subtitle: Text(item['email']),
-                                  leading: const CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/89948549_2639588916153722_2795377561931087872_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=174925&_nc_eui2=AeF7VDmJsYhtzKY59Vh3VAPrZB07xEaIvkhkHTvERoi-SM2LcZgHv9eMxbltvSoZneVOHFKA5n9Lec9V8up40R39&_nc_ohc=M9nyiotG8ygAX-GgxbI&_nc_ht=scontent.facc6-1.fna&oh=00_AfAoGrF60RR1LRKuUneih0xSdxJDXte0OWmucGn5A2qXcQ&oe=645D66A7'),
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(item[
+                                            'photo'] ??
+                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
                                   ),
                                   trailing: TextButton(
                                       onPressed: () {

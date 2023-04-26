@@ -42,18 +42,19 @@ class _HomeState extends State<Home> {
                       size: const Size(400, 195),
                       child: _appBarContent(dataLength)),
                   const Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          "Disciplers List",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w700,
-                          ),
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        "Disciplers List",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w700,
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: SizedBox(
                       height: 500,
@@ -61,6 +62,10 @@ class _HomeState extends State<Home> {
                         itemCount: data.length,
                         itemBuilder: (context, index) {
                           final mentor = data[index];
+                          final String firstName =
+                              mentor['member']['first_name'] ?? "Name";
+                          final String lastName =
+                              mentor['member']['last_name'] ?? "Not updated";
                           return InkWell(
                             onTap: () {
                               Navigator.push(
@@ -79,8 +84,7 @@ class _HomeState extends State<Home> {
                                 child: ListTile(
                                   tileColor:
                                       const Color.fromARGB(255, 255, 255, 255),
-                                  title: Text(
-                                      '${mentor['member']['first_name']} ${mentor['member']['last_name']}'),
+                                  title: Text("$firstName$lastName"),
                                   subtitle: Row(
                                     children: [
                                       const Icon(
@@ -89,13 +93,15 @@ class _HomeState extends State<Home> {
                                         size: 15,
                                       ),
                                       Text(
-                                        mentor['member']['phone_number'],
+                                        mentor['member']['phone_number'] ??
+                                            "not updates",
                                       ),
                                     ],
                                   ),
-                                  leading: const CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        'https://scontent.facc6-1.fna.fbcdn.net/v/t1.6435-9/72890290_2351127111666572_1564614095821340672_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFIgKzN8pVoMtmF9CUNMHXjv5plVhw5eVS_mmVWHDl5VIq0ghNslvr9e10vTpbD-0jbBf1MDkpHbm9P9BHSELJq&_nc_ohc=poJq08SR9D4AX9-sy5p&_nc_ht=scontent.facc6-1.fna&oh=00_AfDJxzyS_nqdRPSvE14r_XJKoD0-eVlZaQOgf7yrr_UTYA&oe=645B36C3'),
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(mentor[
+                                            'member']['photo'] ??
+                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
                                   ),
                                   trailing: const Icon(Icons.arrow_forward),
                                 ),
@@ -275,7 +281,7 @@ class _HomeState extends State<Home> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 2),
                             child: Text(
-                              " $dataLength ",
+                              "$dataLength ",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
@@ -337,7 +343,7 @@ class _HomeState extends State<Home> {
                                               padding: const EdgeInsets.only(
                                                   left: 2),
                                               child: Text(
-                                                dataLength.toString(),
+                                                "$dataLength ",
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w500,
@@ -349,7 +355,6 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                               ),
-                        
                             ],
                           ),
                         ));

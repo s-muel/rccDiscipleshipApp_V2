@@ -88,9 +88,9 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Form')),
+      appBar: AppBar(title: const Text('Disciple Details'), centerTitle: true),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
@@ -376,8 +376,6 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Update was successfully!')));
       // Handle success, e.g. show a success message to the user
-
- 
     } else {
       // throw Exception('Failed to load data');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

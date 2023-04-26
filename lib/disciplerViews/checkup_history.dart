@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 
 import '../logins/api_calls.dart';
@@ -9,10 +10,12 @@ import '../view/member_details_page.dart';
 class ReportHistoryPage extends StatefulWidget {
   final String token;
   final int menteeID;
+  final dynamic data;
   const ReportHistoryPage({
     super.key,
     required this.token,
     required this.menteeID,
+    this.data,
   });
 
   @override
@@ -27,6 +30,7 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
   late String token;
   late dynamic mentor;
   late int mentorID = mentor;
+  late dynamic data = data;
 
   bool wednesday = false;
   bool friday = false;
@@ -49,17 +53,18 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
     token = widget.token;
     mentor = widget.menteeID;
     menteeID = widget.menteeID;
+    data = widget.data;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(""),
-        actions: const [
+        title: Text(data["first_name"] + " " + data['last_name']),
+        actions: [
           CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://e1.pngegg.com/pngimages/444/382/png-clipart-frost-pro-for-os-x-icon-set-now-free-contacts-male-profile.png'),
+            backgroundImage: NetworkImage(data['photo'] ??
+                "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
             radius: 50,
           )
         ],
@@ -88,12 +93,58 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
                         final menteeID = item['id'];
                         final String date = item['created_at'] as String;
                         final String report = item['report_text'];
-                        return ExpansionTile(
-                          title: Text(date),
-                          children: [
-                            const Text(" Report Details"),
-                            Text(report),
-                          ],
+
+                        DateTime dateTime = DateTime.parse(date);
+                        DateTime firstDayOfMonth =
+                            DateTime(dateTime.year, dateTime.month, 1);
+                        int weekNumber =
+                            ((dateTime.difference(firstDayOfMonth).inDays) / 7)
+                                .ceil();
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, bottom: 8, top: 5),
+                          child: Card(
+                            child: ExpansionTile(
+                              title: Row(
+                                children: [
+                                  const Text(
+                                    "Week : ",
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                  Text(weekNumber.toString()),
+                                ],
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  const Icon(Icons.date_range,
+                                      color: Colors.green),
+                                  const SizedBox(width: 8),
+                                  Text(DateFormat.yMMMMd().format(dateTime)),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.access_time,
+                                      color: Colors.green),
+                                  const SizedBox(width: 8),
+                                  Text(DateFormat.jm().format(dateTime)),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.keyboard_arrow_down_rounded)
+                                ],
+                              ),
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(" Report Details"),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(report),
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),
