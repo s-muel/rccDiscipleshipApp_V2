@@ -452,7 +452,7 @@ class _MyFormState extends State<MyForm> {
                   const SizedBox(width: 10),
                   StreamBuilder<List<dynamic>>(
                     stream: api.stream(token,
-                        "https://rcc-discipleship.up.railway.app/api/mentors/"),
+                        "https://rcc-discipleship1.up.railway.app/api/mentors/"),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final List<dynamic> data = snapshot.data!;
@@ -835,7 +835,7 @@ class _MyFormState extends State<MyForm> {
 
     // Make an HTTP PATCH request to update the data in the API
     Uri uri = Uri.parse(
-        'https://rcc-discipleship.up.railway.app/api/members/$memberID/');
+        'https://rcc-discipleship1.up.railway.app/api/members/$memberID/');
     http.Response response = await http.put(
       uri,
 

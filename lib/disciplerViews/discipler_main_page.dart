@@ -5,6 +5,7 @@ import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
 import '../logins/api_calls.dart';
+import '../logins/firsttry.dart';
 import '../view/add_member.dart';
 import '../view/all_members.dart';
 import '../view/member_details_page.dart';
@@ -66,12 +67,15 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
         // ),
         body: StreamBuilder<List<dynamic>>(
           stream: api.stream(
-              token, 'https://rcc-discipleship.up.railway.app/api/members/'),
+              token, 'https://rcc-discipleship1.up.railway.app/api/members/'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
               final int dataLength = data.length;
-              String firstName = "";
+              String firstName =
+                  mentor['user']['first_name'] ?? "Name not updated";
+              String disciplerPhoto = mentor['user']['photo'] ??
+                  "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
               // Map<String, dynamic> user = data.firstWhere((user) => user['id'] == 6,
               //     orElse: () => Map<String, dynamic>());
 
@@ -86,7 +90,8 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
               //   }
               // }
 
-              print('The first name of user with ID $mentor is $firstName');
+              print(
+                  'The first name of user with ID ${mentor['user']['id']}, ${mentor['user']['first_name']}');
 
               // String? mentorName;
               // if(data['id']==mentor){
@@ -110,131 +115,161 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                       height: 120,
                       width: 400,
                       margin: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 15,
+                          vertical: 8, horizontal: 13),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 25,
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 35,
+                            backgroundImage: NetworkImage(disciplerPhoto),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const CircleAvatar(
-                                radius: 25,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
-                                      'Discipler Name',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 17,
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      'Discipler',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            // AddMember()
-                                            AddMemberPage(token: token),
-                                      ),
-                                    );
-                                  },
-                                  child: const Icon(
-                                      Icons.admin_panel_settings_rounded,
-                                      color: Colors.white,
-                                      size: 40),
-
-                                  // Container(
-                                  //   decoration: BoxDecoration(
-                                  //     color: Colors.white,
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //   ),
-                                  //   child: const Center(
-                                  //     child: Text(
-                                  //       'Add Member',
-                                  //       style: TextStyle(
-                                  //           color: Colors.green,
-                                  //           // Color.fromARGB(255, 177, 22, 234),
-                                  //           fontWeight: FontWeight.w500),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ),
-                              )
-                            ],
+                          title: Text(
+                            firstName,
+                            style: TextStyle(color: Colors.white),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, left: 120, right: 120),
-                            child: Card(
-                              color: const Color.fromARGB(199, 6, 146, 60),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "Disciplers",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      DecoratedBox(
-                                        decoration: const BoxDecoration(
-                                          color:
-                                              Color.fromARGB(255, 87, 204, 91),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(2)),
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 2),
-                                          child: Text(
-                                            " $dataLength ",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 17),
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                              ),
-                            ),
+                          subtitle: const Text(
+                            "Discipler",
+                            style: TextStyle(color: Colors.white, fontSize: 10),
                           ),
-                        ],
+                          trailing: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginForm(),
+                                  ),
+                                );
+                              },
+                              child: const Icon(Icons.login_outlined,
+                                  color: Colors.white)),
+                        ),
                       ),
+                      // Column(
+                      //   children: [
+                      //     const SizedBox(
+                      //       height: 15,
+                      //     ),
+                      //     Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         const CircleAvatar(
+                      //           radius: 25,
+                      //         ),
+                      //         const SizedBox(
+                      //           width: 10,
+                      //         ),
+                      //         Expanded(
+                      //           flex: 2,
+                      //           child: Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: const [
+                      //               Text(
+                      //                 'Discipler Name',
+                      //                 style: TextStyle(
+                      //                     fontWeight: FontWeight.w500,
+                      //                     fontSize: 17,
+                      //                     color: Colors.white),
+                      //               ),
+                      //               Text(
+                      //                 'Discipler',
+                      //                 style: TextStyle(
+                      //                     fontWeight: FontWeight.w500,
+                      //                     fontSize: 10,
+                      //                     color: Colors.white),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //         SizedBox(
+                      //           height: 30,
+                      //           child: InkWell(
+                      //             onTap: () {
+                      //               Navigator.push(
+                      //                 context,
+                      //                 MaterialPageRoute(
+                      //                   builder: (context) =>
+                      //                       // AddMember()
+                      //                       AddMemberPage(token: token),
+                      //                 ),
+                      //               );
+                      //             },
+                      //             child: const Icon(
+                      //                 Icons.admin_panel_settings_rounded,
+                      //                 color: Colors.white,
+                      //                 size: 40),
+
+                      //             // Container(
+                      //             //   decoration: BoxDecoration(
+                      //             //     color: Colors.white,
+                      //             //     borderRadius: BorderRadius.circular(10),
+                      //             //   ),
+                      //             //   child: const Center(
+                      //             //     child: Text(
+                      //             //       'Add Member',
+                      //             //       style: TextStyle(
+                      //             //           color: Colors.green,
+                      //             //           // Color.fromARGB(255, 177, 22, 234),
+                      //             //           fontWeight: FontWeight.w500),
+                      //             //     ),
+                      //             //   ),
+                      //             // ),
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(
+                      //           top: 10, left: 120, right: 120),
+                      //       child: Card(
+                      //         color: const Color.fromARGB(199, 6, 146, 60),
+                      //         child: Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Row(
+                      //               mainAxisAlignment: MainAxisAlignment.center,
+                      //               children: [
+                      //                 const Text(
+                      //                   "Disciplers",
+                      //                   style: TextStyle(color: Colors.white),
+                      //                 ),
+                      //                 const SizedBox(
+                      //                   width: 4,
+                      //                 ),
+                      //                 DecoratedBox(
+                      //                   decoration: const BoxDecoration(
+                      //                     color:
+                      //                         Color.fromARGB(255, 87, 204, 91),
+                      //                     borderRadius: BorderRadius.all(
+                      //                         Radius.circular(2)),
+                      //                   ),
+                      //                   child: Padding(
+                      //                     padding:
+                      //                         const EdgeInsets.only(left: 2),
+                      //                     child: Text(
+                      //                       " $dataLength ",
+                      //                       style: const TextStyle(
+                      //                           color: Colors.white,
+                      //                           fontWeight: FontWeight.w500,
+                      //                           fontSize: 17),
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //               ]),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 20, top: 10),
                       child: Text(
-                        "Disciple List",
-                        style: TextStyle(
+                        "Disciple List $dataLength",
+                        style: const TextStyle(
                           fontSize: 18,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w700,

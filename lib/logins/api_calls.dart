@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class ApiCalls {
+  final String baseURL = "";
   Future<Map<String, dynamic>> login(BuildContext context, String username,
       String email, String password, String baseUrl) async {
     final http.Response response = await http.post(
@@ -99,7 +100,8 @@ class ApiCalls {
     String jsonData = jsonEncode(updatedData);
 
     // Make an HTTP PUT request to update the data in the API
-    Uri uri = Uri.parse('https://rcc-discipleship.up.railway.app/api/members/');
+    Uri uri =
+        Uri.parse('https://rcc-discipleship1.up.railway.app/api/members/');
     http.Response response = await http.post(
       uri,
       headers: {
@@ -128,6 +130,56 @@ class ApiCalls {
     }
   }
 
+  // adding as a mentor
+  Future<void> addMentor({
+    required String token,
+    required int userID,
+    // required int memberID,
+    required BuildContext context,
+
+    // required GlobalKey<ScaffoldState> scaffoldKey
+  }) async {
+    // Create a map of the updated data
+    Map<String, dynamic> updatedData = {
+      "user_id": userID,
+    };
+
+    // Convert the map to JSON
+    String jsonData = jsonEncode(updatedData);
+
+    // Make an HTTP PUT request to update the data in the API
+    Uri uri = Uri.parse(
+        'https://rcc-discipleship1.up.railway.app/api/create-mentor/');
+    http.Response response = await http.post(
+      uri,
+      headers: {
+        'Authorization': 'Token  $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    );
+
+    // Check the response status code
+    if (response.statusCode == 201) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Added as Mentor'),
+        ),
+      );
+      print(jsonData);
+
+      // Handle success, e.g. show a success message to the user
+    } else {
+      // Handle error, e.g. show an error message to the user
+
+      print(response.statusCode);
+      print(response.body);
+    }
+  }
+
+  //
+
   // adding a member
   Future<void> assignMentor({
     required String token,
@@ -147,7 +199,7 @@ class ApiCalls {
 
     // Make an HTTP PUT request to update the data in the API
     Uri uri = Uri.parse(
-        'https://rcc-discipleship.up.railway.app/api/unassigned-members/$memberID/');
+        'https://rcc-discipleship1.up.railway.app/api/unassigned-members/$memberID/');
     http.Response response = await http.patch(
       uri,
       headers: {
@@ -159,6 +211,7 @@ class ApiCalls {
 
     // Check the response status code
     if (response.statusCode == 201) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Member created successfully!'),
@@ -195,7 +248,7 @@ class ApiCalls {
 
     // Make an HTTP PUT request to update the data in the API
     Uri uri = Uri.parse(
-        'https://rcc-discipleship.up.railway.app/api/weekly-reports/');
+        'https://rcc-discipleship1.up.railway.app/api/weekly-reports/');
     http.Response response = await http.post(
       uri,
       headers: {
@@ -292,7 +345,7 @@ class ApiCalls {
 
     // Make an HTTP PUT request to update the data in the API
     Uri uri =
-        Uri.parse('https://rcc-discipleship.up.railway.app/api/auth/register');
+        Uri.parse('https://rcc-discipleship1.up.railway.app/api/auth/register');
     http.Response response = await http.post(
       uri,
       headers: {

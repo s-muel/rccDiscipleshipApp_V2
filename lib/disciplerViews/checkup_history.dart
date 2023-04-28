@@ -71,7 +71,7 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
       ),
       body: StreamBuilder<List<dynamic>>(
         stream: api.stream(token,
-            'https://rcc-discipleship.up.railway.app/api/weekly-reports/'),
+            'https://rcc-discipleship1.up.railway.app/api/weekly-reports/'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<dynamic> data = snapshot.data!;

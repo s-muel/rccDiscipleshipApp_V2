@@ -3,6 +3,7 @@ import 'package:reapers_app/view/add_member.dart';
 
 import '../logins/api_calls.dart';
 import 'add_mem.dart';
+import 'add_mentor.dart';
 import 'admin_mentor.dart';
 import 'all_members.dart';
 import 'unassigned_members.dart';
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
         body: StreamBuilder<List<dynamic>>(
           stream: api.stream(
-              token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
+              token, "https://rcc-discipleship1.up.railway.app/api/mentors/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
@@ -84,7 +85,7 @@ class _HomeState extends State<Home> {
                                 child: ListTile(
                                   tileColor:
                                       const Color.fromARGB(255, 255, 255, 255),
-                                  title: Text("$firstName$lastName"),
+                                  title: Text("$firstName $lastName"),
                                   subtitle: Row(
                                     children: [
                                       const Icon(
@@ -294,7 +295,7 @@ class _HomeState extends State<Home> {
                   ),
                   StreamBuilder<List<dynamic>>(
                     stream: api.stream(token,
-                        "https://rcc-discipleship.up.railway.app/api/members/"),
+                        "https://rcc-discipleship1.up.railway.app/api/members/"),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final List<dynamic> data = snapshot.data!;
@@ -420,7 +421,7 @@ class _HomeState extends State<Home> {
                 MaterialPageRoute(
                   builder: (context) =>
                       // AddMember()
-                      AddMemberPage(token: token),
+                      AddMentorPage(token: token),
                 ),
               );
             },
@@ -499,7 +500,7 @@ class _HomeState extends State<Home> {
 
         StreamBuilder<List<dynamic>>(
           stream: api.stream(
-              token, "https://rcc-discipleship.up.railway.app/api/members/"),
+              token, "https://rcc-discipleship1.up.railway.app/api/members/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
