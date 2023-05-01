@@ -29,13 +29,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: StreamBuilder<List<dynamic>>(
-          stream: api.stream(
+        body: FutureBuilder<List<dynamic>>(
+          future: api.streamFuture(
               token, "https://rcc-discipleship1.up.railway.app/api/mentors/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
               final int dataLength = data.length;
+
               return Column(
                 children: [
                   CustomPaint(
@@ -104,7 +105,38 @@ class _HomeState extends State<Home> {
                                             'member']['photo'] ??
                                         "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
                                   ),
-                                  trailing: const Icon(Icons.arrow_forward),
+                                  trailing: Column(
+                                    children: [
+                                      // const Text("Disciplers"),
+                                      // const Icon(Icons.arrow_forward_rounded,
+                                      //     color: Colors.green),
+                                      const SizedBox(height: 10),
+                                      const Icon(Icons.people_outline,
+                                          color: Colors.green, size: 15),
+                                      // adding number of disciplers
+                                      StreamBuilder<List<dynamic>>(
+                                        stream: api.stream(token,
+                                            'https://rcc-discipleship1.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            final List<dynamic> data =
+                                                snapshot.data!;
+                                            final int dataLength = data.length;
+
+                                            return Text(dataLength.toString(),
+                                                style: TextStyle(fontSize: 10));
+                                          } else {
+                                            return Text(
+                                              "0",
+                                              style: TextStyle(fontSize: 10),
+                                            );
+                                            // CircularProgressIndicator();
+                                          }
+                                        },
+                                      ),
+                                      //
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

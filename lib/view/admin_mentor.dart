@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 
 import '../logins/api_calls.dart';
 import 'member_details_page.dart';
@@ -84,8 +85,20 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                               child: Card(
                                 elevation: 3,
                                 child: ListTile(
-                                  title: Text(item['first_name'].toString()),
-                                  subtitle: Text(item['email']),
+                                  title: Text(
+                                      '${item['first_name']} ${item['last_name']} '
+                                      // item['first_name'].toString(),
+                                      ),
+                                  subtitle: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.phone,
+                                        color: Colors.green,
+                                        size: 15,
+                                      ),
+                                      Text(item['phone_number']),
+                                    ],
+                                  ),
                                   leading: CircleAvatar(
                                     backgroundImage: NetworkImage(item[
                                             'photo'] ??
@@ -130,12 +143,16 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
   Future<dynamic> trackerSheet(BuildContext context, int menteeID) {
     return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
       builder: (BuildContext context) {
         return DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.5,
-          minChildSize: 0.25,
-          maxChildSize: 0.75,
+          initialChildSize: 0.7,
+          // minChildSize: 0.25,
+          // maxChildSize: 0.75,
           builder: (BuildContext context, ScrollController scrollController) {
             return StreamBuilder<List<dynamic>>(
               stream: api.stream(token,
@@ -149,17 +166,31 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final item = data[index];
-                      return InkWell(
-                        onTap: () {
-                          //  trackerSheet(context);
-                        },
+                      final String date = item['created_at'] as String;
+                      DateTime dateTime = DateTime.parse(date);
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 8, top: 5),
                         child: Card(
                           child: ListTile(
                             title: Row(children: [
-                              Icon(Icons.date_range),
-                              Text(item['created_at'].toString())
+                              const Icon(Icons.date_range, color: Colors.green),
+                              Text(DateFormat.yMMMMd().format(dateTime))
                             ]),
-                            subtitle: Text(item['report_text']),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(item['report_text']),
+                            ),
+                            // trailing: Row(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: [
+                            //     const Icon(Icons.access_time,
+                            //         color: Colors.green),
+                            //     const SizedBox(width: 8),
+                            //     Text(DateFormat.jm().format(dateTime)),
+                            //     const SizedBox(width: 8),
+                            //   ],
+                            // ),
                           ),
                         ),
                       );

@@ -37,25 +37,25 @@ class ApiCalls {
 
   //
 
-  // Future<List<Map<String, dynamic>>> stream(String token, String Url) async {
-  //   final http.Response response = await http.get(
-  //     Uri.parse('$Url'),
-  //     headers: <String, String>{
-  //       'Authorization': 'Token  $token',
-  //     },
-  //   );
+  Future<List<Map<String, dynamic>>> streamFuture(String token, String Url) async {
+    final http.Response response = await http.get(
+      Uri.parse('$Url'),
+      headers: <String, String>{
+        'Authorization': 'Token  $token',
+      },
+    );
 
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> data = jsonDecode(response.body);
-  //     List<Map<String, dynamic>> result =
-  //         data.map((e) => e as Map<String, dynamic>).toList();
-  //     return result;
-  //   } else {
-  //     print(token);
-  //     print(response.body);
-  //     throw Exception('Failed to load data');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<Map<String, dynamic>> result =
+          data.map((e) => e as Map<String, dynamic>).toList();
+      return result;
+    } else {
+      print(token);
+      print(response.body);
+      throw Exception('Failed to load data');
+    }
+  }
 
   // adding a member
   Future<void> addMember({
@@ -315,7 +315,7 @@ class ApiCalls {
             data.map((e) => e as Map<String, dynamic>).toList();
         yield result;
       } else {
-        throw Exception('Failed to load Data ');
+      //  throw Exception('Failed to load Data ');
       }
       await Future.delayed(Duration(seconds: 5));
     }

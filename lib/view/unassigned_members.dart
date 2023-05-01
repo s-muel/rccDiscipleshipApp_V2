@@ -156,30 +156,55 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
 
                                 Row(
                                   children: [
-                                    if (_mentorNameController.text.isEmpty)
-                                      const Text(''),
-                                    if (_mentorNameController.text.isNotEmpty)
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: SizedBox(
-                                            height: 45,
-                                            child: TextFormField(
-                                              decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    borderSide: BorderSide.none,
-                                                  ),
-                                                  filled: true,
-                                                  fillColor: Colors.grey[200]),
-                                              enabled: false,
-                                              controller: _mentorNameController,
-                                            ),
+                                    //  if (_mentorNameController.text.isEmpty)
+                                    // const Text(''),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SizedBox(
+                                          height: 47,
+                                          child: TextField(
+                                            controller: _mentorNameController,
+                                            decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                                // suffixIcon: const Icon(
+                                                //     Icons.calendar_today,
+                                                //     color: Colors.green),
+                                                filled: true,
+                                                fillColor: Colors.grey[200]),
                                           ),
                                         ),
                                       ),
+                                    ),
+                                    //  if (_mentorNameController.text.isNotEmpty)
+                                    //--------------------------
+
+                                    // Expanded(
+                                    //   child: Padding(
+                                    //     padding: const EdgeInsets.all(8.0),
+                                    //     child: SizedBox(
+                                    //       height: 45,
+                                    //       child: TextFormField(
+                                    //         decoration: InputDecoration(
+                                    //             border: OutlineInputBorder(
+                                    //               borderRadius:
+                                    //                   BorderRadius.circular(10),
+                                    //               borderSide: BorderSide.none,
+                                    //             ),
+                                    //             filled: true,
+                                    //             fillColor: Colors.grey[200]),
+                                    //         enabled: false,
+                                    //         controller: _mentorNameController,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    //--------------------------------------
+
                                     Expanded(
                                       child: StreamBuilder<List<dynamic>>(
                                         stream: api.stream(token,
@@ -194,54 +219,70 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
 
                                             //   int iDValue = widget.initialData['mentor'] ?? 1;
 
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, right: 5),
-                                              child: Card(
-                                                color: Colors.grey[200],
-                                                //  margin: EdgeInsets.zero,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                elevation: 0,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 20,
+                                            return SizedBox(
+                                              width: 50,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, right: 5),
+                                                child: Card(
+                                                  color: Colors.grey[200],
+                                                  //  margin: EdgeInsets.zero,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
-                                                  child: DropdownButton<int>(
-                                                    // value: iDValue,
+                                                  elevation: 0,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 20,
+                                                    ),
+                                                    child: DropdownButton<int>(
+                                                      // value: iDValue,
 
-                                                    hint: const Text(
-                                                        "Select Discipler"),
-                                                    items: snapshot.data!
-                                                        .map((option) =>
-                                                            DropdownMenuItem<
+                                                      hint: const Text(
+                                                          "Select Discipler"),
+                                                      items: snapshot.data!
+                                                          .map(
+                                                            (option) =>
+                                                                DropdownMenuItem<
                                                                     int>(
-                                                                value: option[
-                                                                    'id'],
-                                                                child: Text(option[
-                                                                        "member"]
-                                                                    [
-                                                                    'first_name'])))
-                                                        .toList(),
-                                                    onChanged: (newValue) {
-                                                      setState(() {
-                                                        _selectedItemText = snapshot
-                                                                .data
-                                                                ?.firstWhere((item) =>
-                                                                    item[
-                                                                        'id'] ==
-                                                                    newValue)[
-                                                            "member"]['first_name'];
-                                                        mentorID = newValue!;
-                                                        _mentorNameController
-                                                                .text =
-                                                            _selectedItemText;
-                                                        //_selectedValue = newValue;
-                                                      });
-                                                    },
+                                                              value:
+                                                                  option['id'],
+                                                              child: Text(
+                                                                option["member"]
+                                                                        [
+                                                                        'first_name'] +
+                                                                    " " +
+                                                                    option["member"]
+                                                                        [
+                                                                        'last_name'],
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                              ),
+                                                            ),
+                                                          )
+                                                          .toList(),
+                                                      onChanged: (newValue) {
+                                                        setState(() {
+                                                          _selectedItemText = snapshot
+                                                                  .data
+                                                                  ?.firstWhere((item) =>
+                                                                      item[
+                                                                          'id'] ==
+                                                                      newValue)[
+                                                              "member"]['first_name'];
+                                                          mentorID = newValue!;
+                                                          _mentorNameController
+                                                                  .text =
+                                                              _selectedItemText;
+                                                          //_selectedValue = newValue;
+                                                        });
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
                                               ),
