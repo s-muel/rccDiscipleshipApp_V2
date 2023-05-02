@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'trypage2.dart';
+
 class AddMemberPage extends StatefulWidget {
   final String token;
   const AddMemberPage({super.key, required this.token});
@@ -109,7 +111,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
             email: _emailController.text,
             phoneNumber: _phoneNumberController.text,
             mentorName: _mentorNameController.text,
-            //mentor: mentorID,
+            mentor: mentorID,
             work: _workController.text,
             homeAddress: _homeAddressController.text,
             language: _languageController.text,
@@ -144,6 +146,16 @@ class _AddMemberPageState extends State<AddMemberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(token: token),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_circle_left)),
         centerTitle: true,
         title: const Text('Add Member Page'),
         elevation: 0,
@@ -472,6 +484,137 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
 
               //2 Church details
+
+              Row(
+                children: [
+                  //  if (_mentorNameController.text.isEmpty)
+                  // const Text(''),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 47,
+                        child: TextField(
+                          enabled: false,
+                          controller: _mentorNameController,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              // suffixIcon: const Icon(
+                              //     Icons.calendar_today,
+                              //     color: Colors.green),
+                              filled: true,
+                              fillColor: Colors.grey[200]),
+                        ),
+                      ),
+                    ),
+                  ),
+                  //  if (_mentorNameController.text.isNotEmpty)
+                  //--------------------------
+
+                  // Expanded(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: SizedBox(
+                  //       height: 45,
+                  //       child: TextFormField(
+                  //         decoration: InputDecoration(
+                  //             border: OutlineInputBorder(
+                  //               borderRadius:
+                  //                   BorderRadius.circular(10),
+                  //               borderSide: BorderSide.none,
+                  //             ),
+                  //             filled: true,
+                  //             fillColor: Colors.grey[200]),
+                  //         enabled: false,
+                  //         controller: _mentorNameController,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  //--------------------------------------
+
+                  Expanded(
+                    child: StreamBuilder<List<dynamic>>(
+                      stream: api.stream(token,
+                          "https://rcc-discipleship1.up.railway.app/api/mentors/"),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final List<dynamic> data = snapshot.data!;
+
+                          final int dataLength = data.length;
+                          int iDValue = 1;
+
+                          //   int iDValue = widget.initialData['mentor'] ?? 1;
+
+                          return SizedBox(
+                            width: 50,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 5),
+                              child: Card(
+                                color: Colors.grey[200],
+                                //  margin: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                elevation: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                  ),
+                                  child: DropdownButton<int>(
+                                    // value: iDValue,
+
+                                    hint: const Text("Select Discipler"),
+                                    items: snapshot.data!
+                                        .map(
+                                          (option) => DropdownMenuItem<int>(
+                                            value: option['id'],
+                                            child: Text(
+                                              option["member"]['first_name'] +
+                                                  " " +
+                                                  option["member"]['last_name'],
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _selectedItemText = snapshot.data
+                                                ?.firstWhere((item) =>
+                                                    item['id'] ==
+                                                    newValue)["member"]
+                                            ['first_name'];
+                                        mentorID = newValue!;
+                                        _mentorNameController.text =
+                                            _selectedItemText;
+                                        //_selectedValue = newValue;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error: ${snapshot.error}'),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
 
               const Padding(
                 padding: EdgeInsets.only(left: 10),

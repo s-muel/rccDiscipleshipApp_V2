@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../logins/api_calls.dart';
+import 'trypage2.dart';
 
 class AddMentorPage extends StatefulWidget {
   final String token;
@@ -29,6 +30,16 @@ class _AddMentorPageState extends State<AddMentorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(token: token),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_circle_left)),
         title: const Text("Add Mentor"),
         centerTitle: true,
       ),

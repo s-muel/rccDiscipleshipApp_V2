@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../logins/api_calls.dart';
 import 'member_details_page.dart';
+import 'trypage2.dart';
 
 class AllMembersPage extends StatefulWidget {
   final String token;
@@ -30,6 +31,16 @@ class _AllMembersPageState extends State<AllMembersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(token: token),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.arrow_circle_left)),
           centerTitle: true,
           title: const Text('All Members'),
           elevation: 0,

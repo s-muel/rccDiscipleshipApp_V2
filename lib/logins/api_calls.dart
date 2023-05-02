@@ -37,7 +37,8 @@ class ApiCalls {
 
   //
 
-  Future<List<Map<String, dynamic>>> streamFuture(String token, String Url) async {
+  Future<List<Map<String, dynamic>>> streamFuture(
+      String token, String Url) async {
     final http.Response response = await http.get(
       Uri.parse('$Url'),
       headers: <String, String>{
@@ -65,14 +66,14 @@ class ApiCalls {
     required String email,
     required String phoneNumber,
     required bool isMentor,
-    //required int mentor,
+    required int mentor,
     required String mentorName,
     required String work,
     required String homeAddress,
     required String language,
     required String auxiliary,
     required bool baptized,
-    required String dateOfBirth,
+    String? dateOfBirth,
     required BuildContext context,
     String? photo,
 
@@ -85,7 +86,7 @@ class ApiCalls {
       'email': email,
       'phone_number': phoneNumber,
       'is_mentor': isMentor,
-      //"mentor": mentor,
+      "mentor": mentor,
       'mentor_name': mentorName,
       'work': work,
       'home_address': homeAddress,
@@ -315,7 +316,7 @@ class ApiCalls {
             data.map((e) => e as Map<String, dynamic>).toList();
         yield result;
       } else {
-      //  throw Exception('Failed to load Data ');
+        //  throw Exception('Failed to load Data ');
       }
       await Future.delayed(Duration(seconds: 5));
     }

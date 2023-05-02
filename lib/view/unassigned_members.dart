@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../logins/api_calls.dart';
+import 'trypage2.dart';
 
 class UnassignedMembersPage extends StatefulWidget {
   final String token;
@@ -28,6 +29,16 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(token: token),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_circle_left)),
         centerTitle: true,
         title: const Text('Unassigned Members'),
         elevation: 0,

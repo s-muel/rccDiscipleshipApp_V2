@@ -325,8 +325,8 @@ class _HomeState extends State<Home> {
                       ]),
                     ),
                   ),
-                  StreamBuilder<List<dynamic>>(
-                    stream: api.stream(token,
+                  FutureBuilder<List<dynamic>>(
+                    future: api.streamFuture(token,
                         "https://rcc-discipleship1.up.railway.app/api/members/"),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
