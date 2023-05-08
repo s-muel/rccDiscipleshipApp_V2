@@ -38,7 +38,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
   bool _formCompleted = false;
   bool _selectedValue = false;
   String _selectedItemText = "";
-  int mentorID = 0;
+  dynamic mentorID = null;
 
   //adding pictures functions
   //File _image = File('');
@@ -111,7 +111,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
             email: _emailController.text,
             phoneNumber: _phoneNumberController.text,
             mentorName: _mentorNameController.text,
-            mentor: mentorID,
+            //mentor: mentorID,
             work: _workController.text,
             homeAddress: _homeAddressController.text,
             language: _languageController.text,

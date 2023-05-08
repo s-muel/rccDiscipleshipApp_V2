@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:reapers_app/Pages/view.dart';
+import 'package:reapers_app/landing_page.dart';
 import 'package:reapers_app/view/camera_test.dart';
 import 'package:reapers_app/view/try_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
@@ -12,6 +13,7 @@ import 'package:reapers_app/view/trypage2.dart';
 import 'Pages/landpage.dart';
 import 'Screen/home.dart';
 import 'logins/firsttry.dart';
+import 'socialMedia/splash_screen.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -39,15 +41,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home:
-          //CameraTestPage(),
-          const LoginForm(),
-      // home: const Home(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        home: SplashScreen()
+        // const LoginForm(),
+
+        );
   }
 }
 

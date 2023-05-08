@@ -235,7 +235,8 @@ class _HomeState extends State<Home> {
           // splashColor: Colors.lightGreenAccent,
         ),
         floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked);
+            FloatingActionButtonLocation.centerDocked
+            );
   }
 
   Widget _appBarContent(int dataLength) {
