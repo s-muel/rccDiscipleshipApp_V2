@@ -10,6 +10,7 @@ import '../view/add_member.dart';
 import '../view/all_members.dart';
 import '../view/member_details_page.dart';
 import 'checkup_history.dart';
+import 'dis_add_member.dart';
 import 'dis_all_members.dart';
 
 class DisciplerMainPage extends StatefulWidget {
@@ -135,6 +136,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                           ),
                           trailing: InkWell(
                               onTap: () {
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -391,7 +393,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddMemberPage(
+                    builder: (context) => DisAddMemberPage(
                           token: token,
                         )));
           },

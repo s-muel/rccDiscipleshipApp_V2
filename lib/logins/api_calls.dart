@@ -115,11 +115,30 @@ class ApiCalls {
     // Check the response status code
     if (response.statusCode == 201) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Member created successfully!'),
-        ),
-      );
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Center(
+                child: Text(
+                  "Member added successfully!",
+                ),
+              ),
+              actions: [
+                Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("OK"))),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text('We Believe There Is More.',
+                      style: TextStyle(fontSize: 10)),
+                ),
+              ],
+            );
+          });
       print(jsonData);
 
       // Handle success, e.g. show a success message to the user
