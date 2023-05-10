@@ -18,12 +18,28 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   ApiCalls api = ApiCalls();
+  List<Map<String, dynamic>> _data = [];
+  int dataRange = 0;
   int total = 0;
   late String token;
   @override
   void initState() {
     super.initState();
     token = widget.token;
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    try {
+      List<Map<String, dynamic>> result = await api.streamFuture(widget.token,
+          "https://rcc-discipleship1.up.railway.app/api/members/");
+      setState(() {
+        _data = result;
+        dataRange = _data.length;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -124,9 +140,10 @@ class _HomeState extends State<Home> {
                                             final int dataLength = data.length;
 
                                             return Text(dataLength.toString(),
-                                                style: TextStyle(fontSize: 10));
+                                                style: const TextStyle(
+                                                    fontSize: 10));
                                           } else {
-                                            return Text(
+                                            return const Text(
                                               "0",
                                               style: TextStyle(fontSize: 10),
                                             );
@@ -235,8 +252,7 @@ class _HomeState extends State<Home> {
           // splashColor: Colors.lightGreenAccent,
         ),
         floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked
-            );
+            FloatingActionButtonLocation.centerDocked);
   }
 
   Widget _appBarContent(int dataLength) {
@@ -326,81 +342,134 @@ class _HomeState extends State<Home> {
                       ]),
                     ),
                   ),
-                  FutureBuilder<List<dynamic>>(
-                    future: api.streamFuture(token,
-                        "https://rcc-discipleship1.up.railway.app/api/members/"),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final List<dynamic> data = snapshot.data!;
-                        final int dataLength = data.length;
-                        return Expanded(
-                            child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    AllMembersPage(token: token),
-                              ),
-                            );
-                          },
-                          child: Column(
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 50, left: 10),
-                                child: Card(
-                                  color: const Color.fromARGB(199, 6, 146, 60),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            "Members",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          const SizedBox(
-                                            width: 4,
-                                          ),
-                                          DecoratedBox(
-                                            decoration: const BoxDecoration(
-                                              color: Color.fromARGB(
-                                                  255, 87, 204, 91),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(2)),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 2),
-                                              child: Text(
-                                                "$dataLength ",
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 17),
-                                              ),
-                                            ),
-                                          ),
-                                        ]),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ));
-                      } else if (snapshot.hasError) {
-                        return Card(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
-                      } else {
-                        return const Text("");
-                      }
+                  Expanded(
+                      child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AllMembersPage(token: token),
+                        ),
+                      );
                     },
-                  ),
+                    child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 50, left: 10),
+                          child: Card(
+                            color: const Color.fromARGB(199, 6, 146, 60),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Members",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    DecoratedBox(
+                                      decoration: const BoxDecoration(
+                                        color: Color.fromARGB(255, 87, 204, 91),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(2)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 2),
+                                        child: Text(
+                                          " $dataRange ",
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 17),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ))
+                  // FutureBuilder<List<dynamic>>(
+                  //   future: api.streamFuture(token,
+                  //       "https://rcc-discipleship1.up.railway.app/api/members/"),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasData) {
+                  //       final List<dynamic> data = snapshot.data!;
+                  //       final int dataLength = data.length;
+                  //       return Expanded(
+                  //           child: InkWell(
+                  //         onTap: () {
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   AllMembersPage(token: token),
+                  //             ),
+                  //           );
+                  //         },
+                  //         child: Column(
+                  //           // crossAxisAlignment: CrossAxisAlignment.center,
+                  //           children: [
+                  //             Padding(
+                  //               padding:
+                  //                   const EdgeInsets.only(right: 50, left: 10),
+                  //               child: Card(
+                  //                 color: const Color.fromARGB(199, 6, 146, 60),
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.all(8.0),
+                  //                   child: Row(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.center,
+                  //                       children: [
+                  //                         const Text(
+                  //                           "Members",
+                  //                           style:
+                  //                               TextStyle(color: Colors.white),
+                  //                         ),
+                  //                         const SizedBox(
+                  //                           width: 4,
+                  //                         ),
+                  //                         DecoratedBox(
+                  //                           decoration: const BoxDecoration(
+                  //                             color: Color.fromARGB(
+                  //                                 255, 87, 204, 91),
+                  //                             borderRadius: BorderRadius.all(
+                  //                                 Radius.circular(2)),
+                  //                           ),
+                  //                           child: Padding(
+                  //                             padding: const EdgeInsets.only(
+                  //                                 left: 2),
+                  //                             child: Text(
+                  //                               "$dataLength ",
+                  //                               style: const TextStyle(
+                  //                                   color: Colors.white,
+                  //                                   fontWeight: FontWeight.w500,
+                  //                                   fontSize: 17),
+                  //                             ),
+                  //                           ),
+                  //                         ),
+                  //                       ]),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ));
+                  //     } else if (snapshot.hasError) {
+                  //       return Card(
+                  //         child: Text('Error: ${snapshot.error}'),
+                  //       );
+                  //     } else {
+                  //       return const Text("");
+                  //     }
+                  //   },
+                  // ),
                 ],
               )
               // _userFollowInfo(dataLength)
