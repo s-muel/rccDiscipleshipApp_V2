@@ -20,6 +20,10 @@ class _HomeState extends State<Home> {
   ApiCalls api = ApiCalls();
   List<Map<String, dynamic>> _data = [];
   int dataRange = 0;
+
+  List<Map<String, dynamic>> _data2 = [];
+  int dataRange2 = 0;
+
   int total = 0;
   late String token;
   @override
@@ -33,9 +37,14 @@ class _HomeState extends State<Home> {
     try {
       List<Map<String, dynamic>> result = await api.streamFuture(widget.token,
           "https://rcc-discipleship1.up.railway.app/api/members/");
+      List<Map<String, dynamic>> result2 = await api.streamFuture(widget.token,
+          "https://rcc-discipleship1.up.railway.app/api/mentors/");
       setState(() {
         _data = result;
         dataRange = _data.length;
+
+        _data2 = result2;
+        dataRange2 = _data2.length;
       });
     } catch (e) {
       print(e.toString());
@@ -45,136 +54,266 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<List<dynamic>>(
-          future: api.streamFuture(
-              token, "https://rcc-discipleship1.up.railway.app/api/mentors/"),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final List<dynamic> data = snapshot.data!;
-              final int dataLength = data.length;
+        body: Column(children: [
+          CustomPaint(
+              painter: LogoPainter(),
+              size: const Size(400, 195),
+              child: _appBarContent(dataRange2)),
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Text(
+                "Disciplers List",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+          FutureBuilder<List<dynamic>>(
+            future: api.streamFuture(
+                token, "https://rcc-discipleship1.up.railway.app/api/mentors/"),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final List<dynamic> data = snapshot.data!;
+                final int dataLength = data.length;
 
-              return Column(
-                children: [
-                  CustomPaint(
-                      painter: LogoPainter(),
-                      size: const Size(400, 195),
-                      child: _appBarContent(dataLength)),
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Text(
-                        "Disciplers List",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 500,
-                      child: ListView.builder(
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          final mentor = data[index];
-                          final String firstName =
-                              mentor['member']['first_name'] ?? "Name";
-                          final String lastName =
-                              mentor['member']['last_name'] ?? "Not updated";
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MentorManagementPage(
-                                      token: token, mentor: mentor),
+                return Expanded(
+                  child: SizedBox(
+                    height: 500,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final mentor = data[index];
+                        final String firstName =
+                            mentor['member']['first_name'] ?? "Name";
+                        final String lastName =
+                            mentor['member']['last_name'] ?? "Not updated";
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MentorManagementPage(
+                                    token: token, mentor: mentor),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 8, top: 2),
+                            child: Card(
+                              elevation: 3,
+                              child: ListTile(
+                                tileColor:
+                                    const Color.fromARGB(255, 255, 255, 255),
+                                title: Text("$firstName $lastName"),
+                                subtitle: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.call,
+                                      color: Colors.green,
+                                      size: 15,
+                                    ),
+                                    Text(
+                                      mentor['member']['phone_number'] ??
+                                          "not updates",
+                                    ),
+                                  ],
                                 ),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 8, top: 2),
-                              child: Card(
-                                elevation: 3,
-                                child: ListTile(
-                                  tileColor:
-                                      const Color.fromARGB(255, 255, 255, 255),
-                                  title: Text("$firstName $lastName"),
-                                  subtitle: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.call,
-                                        color: Colors.green,
-                                        size: 15,
-                                      ),
-                                      Text(
-                                        mentor['member']['phone_number'] ??
-                                            "not updates",
-                                      ),
-                                    ],
-                                  ),
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(mentor[
-                                            'member']['photo'] ??
-                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
-                                  ),
-                                  trailing: Column(
-                                    children: [
-                                      // const Text("Disciplers"),
-                                      // const Icon(Icons.arrow_forward_rounded,
-                                      //     color: Colors.green),
-                                      const SizedBox(height: 10),
-                                      const Icon(Icons.people_outline,
-                                          color: Colors.green, size: 15),
-                                      // adding number of disciplers
-                                      StreamBuilder<List<dynamic>>(
-                                        stream: api.stream(token,
-                                            'https://rcc-discipleship1.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            final List<dynamic> data =
-                                                snapshot.data!;
-                                            final int dataLength = data.length;
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(mentor['member']
+                                          ['photo'] ??
+                                      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                ),
+                                trailing: Column(
+                                  children: [
+                                    // const Text("Disciplers"),
+                                    // const Icon(Icons.arrow_forward_rounded,
+                                    //     color: Colors.green),
+                                    const SizedBox(height: 10),
+                                    const Icon(Icons.people_outline,
+                                        color: Colors.green, size: 15),
+                                    // adding number of disciplers
+                                    StreamBuilder<List<dynamic>>(
+                                      stream: api.stream(token,
+                                          'https://rcc-discipleship1.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          final List<dynamic> data =
+                                              snapshot.data!;
+                                          final int dataLength = data.length;
 
-                                            return Text(dataLength.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 10));
-                                          } else {
-                                            return const Text(
-                                              "0",
-                                              style: TextStyle(fontSize: 10),
-                                            );
-                                            // CircularProgressIndicator();
-                                          }
-                                        },
-                                      ),
-                                      //
-                                    ],
-                                  ),
+                                          return Text(dataLength.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 10));
+                                        } else {
+                                          return const Text(
+                                            "0",
+                                            style: TextStyle(fontSize: 10),
+                                          );
+                                          // CircularProgressIndicator();
+                                        }
+                                      },
+                                    ),
+                                    //
+                                  ],
                                 ),
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ]),
+
+        // FutureBuilder<List<dynamic>>(
+        //   future: api.streamFuture(
+        //       token, "https://rcc-discipleship1.up.railway.app/api/mentors/"),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.hasData) {
+        //       final List<dynamic> data = snapshot.data!;
+        //       final int dataLength = data.length;
+
+        //       return Column(
+        //         children: [
+        //           CustomPaint(
+        //               painter: LogoPainter(),
+        //               size: const Size(400, 195),
+        //               child: _appBarContent(dataLength)),
+        //           const Align(
+        //             alignment: Alignment.topLeft,
+        //             child: Padding(
+        //               padding: EdgeInsets.only(left: 20),
+        //               child: Text(
+        //                 "Disciplers List",
+        //                 style: TextStyle(
+        //                   fontSize: 18,
+        //                   fontFamily: 'Lato',
+        //                   fontWeight: FontWeight.w700,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //           Expanded(
+        //             child: SizedBox(
+        //               height: 500,
+        //               child: ListView.builder(
+        //                 itemCount: data.length,
+        //                 itemBuilder: (context, index) {
+        //                   final mentor = data[index];
+        //                   final String firstName =
+        //                       mentor['member']['first_name'] ?? "Name";
+        //                   final String lastName =
+        //                       mentor['member']['last_name'] ?? "Not updated";
+        //                   return InkWell(
+        //                     onTap: () {
+        //                       Navigator.push(
+        //                         context,
+        //                         MaterialPageRoute(
+        //                           builder: (context) => MentorManagementPage(
+        //                               token: token, mentor: mentor),
+        //                         ),
+        //                       );
+        //                     },
+        //                     child: Padding(
+        //                       padding: const EdgeInsets.only(
+        //                           left: 15, right: 15, bottom: 8, top: 2),
+        //                       child: Card(
+        //                         elevation: 3,
+        //                         child: ListTile(
+        //                           tileColor:
+        //                               const Color.fromARGB(255, 255, 255, 255),
+        //                           title: Text("$firstName $lastName"),
+        //                           subtitle: Row(
+        //                             children: [
+        //                               const Icon(
+        //                                 Icons.call,
+        //                                 color: Colors.green,
+        //                                 size: 15,
+        //                               ),
+        //                               Text(
+        //                                 mentor['member']['phone_number'] ??
+        //                                     "not updates",
+        //                               ),
+        //                             ],
+        //                           ),
+        //                           leading: CircleAvatar(
+        //                             backgroundImage: NetworkImage(mentor[
+        //                                     'member']['photo'] ??
+        //                                 "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+        //                           ),
+        //                           trailing: Column(
+        //                             children: [
+        //                               // const Text("Disciplers"),
+        //                               // const Icon(Icons.arrow_forward_rounded,
+        //                               //     color: Colors.green),
+        //                               const SizedBox(height: 10),
+        //                               const Icon(Icons.people_outline,
+        //                                   color: Colors.green, size: 15),
+        //                               // adding number of disciplers
+        //                               StreamBuilder<List<dynamic>>(
+        //                                 stream: api.stream(token,
+        //                                     'https://rcc-discipleship1.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
+        //                                 builder: (context, snapshot) {
+        //                                   if (snapshot.hasData) {
+        //                                     final List<dynamic> data =
+        //                                         snapshot.data!;
+        //                                     final int dataLength = data.length;
+
+        //                                     return Text(dataLength.toString(),
+        //                                         style: const TextStyle(
+        //                                             fontSize: 10));
+        //                                   } else {
+        //                                     return const Text(
+        //                                       "0",
+        //                                       style: TextStyle(fontSize: 10),
+        //                                     );
+        //                                     // CircularProgressIndicator();
+        //                                   }
+        //                                 },
+        //                               ),
+        //                               //
+        //                             ],
+        //                           ),
+        //                         ),
+        //                       ),
+        //                     ),
+        //                   );
+        //                 },
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       );
+        //     } else if (snapshot.hasError) {
+        //       return Center(
+        //         child: Text('Error: ${snapshot.error}'),
+        //       );
+        //     } else {
+        //       return const Center(
+        //         child: CircularProgressIndicator(),
+        //       );
+        //     }
+        //   },
+        // ),
         bottomNavigationBar: BottomAppBar(
           notchMargin: 10,
           shape: const CircularNotchedRectangle(),
