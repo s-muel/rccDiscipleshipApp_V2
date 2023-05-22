@@ -167,30 +167,48 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                     itemBuilder: (context, index) {
                       final item = data[index];
                       final String date = item['created_at'] as String;
+                      final String disStatus = item['how_is_mentee_doing'];
                       DateTime dateTime = DateTime.parse(date);
                       return Padding(
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, bottom: 8, top: 5),
                         child: Card(
-                          child: ListTile(
+                          child: ExpansionTile(
                             title: Row(children: [
                               const Icon(Icons.date_range, color: Colors.green),
                               Text(DateFormat.yMMMMd().format(dateTime))
                             ]),
                             subtitle: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(item['report_text']),
+                              child: Text(item['how_is_mentee_doing']),
                             ),
-                            // trailing: Row(
-                            //   mainAxisSize: MainAxisSize.min,
-                            //   children: [
-                            //     const Icon(Icons.access_time,
-                            //         color: Colors.green),
-                            //     const SizedBox(width: 8),
-                            //     Text(DateFormat.jm().format(dateTime)),
-                            //     const SizedBox(width: 8),
-                            //   ],
-                            // ),
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("How is disciple doing"),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(disStatus),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    "significant_life_events_or_challenges"),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(disStatus),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("How is disciple doing"),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(disStatus),
+                              ),
+                            ],
                           ),
                         ),
                       );

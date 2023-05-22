@@ -35,10 +35,10 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchData() async {
     try {
-      List<Map<String, dynamic>> result = await api.streamFuture(widget.token,
-          "https://rcc-discipleship1.up.railway.app/api/members/");
-      List<Map<String, dynamic>> result2 = await api.streamFuture(widget.token,
-          "https://rcc-discipleship1.up.railway.app/api/mentors/");
+      List<Map<String, dynamic>> result = await api.streamFuture(
+          widget.token, "https://rcc-discipleship.up.railway.app/api/members/");
+      List<Map<String, dynamic>> result2 = await api.streamFuture(
+          widget.token, "https://rcc-discipleship.up.railway.app/api/mentors/");
       setState(() {
         _data = result;
         dataRange = _data.length;
@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
           ),
           FutureBuilder<List<dynamic>>(
             future: api.streamFuture(
-                token, "https://rcc-discipleship1.up.railway.app/api/mentors/"),
+                token, "https://rcc-discipleship.up.railway.app/api/mentors/"),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final List<dynamic> data = snapshot.data!;
@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
                                     // adding number of disciplers
                                     StreamBuilder<List<dynamic>>(
                                       stream: api.stream(token,
-                                          'https://rcc-discipleship1.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
+                                          'https://rcc-discipleship.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           final List<dynamic> data =
@@ -741,7 +741,7 @@ class _HomeState extends State<Home> {
 
         StreamBuilder<List<dynamic>>(
           stream: api.stream(
-              token, "https://rcc-discipleship1.up.railway.app/api/members/"),
+              token, "https://rcc-discipleship.up.railway.app/api/members/"),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;

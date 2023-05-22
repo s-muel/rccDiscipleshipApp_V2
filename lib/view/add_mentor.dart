@@ -7,6 +7,7 @@ import 'trypage2.dart';
 
 class AddMentorPage extends StatefulWidget {
   final String token;
+
   const AddMentorPage({
     super.key,
     required this.token,
@@ -19,6 +20,7 @@ class AddMentorPage extends StatefulWidget {
 class _AddMentorPageState extends State<AddMentorPage> {
   ApiCalls api = ApiCalls();
   late String token;
+  bool tap = false;
 
   @override
   void initState() {
@@ -69,6 +71,10 @@ class _AddMentorPageState extends State<AddMentorPage> {
                           left: 15, right: 15, bottom: 8, top: 2),
                       child: InkWell(
                         onTap: () {
+                          setState(() {
+                            tap = true;
+                            print(item['id']);
+                          });
                           api.addMentor(
                               token: token,
                               userID: item['id'],
@@ -80,17 +86,20 @@ class _AddMentorPageState extends State<AddMentorPage> {
                             title: Text(
                                 "${item['first_name']} ${item['last_name']}"),
                             subtitle: Row(
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.person_add_alt_1,
                                   color: Colors.green,
                                   size: 15,
                                 ),
-                                SizedBox(width: 3),
-                                Text(
+                                const SizedBox(width: 3),
+                                const Text(
                                   "Add as Mentor",
                                   style: TextStyle(color: Colors.green),
                                 ),
+                                Visibility(
+                                    visible: tap,
+                                    child: CircularProgressIndicator())
                               ],
                             ),
 

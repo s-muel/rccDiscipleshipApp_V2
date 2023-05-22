@@ -54,6 +54,9 @@ class _MyFormState extends State<MyForm> {
   String? _imageURL;
   bool isUploadImage = false;
 
+  bool _isLoading = true;
+  bool isLoading2 = false;
+
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
     apiKey: '295462655464473',
@@ -108,8 +111,22 @@ class _MyFormState extends State<MyForm> {
   }
   //
 
+//
+// loading widget
+  Future<void> _startLoading() async {
+    _isLoading = true;
+    print(_isLoading);
+    await Future.delayed(const Duration(seconds: 4));
+    setState(() {
+      _isLoading = false;
+    });
+    print(_isLoading);
+  }
+
+//
   @override
   void initState() {
+    _startLoading();
     super.initState();
     _firstNameController =
         TextEditingController(text: widget.initialData['first_name']);
@@ -715,6 +732,7 @@ class _MyFormState extends State<MyForm> {
             ),
             ElevatedButton(
               onPressed: () {
+                _startLoading();
 // Update the data in the API with the values from the form
                 String firstName = _firstNameController.text;
                 String lastName = _lastNameController.text;
@@ -772,6 +790,12 @@ class _MyFormState extends State<MyForm> {
                 // );
               },
               child: const Text('Update'),
+            ),
+            Visibility(
+              visible: isLoading2,
+              child: LinearProgressIndicator(
+                minHeight: 5,
+              ),
             ),
           ],
         ),
@@ -856,9 +880,10 @@ class _MyFormState extends State<MyForm> {
       print(jsonData);
     } else {
       // throw Exception('Failed to load data');
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('An error occurred try again',
-              style: TextStyle(
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response.body,
+              style: const TextStyle(
                 color: Colors.red,
               ))));
 

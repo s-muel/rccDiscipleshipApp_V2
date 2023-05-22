@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
-import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 
 import '../logins/api_calls.dart';
-import '../view/member_details_page.dart';
 
 class ReportHistoryPage extends StatefulWidget {
   final String token;
@@ -35,7 +31,7 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
   bool wednesday = false;
   bool friday = false;
   bool sunday = false;
-  bool _value = false;
+  final bool _value = false;
 
   //resetting the form
   void resetForm() {
@@ -92,7 +88,7 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
                         final item = filteredData[index];
                         final menteeID = item['id'];
                         final String date = item['created_at'] as String;
-                        final String report = item['report_text'];
+                        final String disStatus = item['how_is_mentee_doing'];
 
                         DateTime dateTime = DateTime.parse(date);
                         DateTime firstDayOfMonth =
@@ -136,11 +132,28 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Text(" Report Details"),
+                                  child: Text("How is disciple doing"),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text(report),
+                                  child: Text(disStatus),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                      "significant_life_events_or_challenges"),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(disStatus),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("How is disciple doing"),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(disStatus),
                                 ),
                               ],
                             ),
@@ -373,15 +386,15 @@ void _showModalBottomSheet(BuildContext context) {
       context: context,
       builder: (BuildContext bc) {
         return Container(
-          child: new Wrap(
+          child: Wrap(
             children: <Widget>[
-              new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
+              ListTile(
+                  leading: const Icon(Icons.music_note),
+                  title: const Text('Music'),
                   onTap: () => {}),
-              new ListTile(
-                leading: new Icon(Icons.videocam),
-                title: new Text('Video'),
+              ListTile(
+                leading: const Icon(Icons.videocam),
+                title: const Text('Video'),
                 onTap: () => {},
               ),
             ],

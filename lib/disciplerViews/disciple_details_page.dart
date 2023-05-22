@@ -7,8 +7,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
-
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'package:image_picker/image_picker.dart';
 import '../logins/api_calls.dart';
+import 'dart:io';
 //import 'package:intl/intl.dart';
 
 class DiscipleDetailsPage extends StatefulWidget {
@@ -40,6 +42,69 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   late dynamic data;
   int _selectedValue = 1;
   String _selectedItemText = "";
+
+  late String userImage ="" ;
+
+  //adding pictures functions
+  //File _image = File('');
+  File? _image = File('');
+  XFile? _DBimage;
+  String? _imageURL;
+  bool isUploadImage = false;
+
+  //sending image to cloud storage
+  final cloudinary = Cloudinary.full(
+    apiKey: '295462655464473',
+    cloudName: 'dekhxk5wg',
+    apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
+  );
+  //function for uploading
+  Future _uploadImage(File imageFile) async {
+    final response = await cloudinary.uploadResource(CloudinaryUploadResource(
+      filePath: imageFile.path,
+    ));
+    setState(() {
+      _imageURL = response.secureUrl;
+      userImage = response.secureUrl!;
+    });
+    if (response.isSuccessful) {
+      print('Get your image from with ${response.secureUrl}');
+    } else {
+      print(response.error);
+    }
+  }
+
+  final picker = ImagePicker();
+
+  Future getImageFromCamera() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+
+    if (pickedFile != null) {
+      await _uploadImage(File(pickedFile.path));
+    }
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        isUploadImage = true;
+      }
+    });
+  }
+
+  Future getImageFromGallery() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if (pickedFile != null) {
+      await _uploadImage(File(pickedFile.path));
+    }
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        isUploadImage = true;
+      }
+    });
+  }
+  //
 
   @override
   void initState() {
@@ -93,6 +158,138 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // image Upload
+            Visibility(
+              visible: isUploadImage,
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: FileImage(_image!),
+                    radius: 50,
+                  ),
+                  Positioned(
+                    top: 70,
+                    left: 60,
+                    child: Card(
+                      color: const Color.fromARGB(255, 230, 225, 225),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 5, right: 5, bottom: 3),
+                        child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                  height: 150.0,
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      //const Text("Select Image from"),
+
+                                      ListTile(
+                                        leading: const Icon(Icons.camera_alt),
+                                        title: const Text('Take a picture'),
+                                        onTap: () async {
+                                          await getImageFromCamera();
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(context, _image);
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.image),
+                                        title:
+                                            const Text('Choose from gallery'),
+                                        onTap: () async {
+                                          await getImageFromGallery();
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(context, _image);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.camera_alt,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: !isUploadImage,
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    // backgroundColor: Color.fromARGB(255, 163, 240, 167),
+                    backgroundImage: NetworkImage(userImage),
+                  ),
+                  Positioned(
+                    top: 70,
+                    left: 60,
+                    child: Card(
+                      color: const Color.fromARGB(255, 230, 225, 225),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 5, right: 5, bottom: 3),
+                        child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                  height: 150.0,
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      //const Text("Select Image from"),
+
+                                      ListTile(
+                                        leading: const Icon(Icons.camera_alt),
+                                        title: const Text('Take a picture'),
+                                        onTap: () async {
+                                          await getImageFromCamera();
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(context, _image);
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.image),
+                                        title:
+                                            const Text('Choose from gallery'),
+                                        onTap: () async {
+                                          await getImageFromGallery();
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(context, _image);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.camera_alt,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             TextField(
               controller: _firstNameController,
               decoration: const InputDecoration(labelText: 'First Name'),

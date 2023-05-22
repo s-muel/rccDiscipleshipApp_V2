@@ -97,7 +97,7 @@ class _AllMembersPageState extends State<AllMembersPage> {
             Expanded(
               child: StreamBuilder<List<dynamic>>(
                 stream: api.stream(token,
-                    "https://rcc-discipleship1.up.railway.app/api/members/"),
+                    "https://rcc-discipleship.up.railway.app/api/members/"),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final List<dynamic> data = snapshot.data!;

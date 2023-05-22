@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class ApiCalls {
-  final String baseURL = "";
+  final String baseURL = "https://rcc-discipleship.up.railway.app/api/";
   Future<Map<String, dynamic>> login(BuildContext context, String username,
       String email, String password, String baseUrl) async {
     final http.Response response = await http.post(
@@ -40,7 +40,7 @@ class ApiCalls {
   Future<List<Map<String, dynamic>>> streamFuture(
       String token, String Url) async {
     final http.Response response = await http.get(
-      Uri.parse('$Url'),
+      Uri.parse(Url),
       headers: <String, String>{
         'Authorization': 'Token  $token',
       },
@@ -57,6 +57,27 @@ class ApiCalls {
       throw Exception('Failed to load data');
     }
   }
+
+  // Future<List<Map<String, dynamic>>> streamFuture(
+  //     String token, String Url) async {
+  //   final http.Response response = await http.get(
+  //     Uri.parse(Url),
+  //     headers: <String, String>{
+  //       'Authorization': 'Token  $token',
+  //     },
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     List<dynamic> data = jsonDecode(response.body);
+  //     List<Map<String, dynamic>> result =
+  //         data.map((e) => e as Map<String, dynamic>).toList();
+  //     return result;
+  //   } else {
+  //     print(token);
+  //     print(response.body);
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
 
   // adding a member
   Future<void> addMember({
@@ -101,8 +122,7 @@ class ApiCalls {
     String jsonData = jsonEncode(updatedData);
 
     // Make an HTTP PUT request to update the data in the API
-    Uri uri =
-        Uri.parse('https://rcc-discipleship1.up.railway.app/api/members/');
+    Uri uri = Uri.parse('${baseURL}members/');
     http.Response response = await http.post(
       uri,
       headers: {
@@ -168,8 +188,7 @@ class ApiCalls {
     String jsonData = jsonEncode(updatedData);
 
     // Make an HTTP PUT request to update the data in the API
-    Uri uri = Uri.parse(
-        'https://rcc-discipleship1.up.railway.app/api/create-mentor/');
+    Uri uri = Uri.parse('${baseURL}create-mentor/');
     http.Response response = await http.post(
       uri,
       headers: {
@@ -191,7 +210,12 @@ class ApiCalls {
 
       // Handle success, e.g. show a success message to the user
     } else {
-      // Handle error, e.g. show an error message to the user
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
 
       print(response.statusCode);
       print(response.body);
@@ -218,8 +242,7 @@ class ApiCalls {
     String jsonData = jsonEncode(updatedData);
 
     // Make an HTTP PUT request to update the data in the API
-    Uri uri = Uri.parse(
-        'https://rcc-discipleship1.up.railway.app/api/unassigned-members/$memberID/');
+    Uri uri = Uri.parse('${baseURL}unassigned-members/$memberID/');
     http.Response response = await http.patch(
       uri,
       headers: {
@@ -233,7 +256,7 @@ class ApiCalls {
     if (response.statusCode == 201) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Member created successfully!'),
         ),
       );
@@ -252,7 +275,12 @@ class ApiCalls {
   Future<void> submitReport({
     required String token,
     required int memberID,
-    required String report,
+    bool? wednesday,
+    bool? friday,
+    bool? sunday,
+    required String disStatus,
+    required String lifeEvent,
+    required String request,
     required BuildContext context,
 
     // required GlobalKey<ScaffoldState> scaffoldKey
@@ -260,15 +288,19 @@ class ApiCalls {
     // Create a map of the updated data
     Map<String, dynamic> updatedData = {
       "mentee": memberID,
-      "report_text": report
+      "wednesday_service_attended": wednesday,
+      "friday_service_attended": friday,
+      "sunday_service_attended": sunday,
+      "how_is_mentee_doing": disStatus,
+      "significant_life_events_or_challenges": lifeEvent,
+      "mentee_discussion_requests": request
     };
 
     // Convert the map to JSON
     String jsonData = jsonEncode(updatedData);
 
     // Make an HTTP PUT request to update the data in the API
-    Uri uri = Uri.parse(
-        'https://rcc-discipleship1.up.railway.app/api/weekly-reports/');
+    Uri uri = Uri.parse('${baseURL}weekly-reports/');
     http.Response response = await http.post(
       uri,
       headers: {
@@ -280,9 +312,9 @@ class ApiCalls {
 
     // Check the response status code
     if (response.statusCode == 201) {
-      void resetForm() {
-        report = "";
-      }
+      // void resetForm() {
+      //  disStatus = "";
+      // }
 
       // ignore: use_build_context_synchronously
       showDialog(
@@ -316,7 +348,8 @@ class ApiCalls {
       // Handle error, e.g. show an error message to the user
 
       print(response.statusCode);
-      print(response.body);
+      // print(response.body);
+      print(jsonData);
     }
   }
 
@@ -324,7 +357,7 @@ class ApiCalls {
   Stream<List<Map<String, dynamic>>> stream(String token, String Url) async* {
     while (true) {
       final http.Response response = await http.get(
-        Uri.parse('$Url'),
+        Uri.parse(Url),
         headers: <String, String>{
           'Authorization': 'Token  $token',
         },
@@ -337,7 +370,7 @@ class ApiCalls {
       } else {
         //  throw Exception('Failed to load Data ');
       }
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
     }
   }
 
@@ -364,8 +397,7 @@ class ApiCalls {
     String jsonData = jsonEncode(register);
 
     // Make an HTTP PUT request to update the data in the API
-    Uri uri =
-        Uri.parse('https://rcc-discipleship1.up.railway.app/api/auth/register');
+    Uri uri = Uri.parse('${baseURL}auth/register');
     http.Response response = await http.post(
       uri,
       headers: {

@@ -1,19 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:flutter/src/widgets/placeholder.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
-
-// class LandingPage extends StatelessWidget {
-//   const LandingPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:reapers_app/logins/firsttry.dart';
 
@@ -58,26 +42,69 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        physics: NeverScrollableScrollPhysics(),
         children: [
           CustomPaint(
             painter: LogoPainter1(),
-            size: const Size(400, 120),
-            child: const Padding(
-              padding: EdgeInsets.only(top: 30, bottom: 30),
-              child: Center(
-                  child: Text(
-                "Reapers City Chapel App",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 20,
+            size: const Size(400, 150),
+            child: Column(
+              children: const [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Text(
+                      "Welcome",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      "Reapers City Chapel",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20,
+                      ),
+                    ),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
+                      radius: 25,
+                    ),
+                  ),
                 ),
-              )),
+                SizedBox(
+                  height: 20,
+                )
+                // Padding(
+                //   padding: EdgeInsets.only(top: 30, bottom: 30),
+                //   child: Text(
+                //     "Reapers City Chapel",
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontWeight: FontWeight.bold,
+                //       fontStyle: FontStyle.italic,
+                //       fontSize: 20,
+                //     ),
+                //   ),
+                // ),
+
+                // Padding(
+                //   padding: EdgeInsets.only(top: 30, bottom: 30),
+                //   child: Text(
+                //     "Reapers City Chapel",
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontWeight: FontWeight.bold,
+                //       fontStyle: FontStyle.italic,
+                //       fontSize: 20,
+                //     ),
+                //   ),
+                // ),
+              ],
             ),
           ),
           const SizedBox(
-            height: 40,
+            height: 30,
           ),
           ImageSliderCarousel(),
           const SizedBox(
@@ -86,168 +113,221 @@ class _LandingPageState extends State<LandingPage> {
           Stack(
             children: [
               SizedBox(
-                height: 450,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(225, 225, 252, 227),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                height: 350,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(225, 225, 252, 227),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 66,
-                        width: 400,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30, left: 20),
-                        child: ListTile(
-                          title: Text("TIME FOR THE"),
-                          subtitle: Text("PRECIOUS WORD"),
-                          trailing: CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Color.fromARGB(202, 202, 162, 48),
-                            child: Column(
-                              children: const [
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  " 8:00",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 19, 53, 20),
-                                  ),
-                                ),
-                                Text(
-                                  "AM",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 19, 53, 20),
-                                  ),
-                                ),
-                              ],
+                    child: ListView(
+                      // shrinkWrap: true,
+                      children: [
+                        const SizedBox(height: 40),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              title: const Text("THE PRECIOUS WORD"),
+                              subtitle: const Text("Every Sunday"),
+                              trailing: ElevatedButton(
+                                  child: const Text("8:00AM"),
+                                  onPressed: () {}),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 35),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text("This and Every Sunday")),
-                      ),
-                      const Divider(
-                        endIndent: 60,
-                        indent: 60,
-                        thickness: 2,
-                        color: Colors.black,
-                      ),
-
-                      //mid week
-
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30, left: 20),
-                        child: ListTile(
-                          title: const Text("MIDWEEK"),
-                          subtitle: const Text("TEACHING SERVICE"),
-                          trailing: CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Color.fromARGB(202, 202, 162, 48),
-                            child: Column(
-                              children: const [
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  " 6:30",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 19, 53, 20),
-                                  ),
-                                ),
-                                Text(
-                                  "PM",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 19, 53, 20),
-                                  ),
-                                ),
-                              ],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: const ListTile(
+                              title: Text("MID-WEEK"),
+                              subtitle: Text("Every Wednesday"),
+                              trailing: Text("6:30PM"),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 35),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text("This and Every Wednesday")),
-                      ),
-                      const Divider(
-                        endIndent: 60,
-                        indent: 60,
-                        thickness: 2,
-                        color: Colors.black,
-                      ),
-                      // const Divider(
-                      //   endIndent: 60,
-                      //   indent: 60,
-                      //   thickness: 2,
-                      // ),
-                      //Friday
-
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30, left: 20),
-                        child: ListTile(
-                          title: const Text("FRIDAY"),
-                          subtitle: const Text("PRAYER SERVICE"),
-                          trailing: CircleAvatar(
-                            backgroundColor:
-                                const Color.fromARGB(202, 202, 162, 48),
-                            radius: 25,
-                            child: Column(
-                              children: const [
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  " 7:00",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 19, 53, 20),
-                                  ),
-                                ),
-                                Text(
-                                  "PM",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 19, 53, 20),
-                                  ),
-                                ),
-                              ],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: const ListTile(
+                              title: Text("PRAYER SERVICE"),
+                              subtitle: Text("Every Friday"),
+                              trailing: Text("7:00PM"),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 35),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text("This and Every Friday")),
-                      ),
-                      const Divider(
-                        endIndent: 60,
-                        indent: 60,
-                        thickness: 2,
-                        color: Colors.black,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 1,
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    //  Column(
+                    //   children: [
+                    //     const SizedBox(
+                    //       height: 66,
+                    //       width: 400,
+                    //     ),
+                    //     Padding(
+                    //       padding: const EdgeInsets.only(right: 30, left: 20),
+                    //       child: ListTile(
+                    //         title: Text("TIME FOR THE"),
+                    //         subtitle: Text("PRECIOUS WORD"),
+                    //         trailing: CircleAvatar(
+                    //           radius: 25,
+                    //           backgroundColor:
+                    //               Color.fromARGB(202, 202, 162, 48),
+                    //           child: Column(
+                    //             children: const [
+                    //               SizedBox(
+                    //                 height: 4,
+                    //               ),
+                    //               Text(
+                    //                 " 8:00",
+                    //                 style: TextStyle(
+                    //                   color: Color.fromARGB(255, 19, 53, 20),
+                    //                 ),
+                    //               ),
+                    //               Text(
+                    //                 "AM",
+                    //                 style: TextStyle(
+                    //                   color: Color.fromARGB(255, 19, 53, 20),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const Padding(
+                    //       padding: EdgeInsets.only(left: 35),
+                    //       child: Align(
+                    //           alignment: Alignment.topLeft,
+                    //           child: Text("This and Every Sunday")),
+                    //     ),
+                    //     const Divider(
+                    //       endIndent: 60,
+                    //       indent: 60,
+                    //       thickness: 2,
+                    //       color: Colors.black,
+                    //     ),
+
+                    //     //mid week
+
+                    //     Padding(
+                    //       padding: const EdgeInsets.only(right: 30, left: 20),
+                    //       child: ListTile(
+                    //         title: const Text("MIDWEEK"),
+                    //         subtitle: const Text("TEACHING SERVICE"),
+                    //         trailing: CircleAvatar(
+                    //           radius: 25,
+                    //           backgroundColor:
+                    //               Color.fromARGB(202, 202, 162, 48),
+                    //           child:
+                    //           Column(
+                    //             children: const [
+                    //               SizedBox(
+                    //                 height: 4,
+                    //               ),
+                    //               Text(
+                    //                 " 6:30",
+                    //                 style: TextStyle(
+                    //                   color: Color.fromARGB(255, 19, 53, 20),
+                    //                 ),
+                    //               ),
+                    //               Text(
+                    //                 "PM",
+                    //                 style: TextStyle(
+                    //                   color: Color.fromARGB(255, 19, 53, 20),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const Padding(
+                    //       padding: EdgeInsets.only(left: 35),
+                    //       child: Align(
+                    //           alignment: Alignment.topLeft,
+                    //           child: Text("This and Every Wednesday")),
+                    //     ),
+                    //     const Divider(
+                    //       endIndent: 60,
+                    //       indent: 60,
+                    //       thickness: 2,
+                    //       color: Colors.black,
+                    //     ),
+                    //     // const Divider(
+                    //     //   endIndent: 60,
+                    //     //   indent: 60,
+                    //     //   thickness: 2,
+                    //     // ),
+                    //     //Friday
+
+                    //     Padding(
+                    //       padding: const EdgeInsets.only(right: 30, left: 20),
+                    //       child: ListTile(
+                    //         title: const Text("FRIDAY"),
+                    //         subtitle: const Text("PRAYER SERVICE"),
+                    //         trailing: CircleAvatar(
+                    //           backgroundColor:
+                    //               const Color.fromARGB(202, 202, 162, 48),
+                    //           radius: 25,
+                    //           child: Column(
+                    //             children: const [
+                    //               SizedBox(
+                    //                 height: 4,
+                    //               ),
+                    //               Text(
+                    //                 " 7:00",
+                    //                 style: TextStyle(
+                    //                   color: Color.fromARGB(255, 19, 53, 20),
+                    //                 ),
+                    //               ),
+                    //               Text(
+                    //                 "PM",
+                    //                 style: TextStyle(
+                    //                   color: Color.fromARGB(255, 19, 53, 20),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const Padding(
+                    //       padding: EdgeInsets.only(left: 35),
+                    //       child: Align(
+                    //           alignment: Alignment.topLeft,
+                    //           child: Text("This and Every Friday")),
+                    //     ),
+                    //     const Divider(
+                    //       endIndent: 60,
+                    //       indent: 60,
+                    //       thickness: 2,
+                    //       color: Colors.black,
+                    //     ),
+                    //     const Padding(
+                    //       padding: EdgeInsets.all(8.0),
+                    //       child: SizedBox(
+                    //         width: 100,
+                    //         child: LinearProgressIndicator(
+                    //           minHeight: 1,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ),
                 ),
               ),
@@ -255,21 +335,17 @@ class _LandingPageState extends State<LandingPage> {
                 child: SizedBox(
                   child: Container(
                     height: 40,
-                    width: 200,
+                    width: 150,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 19, 53, 20),
-                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Column(children: const [
-                      Text(
-                        "Weekly Activities  &",
+                    child: const Center(
+                      child: Text(
+                        "Activities",
                         style: TextStyle(color: Colors.white),
                       ),
-                      Text(
-                        "Upcoming Programs ",
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ]),
+                    ),
                   ),
                 ),
               ),
@@ -337,6 +413,7 @@ class _LandingPageState extends State<LandingPage> {
 
       bottomNavigationBar: BottomNavigationBar(
         // currentIndex: _selectedIndex,
+        // backgroundColor: Colors.green,
         onTap: (index) {
           if (index == 0) {
             void fBLunch() async {
@@ -404,9 +481,11 @@ class LogoPainter1 extends CustomPainter {
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
+        Colors.green,
+        Colors.green
         //Color.fromARGB(255, 27, 58, 28),
-        Color.fromARGB(255, 49, 109, 51),
-        Color.fromARGB(255, 49, 109, 51)
+        // Color.fromARGB(255, 49, 109, 51),
+        // Color.fromARGB(255, 49, 109, 51)
         //Color.fromARGB(255, 23, 54, 23),
         // Color.fromARGB(255, 87, 241, 40),
         // Color.fromARGB(255, 12, 168, 12)
@@ -414,10 +493,10 @@ class LogoPainter1 extends CustomPainter {
         // Color.fromARGB(255, 154, 76, 237),
       ],
     ).createShader(rect);
-    path.lineTo(0, size.height - size.height / 8);
-    path.conicTo(size.width / 1.2, size.height, size.width,
-        size.height - size.height / 8, 9);
-    path.lineTo(size.width, 0);
+    path.lineTo(0, size.height - size.height / 5);
+    path.conicTo(size.width / -5, size.height, size.width,
+        size.height - size.height / 5, 0);
+    path.lineTo(size.width, 0.3);
     path.close();
     canvas.drawShadow(path, const Color.fromARGB(255, 44, 241, 61), 4, false);
     canvas.drawPath(path, paint);
@@ -492,14 +571,14 @@ class ImageSliderCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 150.0,
+        height: 200.0,
         autoPlay: true,
         enlargeCenterPage: true,
         //  aspectRatio: 10 / 4,
         autoPlayCurve: Curves.fastOutSlowIn,
         enableInfiniteScroll: true,
         autoPlayAnimationDuration: const Duration(milliseconds: 700),
-        viewportFraction: 0.5,
+        viewportFraction: 0.7,
         // animateToClosest: true,
       ),
       items: imagePaths.map((imagePath) {

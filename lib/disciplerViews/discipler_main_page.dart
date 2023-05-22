@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
 import '../logins/api_calls.dart';
 import '../logins/firsttry.dart';
-import '../view/add_member.dart';
-import '../view/all_members.dart';
-import '../view/member_details_page.dart';
 import 'checkup_history.dart';
 import 'dis_add_member.dart';
 import 'dis_all_members.dart';
@@ -25,14 +20,16 @@ class DisciplerMainPage extends StatefulWidget {
 class _DisciplerMainPageState extends State<DisciplerMainPage> {
   ApiCalls api = ApiCalls();
   final _formKey = GlobalKey<FormState>();
-  final reportTextController = TextEditingController();
+  final discipleStatus = TextEditingController();
+  final lifeEvent = TextEditingController();
+  final request = TextEditingController();
   late String token;
   late dynamic mentor;
   late int mentorID = mentor;
   bool wednesday = false;
   bool friday = false;
   bool sunday = false;
-  bool _value = false;
+  final bool _value = false;
   // late String mentorName;
 
   //resetting the form
@@ -41,7 +38,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
       wednesday = false;
       friday = false;
       sunday = false;
-      reportTextController.text = '';
+      discipleStatus.text = '';
     });
   }
 
@@ -128,7 +125,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                           ),
                           title: Text(
                             firstName,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           subtitle: const Text(
                             "Discipler",
@@ -268,7 +265,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20, top: 10),
+                      padding: const EdgeInsets.only(left: 20, top: 10),
                       child: Text(
                         "Disciple List $dataLength",
                         style: const TextStyle(
@@ -487,8 +484,8 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                       const SizedBox(height: 10),
                                       const Text("Church Attendance"),
                                       const SizedBox(height: 10),
-                                      Row(
-                                        children: const [
+                                    Row(
+                                        children:const [
                                           Expanded(
                                             child: Text(
                                               'Wednesday',
@@ -551,11 +548,69 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                           maxLines: null,
                                           textAlignVertical:
                                               TextAlignVertical.top,
-                                          controller: reportTextController,
+                                          controller: discipleStatus,
                                           decoration: InputDecoration(
                                             floatingLabelBehavior:
                                                 FloatingLabelBehavior.always,
-                                            labelText: 'Weekly Report',
+                                            labelText: 'How is disciple doing',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 20.0),
+                                          ),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter a report';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 25, right: 25, bottom: 30),
+                                        child: TextFormField(
+                                          maxLines: null,
+                                          textAlignVertical:
+                                              TextAlignVertical.top,
+                                          controller: lifeEvent,
+                                          decoration: InputDecoration(
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.always,
+                                            labelText:
+                                                'Significant life events / Challenges',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 20.0),
+                                          ),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter a report';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 25, right: 25, bottom: 30),
+                                        child: TextFormField(
+                                          maxLines: null,
+                                          textAlignVertical:
+                                              TextAlignVertical.top,
+                                          controller: request,
+                                          decoration: InputDecoration(
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.always,
+                                            labelText:
+                                                'Disciple discussion / requests',
                                             border: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
@@ -580,7 +635,12 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                             api.submitReport(
                                               token: token,
                                               memberID: memberID,
-                                              report: reportTextController.text,
+                                              wednesday: wednesday,
+                                              friday: friday,
+                                              sunday: sunday,
+                                              disStatus: discipleStatus.text,
+                                              lifeEvent: lifeEvent.text,
+                                              request: request.text,
                                               context: context,
                                             );
                                             setState(() {});
@@ -611,15 +671,15 @@ void _showModalBottomSheet(BuildContext context) {
       context: context,
       builder: (BuildContext bc) {
         return Container(
-          child: new Wrap(
+          child: Wrap(
             children: <Widget>[
-              new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
+              ListTile(
+                  leading: const Icon(Icons.music_note),
+                  title: const Text('Music'),
                   onTap: () => {}),
-              new ListTile(
-                leading: new Icon(Icons.videocam),
-                title: new Text('Video'),
+              ListTile(
+                leading: const Icon(Icons.videocam),
+                title: const Text('Video'),
                 onTap: () => {},
               ),
             ],

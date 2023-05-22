@@ -28,7 +28,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
-      const String url = "https://rcc-discipleship1.up.railway.app/api/auth";
+      const String url = "https://rcc-discipleship.up.railway.app/api/auth";
       final username = _usernameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
