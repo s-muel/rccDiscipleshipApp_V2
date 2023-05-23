@@ -32,22 +32,22 @@ class _AddMentorPageState extends State<AddMentorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Home(token: token),
-                ),
-              );
-            },
-            icon: const Icon(Icons.arrow_circle_left)),
+        // leading: IconButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) => Home(token: token),
+        //         ),
+        //       );
+        //     },
+        //     icon: const Icon(Icons.arrow_circle_left)),
         title: const Text("Add Mentor"),
         centerTitle: true,
       ),
       body: StreamBuilder<List<dynamic>>(
         stream: api.stream(
-            token, "https://rcc-discipleship1.up.railway.app/api/users/"),
+            token, "https://rcc-discipleship.up.railway.app/api/users/"),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<dynamic> data = snapshot.data!;
@@ -77,7 +77,7 @@ class _AddMentorPageState extends State<AddMentorPage> {
                           });
                           api.addMentor(
                               token: token,
-                              userID: item['id'],
+                              userEmail: item['email'],
                               context: context);
                           print(item);
                         },
@@ -99,7 +99,7 @@ class _AddMentorPageState extends State<AddMentorPage> {
                                 ),
                                 Visibility(
                                     visible: tap,
-                                    child: CircularProgressIndicator())
+                                    child: const CircularProgressIndicator(strokeWidth: 1,))
                               ],
                             ),
 

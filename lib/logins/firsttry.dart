@@ -57,6 +57,8 @@ class _LoginFormState extends State<LoginForm> {
         // ignore: use_build_context_synchronously
         if (isDiscipler) {
           //  ignore: use_build_context_synchronously
+          Navigator.pop(context);
+          // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -64,6 +66,8 @@ class _LoginFormState extends State<LoginForm> {
             ),
           );
         } else {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
           // ignore: use_build_context_synchronously
           Navigator.push(
             context,
@@ -88,9 +92,9 @@ class _LoginFormState extends State<LoginForm> {
 
   Future<void> _startLoading() async {
     await Future.delayed(const Duration(seconds: 4));
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   //_isLoading = false;
+    // });
   }
 
   @override

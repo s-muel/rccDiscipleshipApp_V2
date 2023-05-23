@@ -86,7 +86,7 @@ class _DisAllMembersPageState extends State<DisAllMembersPage> {
             Expanded(
               child: StreamBuilder<List<dynamic>>(
                 stream: api.stream(token,
-                    "https://rcc-discipleship1.up.railway.app/api/readonly-members/"),
+                    "https://rcc-discipleship.up.railway.app/api/readonly-members/"),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final List<dynamic> data = snapshot.data!;
@@ -219,7 +219,7 @@ class allMembersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<List<dynamic>>(
       stream: api.stream(token,
-          "https://rcc-discipleship1.up.railway.app/api/readonly-members/"),
+          "https://rcc-discipleship.up.railway.app/api/readonly-members/"),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final List<dynamic> data = snapshot.data!;

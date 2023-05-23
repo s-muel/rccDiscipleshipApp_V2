@@ -67,7 +67,7 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
       ),
       body: StreamBuilder<List<dynamic>>(
         stream: api.stream(token,
-            'https://rcc-discipleship1.up.railway.app/api/weekly-reports/'),
+            'https://rcc-discipleship.up.railway.app/api/weekly-reports/'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<dynamic> data = snapshot.data!;
@@ -89,6 +89,10 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
                         final menteeID = item['id'];
                         final String date = item['created_at'] as String;
                         final String disStatus = item['how_is_mentee_doing'];
+                        final String sFE =
+                            item['significant_life_events_or_challenges'];
+                        final String request =
+                            item['mentee_discussion_requests'];
 
                         DateTime dateTime = DateTime.parse(date);
                         DateTime firstDayOfMonth =
@@ -145,15 +149,15 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text(disStatus),
+                                  child: Text(sFE),
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Text("How is disciple doing"),
+                                  child: Text("Request"),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text(disStatus),
+                                  child: Text(request),
                                 ),
                               ],
                             ),

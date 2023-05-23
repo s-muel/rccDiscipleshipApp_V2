@@ -42,7 +42,7 @@ class _MyFormState extends State<MyForm> {
   final TextEditingController _mentorNameController2 = TextEditingController();
   late int mentor;
   late dynamic data;
-  int _selectedValue = 1;
+  var _selectedValue = null;
   String _selectedItemText = "";
 
   late String userImage;
@@ -153,6 +153,8 @@ class _MyFormState extends State<MyForm> {
         "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
     token = widget.token;
     data = widget.initialData;
+
+    _selectedValue = widget.initialData['mentor'];
   }
 
   @override
@@ -469,7 +471,7 @@ class _MyFormState extends State<MyForm> {
                   const SizedBox(width: 10),
                   StreamBuilder<List<dynamic>>(
                     stream: api.stream(token,
-                        "https://rcc-discipleship1.up.railway.app/api/mentors/"),
+                        "https://rcc-discipleship.up.railway.app/api/mentors/"),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final List<dynamic> data = snapshot.data!;
@@ -793,7 +795,7 @@ class _MyFormState extends State<MyForm> {
             ),
             Visibility(
               visible: isLoading2,
-              child: LinearProgressIndicator(
+              child: const LinearProgressIndicator(
                 minHeight: 5,
               ),
             ),
@@ -825,7 +827,7 @@ class _MyFormState extends State<MyForm> {
       String email,
       String phoneNumber,
       bool isMentor,
-      int mentor,
+      var mentor,
       String mentorName,
       String work,
       String homeAddress,
@@ -837,7 +839,7 @@ class _MyFormState extends State<MyForm> {
       String token) async {
     // Create a map of the updated data
     Map<String, dynamic> updatedData = {
-      // 'id': memberID,
+      //'id': memberID,
       'photo': photo,
       'first_name': firstName,
       'last_name': lastName,
@@ -845,7 +847,7 @@ class _MyFormState extends State<MyForm> {
       'phone_number': phoneNumber,
       'is_mentor': isMentor,
       'mentor': mentor,
-      'mentor_name': mentorName,
+      //'mentor_name': mentorName,
       'work': work,
       'home_address': homeAddress,
       'language': language,
@@ -859,7 +861,7 @@ class _MyFormState extends State<MyForm> {
 
     // Make an HTTP PATCH request to update the data in the API
     Uri uri = Uri.parse(
-        'https://rcc-discipleship1.up.railway.app/api/members/$memberID/');
+        'https://rcc-discipleship.up.railway.app/api/members/$memberID/');
     http.Response response = await http.put(
       uri,
 
@@ -873,19 +875,22 @@ class _MyFormState extends State<MyForm> {
 
     // Check the response status code
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Update was successfully!')));
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Update was successfully!')));
       // Handle success, e.g. show a success message to the user
       print('outside setstate $_isMentor');
       print(jsonData);
     } else {
+      print(jsonData);
       // throw Exception('Failed to load data');
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(response.body,
+          content: Text('An error occurred ${response.statusCode}',
               style: const TextStyle(
                 color: Colors.red,
               ))));
+      print('this is in error $memberID');
 
       // Handle error, e.g. show an error message to the user
     }

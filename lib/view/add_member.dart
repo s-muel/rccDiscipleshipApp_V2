@@ -146,16 +146,16 @@ class _AddMemberPageState extends State<AddMemberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Home(token: token),
-                ),
-              );
-            },
-            icon: const Icon(Icons.arrow_circle_left)),
+        // leading: IconButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) => Home(token: token),
+        //         ),
+        //       );
+        //     },
+        //     icon: const Icon(Icons.arrow_circle_left)),
         centerTitle: true,
         title: const Text('Add Member Page'),
         elevation: 0,
@@ -484,7 +484,19 @@ class _AddMemberPageState extends State<AddMemberPage> {
               ),
 
               //2 Church details
-
+              const Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Discipler",
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
               Row(
                 children: [
                   //  if (_mentorNameController.text.isEmpty)
@@ -539,7 +551,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                   Expanded(
                     child: StreamBuilder<List<dynamic>>(
                       stream: api.stream(token,
-                          "https://rcc-discipleship1.up.railway.app/api/mentors/"),
+                          "https://rcc-discipleship.up.railway.app/api/mentors/"),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final List<dynamic> data = snapshot.data!;

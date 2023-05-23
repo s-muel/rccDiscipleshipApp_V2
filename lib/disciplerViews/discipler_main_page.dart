@@ -65,13 +65,15 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
         // ),
         body: StreamBuilder<List<dynamic>>(
           stream: api.stream(
-              token, 'https://rcc-discipleship1.up.railway.app/api/members/'),
+              token, 'https://rcc-discipleship.up.railway.app/api/members/'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
               final int dataLength = data.length;
               String firstName =
                   mentor['user']['first_name'] ?? "Name not updated";
+              String lastName =
+                  mentor['user']['last_name'] ?? "Name not updated";
               String disciplerPhoto = mentor['user']['photo'] ??
                   "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
               // Map<String, dynamic> user = data.firstWhere((user) => user['id'] == 6,
@@ -124,7 +126,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                             backgroundImage: NetworkImage(disciplerPhoto),
                           ),
                           title: Text(
-                            firstName,
+                            '$firstName $lastName',
                             style: const TextStyle(color: Colors.white),
                           ),
                           subtitle: const Text(
@@ -484,8 +486,8 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                       const SizedBox(height: 10),
                                       const Text("Church Attendance"),
                                       const SizedBox(height: 10),
-                                    Row(
-                                        children:const [
+                                      Row(
+                                        children: const [
                                           Expanded(
                                             child: Text(
                                               'Wednesday',

@@ -164,7 +164,31 @@ class ApiCalls {
       // Handle success, e.g. show a success message to the user
     } else {
       // Handle error, e.g. show an error message to the user
-
+// ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Center(
+                child: Text(
+                  response.body,
+                ),
+              ),
+              actions: [
+                Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("OK"))),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text('We Believe There Is More.',
+                      style: TextStyle(fontSize: 10)),
+                ),
+              ],
+            );
+          });
       print(response.statusCode);
       print(response.body);
     }
@@ -173,7 +197,7 @@ class ApiCalls {
   // adding as a mentor
   Future<void> addMentor({
     required String token,
-    required int userID,
+    required String userEmail,
     // required int memberID,
     required BuildContext context,
 
@@ -181,7 +205,7 @@ class ApiCalls {
   }) async {
     // Create a map of the updated data
     Map<String, dynamic> updatedData = {
-      "user_id": userID,
+      "email": userEmail,
     };
 
     // Convert the map to JSON
@@ -341,12 +365,35 @@ class ApiCalls {
               ],
             );
           });
-      print(jsonData);
 
       // Handle success, e.g. show a success message to the user
     } else {
       // Handle error, e.g. show an error message to the user
-
+      // ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Center(
+                child: Text(
+                  response.body,
+                ),
+              ),
+              actions: [
+                Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("OK"))),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text('We Believe There Is More.',
+                      style: TextStyle(fontSize: 10)),
+                ),
+              ],
+            );
+          });
       print(response.statusCode);
       // print(response.body);
       print(jsonData);
@@ -368,7 +415,9 @@ class ApiCalls {
             data.map((e) => e as Map<String, dynamic>).toList();
         yield result;
       } else {
-        //  throw Exception('Failed to load Data ');
+        print(response.statusCode);
+        print(response.body);
+        throw Exception('Failed to load Data ');
       }
       await Future.delayed(const Duration(seconds: 5));
     }

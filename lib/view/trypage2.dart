@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reapers_app/view/add_member.dart';
+import 'dart:async';
 
 import '../logins/api_calls.dart';
 import 'add_mem.dart';
@@ -26,17 +27,28 @@ class _HomeState extends State<Home> {
 
   int total = 0;
   late String token;
+  late Timer _timer;
   @override
   void initState() {
     super.initState();
     token = widget.token;
     _fetchData();
+    // Start a timer to call fetchData every 5 seconds
+    _timer = Timer.periodic(const Duration(seconds: 3), (_) => _fetchData());
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<void> _fetchData() async {
     try {
       List<Map<String, dynamic>> result = await api.streamFuture(
           widget.token, "https://rcc-discipleship.up.railway.app/api/members/");
+
       List<Map<String, dynamic>> result2 = await api.streamFuture(
           widget.token, "https://rcc-discipleship.up.railway.app/api/mentors/");
       setState(() {

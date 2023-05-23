@@ -59,7 +59,7 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
         ),
         body: StreamBuilder<List<dynamic>>(
           stream: api.stream(token,
-              'https://rcc-discipleship1.up.railway.app/api/mentors/$mentorID/mentees/'),
+              'https://rcc-discipleship.up.railway.app/api/mentors/$mentorID/mentees/'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
@@ -156,7 +156,7 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
           builder: (BuildContext context, ScrollController scrollController) {
             return StreamBuilder<List<dynamic>>(
               stream: api.stream(token,
-                  'https://rcc-discipleship1.up.railway.app/api/mentors/$mentorID/mentees/$menteeID/report/'),
+                  'https://rcc-discipleship.up.railway.app/api/mentors/$mentorID/mentees/$menteeID/report/'),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final List<dynamic> data = snapshot.data!;

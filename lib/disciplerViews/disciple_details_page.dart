@@ -35,6 +35,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   late TextEditingController _languageController;
   late TextEditingController _auxiliaryController;
   late TextEditingController _dateOfBirthController;
+
   // late bool _isMentor;
   late String token;
   final TextEditingController _mentorNameController2 = TextEditingController();
@@ -43,7 +44,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   int _selectedValue = 1;
   String _selectedItemText = "";
 
-  late String userImage ="" ;
+  late String userImage;
 
   //adding pictures functions
   //File _image = File('');
@@ -51,6 +52,8 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   XFile? _DBimage;
   String? _imageURL;
   bool isUploadImage = false;
+
+  bool _isLoading = false;
 
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
@@ -104,7 +107,23 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
       }
     });
   }
+
   //
+  // loading widget
+  Future<void> _startLoading() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    print(_isLoading);
+    await Future.delayed(const Duration(seconds: 4));
+    setState(() {
+      _isLoading = false;
+    });
+    print(_isLoading);
+  }
+
+//
 
   @override
   void initState() {
@@ -129,6 +148,8 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
         TextEditingController(text: widget.initialData['date_of_birth']);
     // _isMentor =
     //     TextEditingController(text: widget.initialData['is_mentor'].toString());
+    userImage = widget.initialData['photo'] ??
+        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
 
     token = widget.token;
     data = widget.initialData;
@@ -454,6 +475,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
             ),
             ElevatedButton(
               onPressed: () {
+                _startLoading();
 // Update the data in the API with the values from the form
                 String firstName = _firstNameController.text;
                 String lastName = _lastNameController.text;
@@ -474,6 +496,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
 // Update the API with the new values
                 // Replace this with your actual API call to update the data
                 updateDataInApi(
+                    userImage,
                     firstName,
                     lastName,
                     email,
@@ -511,6 +534,15 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
               },
               child: Text('Update'),
             ),
+            Visibility(
+              visible: _isLoading,
+              child: const SizedBox(
+                width: 60,
+                child: LinearProgressIndicator(
+                  minHeight: 1,
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -518,6 +550,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   }
 
   void updateDataInApi(
+      String photo,
       String firstName,
       String lastName,
       String email,
@@ -536,6 +569,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
     // Create a map of the updated data
     Map<String, dynamic> updatedData = {
       // 'id': memberID,
+      'photo': photo,
       'first_name': firstName,
       'last_name': lastName,
       'email': email,

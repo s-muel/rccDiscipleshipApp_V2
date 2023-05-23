@@ -46,6 +46,7 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
   XFile? _DBimage;
   String? _imageURL;
   bool isUploadImage = false;
+  bool _isLoading = false;
 
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
@@ -133,6 +134,20 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
         });
       }
     }
+  }
+
+  // loading widget
+  Future<void> _startLoading() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    print(_isLoading);
+    await Future.delayed(const Duration(seconds: 4));
+    setState(() {
+      _isLoading = false;
+    });
+    print(_isLoading);
   }
 
   late String token;
@@ -704,6 +719,7 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
                     width: 100,
                     child: ElevatedButton(
                       onPressed: () {
+                        _startLoading();
                         _submitForm();
                       },
                       child: const Text("Submit"),
@@ -711,6 +727,15 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
                   ),
                 ),
               ),
+              Visibility(
+                visible: _isLoading,
+                child: const SizedBox(
+                  width: 60,
+                  child: LinearProgressIndicator(
+                    minHeight: 1,
+                  ),
+                ),
+              )
             ],
           ),
         ),
