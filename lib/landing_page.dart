@@ -43,7 +43,7 @@ class _LandingPageState extends State<LandingPage> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: ListView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           CustomPaint(
             painter: LogoPainter1(),
@@ -76,31 +76,6 @@ class _LandingPageState extends State<LandingPage> {
                 SizedBox(
                   height: 20,
                 )
-                // Padding(
-                //   padding: EdgeInsets.only(top: 30, bottom: 30),
-                //   child: Text(
-                //     "Reapers City Chapel",
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontWeight: FontWeight.bold,
-                //       fontStyle: FontStyle.italic,
-                //       fontSize: 20,
-                //     ),
-                //   ),
-                // ),
-
-                // Padding(
-                //   padding: EdgeInsets.only(top: 30, bottom: 30),
-                //   child: Text(
-                //     "Reapers City Chapel",
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontWeight: FontWeight.bold,
-                //       fontStyle: FontStyle.italic,
-                //       fontSize: 20,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -114,7 +89,7 @@ class _LandingPageState extends State<LandingPage> {
           Stack(
             children: [
               SizedBox(
-                height: screenHeight * 0.4,
+                height: screenHeight * 0.40,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -178,163 +153,6 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                       ],
                     ),
-                    //  Column(
-                    //   children: [
-                    //     const SizedBox(
-                    //       height: 66,
-                    //       width: 400,
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(right: 30, left: 20),
-                    //       child: ListTile(
-                    //         title: Text("TIME FOR THE"),
-                    //         subtitle: Text("PRECIOUS WORD"),
-                    //         trailing: CircleAvatar(
-                    //           radius: 25,
-                    //           backgroundColor:
-                    //               Color.fromARGB(202, 202, 162, 48),
-                    //           child: Column(
-                    //             children: const [
-                    //               SizedBox(
-                    //                 height: 4,
-                    //               ),
-                    //               Text(
-                    //                 " 8:00",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromARGB(255, 19, 53, 20),
-                    //                 ),
-                    //               ),
-                    //               Text(
-                    //                 "AM",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromARGB(255, 19, 53, 20),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const Padding(
-                    //       padding: EdgeInsets.only(left: 35),
-                    //       child: Align(
-                    //           alignment: Alignment.topLeft,
-                    //           child: Text("This and Every Sunday")),
-                    //     ),
-                    //     const Divider(
-                    //       endIndent: 60,
-                    //       indent: 60,
-                    //       thickness: 2,
-                    //       color: Colors.black,
-                    //     ),
-
-                    //     //mid week
-
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(right: 30, left: 20),
-                    //       child: ListTile(
-                    //         title: const Text("MIDWEEK"),
-                    //         subtitle: const Text("TEACHING SERVICE"),
-                    //         trailing: CircleAvatar(
-                    //           radius: 25,
-                    //           backgroundColor:
-                    //               Color.fromARGB(202, 202, 162, 48),
-                    //           child:
-                    //           Column(
-                    //             children: const [
-                    //               SizedBox(
-                    //                 height: 4,
-                    //               ),
-                    //               Text(
-                    //                 " 6:30",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromARGB(255, 19, 53, 20),
-                    //                 ),
-                    //               ),
-                    //               Text(
-                    //                 "PM",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromARGB(255, 19, 53, 20),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const Padding(
-                    //       padding: EdgeInsets.only(left: 35),
-                    //       child: Align(
-                    //           alignment: Alignment.topLeft,
-                    //           child: Text("This and Every Wednesday")),
-                    //     ),
-                    //     const Divider(
-                    //       endIndent: 60,
-                    //       indent: 60,
-                    //       thickness: 2,
-                    //       color: Colors.black,
-                    //     ),
-                    //     // const Divider(
-                    //     //   endIndent: 60,
-                    //     //   indent: 60,
-                    //     //   thickness: 2,
-                    //     // ),
-                    //     //Friday
-
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(right: 30, left: 20),
-                    //       child: ListTile(
-                    //         title: const Text("FRIDAY"),
-                    //         subtitle: const Text("PRAYER SERVICE"),
-                    //         trailing: CircleAvatar(
-                    //           backgroundColor:
-                    //               const Color.fromARGB(202, 202, 162, 48),
-                    //           radius: 25,
-                    //           child: Column(
-                    //             children: const [
-                    //               SizedBox(
-                    //                 height: 4,
-                    //               ),
-                    //               Text(
-                    //                 " 7:00",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromARGB(255, 19, 53, 20),
-                    //                 ),
-                    //               ),
-                    //               Text(
-                    //                 "PM",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromARGB(255, 19, 53, 20),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const Padding(
-                    //       padding: EdgeInsets.only(left: 35),
-                    //       child: Align(
-                    //           alignment: Alignment.topLeft,
-                    //           child: Text("This and Every Friday")),
-                    //     ),
-                    //     const Divider(
-                    //       endIndent: 60,
-                    //       indent: 60,
-                    //       thickness: 2,
-                    //       color: Colors.black,
-                    //     ),
-                    //     const Padding(
-                    //       padding: EdgeInsets.all(8.0),
-                    //       child: SizedBox(
-                    //         width: 100,
-                    //         child: LinearProgressIndicator(
-                    //           minHeight: 1,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ),
                 ),
               ),
@@ -576,32 +394,73 @@ class ImageSliderCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return CarouselSlider(
       options: CarouselOptions(
-        height: 200.0,
+        height: screenHeight * 0.30,
         autoPlay: true,
         enlargeCenterPage: true,
-        //  aspectRatio: 10 / 4,
         autoPlayCurve: Curves.fastOutSlowIn,
         enableInfiniteScroll: true,
         autoPlayAnimationDuration: const Duration(milliseconds: 700),
-        viewportFraction: 0.7,
-        // animateToClosest: true,
+        viewportFraction: 0.8,
       ),
-      items: imagePaths.map((imagePath) {
+      items: imagePaths.asMap().entries.map((entry) {
+        int index = entry.key;
+        String imagePath = entry.value;
         return Builder(
           builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 0),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30.0),
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.fill,
+            return GestureDetector(
+              onTap: () {
+                // Navigate to a specific page based on the tapped image
+                if (index == 0) {
+                  void fBLunch() async {
+                    // final url = Uri.parse('https://web.facebook.com/reapnet1');
+                    final url = Uri.parse('https://m.facebook.com/reapnet1/');
+
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(
+                        url,
+                      );
+                    }
+                  }
+
+                  fBLunch();
+                } else if (index == 1) {
+                  void messagesLunch() async {
+                    // final url = Uri.parse('https://web.facebook.com/reapnet1');
+                    final url = Uri.parse(
+                        'https://podcasts.google.com/feed/aHR0cHM6Ly9hbmNob3IuZm0vcy82NTUwYTk4Yy9wb2RjYXN0L3Jzcw==');
+
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(
+                        url,
+                      );
+                    }
+                  }
+
+                  messagesLunch();
+                } else if (index == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginForm(),
+                    ),
+                  );
+                }
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 0),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Image.asset(
+                    imagePath,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             );

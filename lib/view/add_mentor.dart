@@ -42,7 +42,7 @@ class _AddMentorPageState extends State<AddMentorPage> {
         //       );
         //     },
         //     icon: const Icon(Icons.arrow_circle_left)),
-        title: const Text("Add Mentor"),
+        title: const Text("Add Discipler"),
         centerTitle: true,
       ),
       body: StreamBuilder<List<dynamic>>(
@@ -99,7 +99,9 @@ class _AddMentorPageState extends State<AddMentorPage> {
                                 ),
                                 Visibility(
                                     visible: tap,
-                                    child: const CircularProgressIndicator(strokeWidth: 1,))
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 1,
+                                    ))
                               ],
                             ),
 
@@ -130,9 +132,8 @@ class _AddMentorPageState extends State<AddMentorPage> {
               },
             );
           } else if (snapshot.hasError) {
-            return Center(
-              child: 
-              Text('Error: ${snapshot.error}')
+            return const Center(
+              child: Text('Lost connection, double check network')
               // Text('Error: ${snapshot.error}')
               ,
             );

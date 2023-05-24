@@ -582,9 +582,10 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                             ),
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 20.0),
+                                            // contentPadding:
+                                            //EdgeInsets.all(8.0),
+                                            // const EdgeInsets.symmetric(
+                                            //     vertical: 20.0),
                                           ),
                                           validator: (value) {
                                             if (value!.isEmpty) {
@@ -611,9 +612,9 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                             ),
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 20.0),
+                                            // contentPadding:
+                                            //     const EdgeInsets.symmetric(
+                                            //         vertical: 20.0),
                                           ),
                                           validator: (value) {
                                             if (value!.isEmpty) {
@@ -640,9 +641,9 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                             ),
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 20.0),
+                                            // contentPadding:
+                                            //     const EdgeInsets.symmetric(
+                                            //         vertical: 20.0),
                                           ),
                                           validator: (value) {
                                             if (value!.isEmpty) {

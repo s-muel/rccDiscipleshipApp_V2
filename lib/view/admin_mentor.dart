@@ -148,200 +148,211 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.8,
-          // minChildSize: 0.25,
-          maxChildSize: 1.0,
-          builder: (BuildContext context, ScrollController scrollController) {
-            return StreamBuilder<List<dynamic>>(
-              stream: api.stream(
-                token,
-                'https://rcc-discipleship.up.railway.app/api/mentors/$mentorID/mentees/$menteeID/report/',
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final List<dynamic> data = snapshot.data!;
-                  final int dataLength = data.length;
-                  // print(data);
-                  return ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      final item = data[index];
-                      final String date = item['created_at'] as String;
-                      final String disStatus = item['how_is_mentee_doing'];
-                      final String sFE =
-                          item['significant_life_events_or_challenges'];
-                      final String request = item['mentee_discussion_requests'];
-                      DateTime dateTime = DateTime.parse(date);
-                      DateTime firstDayOfMonth =
-                          DateTime(dateTime.year, dateTime.month, 1);
-                      int weekNumber =
-                          ((dateTime.difference(firstDayOfMonth).inDays) / 7)
-                              .ceil();
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 8, top: 5),
-                        child: Card(
-                          elevation: 3,
-                          child: ExpansionTile(
-                            title: Row(children: [
-                              const Icon(Icons.date_range, color: Colors.green),
-                              Text(DateFormat.yMMMMd().format(dateTime))
-                            ]),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Week: $weekNumber'),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.access_time,
+        return SafeArea(
+          child: DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.8,
+            // // minChildSize: 0.25,
+            // maxChildSize: 1.0,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return StreamBuilder<List<dynamic>>(
+                stream: api.stream(
+                  token,
+                  'https://rcc-discipleship.up.railway.app/api/mentors/$mentorID/mentees/$menteeID/report/',
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final List<dynamic> data = snapshot.data!;
+                    final int dataLength = data.length;
+                    // print(data);
+                    return ListView.builder(
+                      controller: scrollController,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final item = data[index];
+                        final String date = item['created_at'] as String;
+                        final String disStatus = item['how_is_mentee_doing'];
+                        final String sFE =
+                            item['significant_life_events_or_challenges'];
+                        final String request =
+                            item['mentee_discussion_requests'];
+                        DateTime dateTime = DateTime.parse(date);
+                        DateTime firstDayOfMonth =
+                            DateTime(dateTime.year, dateTime.month, 1);
+                        int weekNumber =
+                            ((dateTime.difference(firstDayOfMonth).inDays) / 7)
+                                .ceil();
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, bottom: 8, top: 5),
+                          child: Card(
+                            elevation: 3,
+                            child: ExpansionTile(
+                              title: Row(children: [
+                                const Icon(Icons.date_range,
                                     color: Colors.green),
-                                const SizedBox(width: 8),
-                                Text(DateFormat.jm().format(dateTime)),
-                                const SizedBox(width: 8),
-                                const Icon(Icons.keyboard_arrow_down_rounded)
+                                Text(DateFormat.yMMMMd().format(dateTime))
+                              ]),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Week: $weekNumber'),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.access_time,
+                                      color: Colors.green),
+                                  const SizedBox(width: 8),
+                                  Text(DateFormat.jm().format(dateTime)),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.keyboard_arrow_down_rounded)
+                                ],
+                              ),
+                              children: [
+                                const Text("Church Attendance"),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: const [
+                                    Expanded(
+                                      child: Text(
+                                        'Wednesday',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Friday',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Sunday',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Checkbox(
+                                          value: item[
+                                              'wednesday_service_attended'],
+                                          // ignore: avoid_types_as_parameter_names
+                                          onChanged: (bool) {}),
+                                    ),
+                                    Expanded(
+                                      child: Checkbox(
+                                          value:
+                                              item['friday_service_attended'],
+                                          // ignore: avoid_types_as_parameter_names
+                                          onChanged: (bool) {}),
+                                    ),
+                                    Expanded(
+                                      child: Checkbox(
+                                          value:
+                                              item['sunday_service_attended'],
+                                          // ignore: avoid_types_as_parameter_names
+                                          onChanged: (bool) {}),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 25, right: 25, bottom: 30),
+                                  child: TextFormField(
+                                    maxLines: null,
+                                    textAlignVertical: TextAlignVertical.top,
+                                    // controller: discipleStatus,
+                                    initialValue: disStatus,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      labelText: 'How is disciple doing',
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      // contentPadding: const EdgeInsets.symmetric(
+                                      //     vertical: 20.0),
+                                    ),
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 25, right: 25, bottom: 30),
+                                  child: TextFormField(
+                                    maxLines: null,
+                                    textAlignVertical: TextAlignVertical.top,
+                                    // controller: discipleStatus,
+                                    initialValue: sFE,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      labelText:
+                                          'Significant life events or challenges',
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      // contentPadding: const EdgeInsets.symmetric(
+                                      //     vertical: 20.0),
+                                    ),
+                                  ),
+                                ),
+
+                                // const Padding(
+                                //   padding: EdgeInsets.all(8.0),
+                                //   child: Text("How is disciple doing"),
+                                // ),
+
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 25, right: 25, bottom: 30),
+                                  child: TextFormField(
+                                    maxLines: null,
+                                    textAlignVertical: TextAlignVertical.top,
+                                    // controller: discipleStatus,
+                                    initialValue: request,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      labelText:
+                                          'Discipler discussion/ request',
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      // contentPadding: const EdgeInsets.symmetric(
+                                      //     vertical: 20.0),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
-                            children: [
-                              const Text("Church Attendance"),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: const [
-                                  Expanded(
-                                    child: Text(
-                                      'Wednesday',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Friday',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Sunday',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Checkbox(
-                                        value:
-                                            item['wednesday_service_attended'],
-                                        // ignore: avoid_types_as_parameter_names
-                                        onChanged: (bool) {}),
-                                  ),
-                                  Expanded(
-                                    child: Checkbox(
-                                        value: item['friday_service_attended'],
-                                        // ignore: avoid_types_as_parameter_names
-                                        onChanged: (bool) {}),
-                                  ),
-                                  Expanded(
-                                    child: Checkbox(
-                                        value: item['sunday_service_attended'],
-                                        // ignore: avoid_types_as_parameter_names
-                                        onChanged: (bool) {}),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25, right: 25, bottom: 30),
-                                child: TextFormField(
-                                  maxLines: null,
-                                  textAlignVertical: TextAlignVertical.top,
-                                  // controller: discipleStatus,
-                                  initialValue: disStatus,
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelText: 'How is disciple doing',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 20.0),
-                                  ),
-                                ),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25, right: 25, bottom: 30),
-                                child: TextFormField(
-                                  maxLines: null,
-                                  textAlignVertical: TextAlignVertical.top,
-                                  // controller: discipleStatus,
-                                  initialValue: sFE,
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelText:
-                                        'Significant life events or challenges',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 20.0),
-                                  ),
-                                ),
-                              ),
-
-                              // const Padding(
-                              //   padding: EdgeInsets.all(8.0),
-                              //   child: Text("How is disciple doing"),
-                              // ),
-
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25, right: 25, bottom: 30),
-                                child: TextFormField(
-                                  maxLines: null,
-                                  textAlignVertical: TextAlignVertical.top,
-                                  // controller: discipleStatus,
-                                  initialValue: request,
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelText: 'Discipler discussion/ request',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 20.0),
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
-                        ),
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('No report submitted '),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            );
-          },
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('No report submitted '),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              );
+            },
+          ),
         );
       },
     );
@@ -363,24 +374,24 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
   // }
 }
 
-void _showModalBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return Container(
-          child: new Wrap(
-            children: <Widget>[
-              new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
-                  onTap: () => {}),
-              new ListTile(
-                leading: new Icon(Icons.videocam),
-                title: new Text('Video'),
-                onTap: () => {},
-              ),
-            ],
-          ),
-        );
-      });
-}
+// void _showModalBottomSheet(BuildContext context) {
+//   showModalBottomSheet(
+//       context: context,
+//       builder: (BuildContext bc) {
+//         return Container(
+//           child: new Wrap(
+//             children: <Widget>[
+//               new ListTile(
+//                   leading: new Icon(Icons.music_note),
+//                   title: new Text('Music'),
+//                   onTap: () => {}),
+//               new ListTile(
+//                 leading: new Icon(Icons.videocam),
+//                 title: new Text('Video'),
+//                 onTap: () => {},
+//               ),
+//             ],
+//           ),
+//         );
+//       });
+// }

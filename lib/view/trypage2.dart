@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reapers_app/logins/firsttry.dart';
 import 'package:reapers_app/view/add_member.dart';
 import 'dart:async';
 
@@ -93,17 +94,84 @@ class _HomeState extends State<Home> {
                       "Administrator",
                       style: TextStyle(color: Colors.white, fontSize: 10),
                     ),
-                    trailing: InkWell(
-                        onTap: () {
+                    trailing: PopupMenuButton<int>(
+                      icon: const Icon(Icons.more_vert_rounded,
+                          color: Colors.white),
+
+                      itemBuilder: (context) => [
+                        // PopupMenuItem 1
+                        PopupMenuItem(
+                          value: 1,
+                          // row with 2 children
+                          child: Row(
+                            children: const [
+                              Icon(Icons.admin_panel_settings_rounded,
+                                  color: Colors.green),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Add Discipler",
+                                style: TextStyle(color: Colors.green),
+                              )
+                            ],
+                          ),
+                        ),
+                        // PopupMenuItem 2
+                        PopupMenuItem(
+                          value: 2,
+                          // row with two children
+                          child: Row(
+                            children: const [
+                              Icon(Icons.login_outlined),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Logout")
+                            ],
+                          ),
+                        ),
+                      ],
+                      // offset: Offset(0, 100),
+                      // color: Colors.grey,
+                      elevation: 2,
+                      // on selected we show the dialog box
+                      onSelected: (value) {
+                        // if value 1 show dialog
+                        if (value == 1) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => AddMentorPage(token: token),
                             ),
                           );
-                        },
-                        child: const Icon(Icons.admin_panel_settings_rounded,
-                            color: Colors.white, size: 40)),
+                          // _showDialog(context);
+                          // if value 2 show dialog
+                        } else if (value == 2) {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginForm(),
+                            ),
+                          );
+                          //  _showDialog(context);
+                        }
+                      },
+                    ),
+
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => AddMentorPage(token: token),
+                    //       ),
+                    //     );
+                    //   },
+                    //   child: const Icon(Icons.admin_panel_settings_rounded,
+                    //       color: Colors.white, size: 40),
+                    // ),
                   ),
                 ),
 
