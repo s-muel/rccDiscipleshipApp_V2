@@ -40,6 +40,7 @@ class _LandingPageState extends State<LandingPage> {
   );
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: ListView(
         physics: NeverScrollableScrollPhysics(),
@@ -113,7 +114,7 @@ class _LandingPageState extends State<LandingPage> {
           Stack(
             children: [
               SizedBox(
-                height: 350,
+                height: screenHeight * 0.4,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -139,7 +140,9 @@ class _LandingPageState extends State<LandingPage> {
                               subtitle: const Text("Every Sunday"),
                               trailing: ElevatedButton(
                                   child: const Text("8:00AM"),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    // print(screenHeight);
+                                  }),
                             ),
                           ),
                         ),

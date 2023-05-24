@@ -11,7 +11,8 @@ import 'unassigned_members.dart';
 
 class Home extends StatefulWidget {
   final String token;
-  const Home({Key? key, required this.token}) : super(key: key);
+  final dynamic admin;
+  const Home({Key? key, required this.token, this.admin}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -28,10 +29,12 @@ class _HomeState extends State<Home> {
   int total = 0;
   late String token;
   late Timer _timer;
+  late dynamic admin;
   @override
   void initState() {
     super.initState();
     token = widget.token;
+    admin = widget.admin;
     _fetchData();
     // Start a timer to call fetchData every 5 seconds
     _timer = Timer.periodic(const Duration(seconds: 3), (_) => _fetchData());
@@ -70,18 +73,77 @@ class _HomeState extends State<Home> {
           CustomPaint(
               painter: LogoPainter(),
               size: const Size(400, 195),
-              child: _appBarContent(dataRange2)),
-          const Align(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 25,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                          'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
+                    ),
+                    title: Text(
+                      'Welcome, ${admin['user']['first_name'] ?? " "}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    subtitle: const Text(
+                      "Administrator",
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                    trailing: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddMentorPage(token: token),
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.admin_panel_settings_rounded,
+                            color: Colors.white, size: 40)),
+                  ),
+                ),
+
+                //_appBarContent(dataRange2)
+              )),
+          const SizedBox(
+            height: 10,
+          ),
+          Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                "Disciplers List",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w700,
-                ),
+              padding: const EdgeInsets.only(left: 20),
+              child: Row(
+                children: [
+                  const Text(
+                    'Disciplers',
+                    style: TextStyle(
+                      fontSize: 18,
+                      //fontFamily: 'Alto',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  DecoratedBox(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 87, 204, 91),
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(
+                        ' ${dataRange2} ',
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
@@ -352,9 +414,30 @@ class _HomeState extends State<Home> {
                       );
                     }));
                   },
-                  child: const Text(
-                    "All members",
-                    style: TextStyle(fontSize: 10),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'All members',
+                        style: const TextStyle(fontSize: 10),
+                      ),
+                      const SizedBox(width: 4),
+                      DecoratedBox(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 87, 204, 91),
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(
+                            ' ${dataRange} ',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12),
+                          ),
+                        ),
+                      )
+                    ],
                   )),
               const Spacer(),
               InkWell(
@@ -387,7 +470,7 @@ class _HomeState extends State<Home> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             // Navigator.of(context).pop();
-
+            // print('this is admin--------- $admin');
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -448,9 +531,9 @@ class _HomeState extends State<Home> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(
-          height: 10,
+          height: 20,
         ),
-        _userAvatar(),
+        //  _userAvatar(),
         const SizedBox(
           width: 10,
         ),
@@ -458,6 +541,9 @@ class _HomeState extends State<Home> {
           flex: 1,
           child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               _userPersonalInfo(),
               const SizedBox(
                 height: 25,

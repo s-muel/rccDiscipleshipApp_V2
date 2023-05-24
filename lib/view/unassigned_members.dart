@@ -279,18 +279,17 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                                                           .toList(),
                                                       onChanged: (newValue) {
                                                         setState(() {
-                                                          _selectedItemText = snapshot
-                                                                  .data
-                                                                  ?.firstWhere((item) =>
-                                                                      item[
-                                                                          'id'] ==
-                                                                      newValue)[
-                                                              "member"]['first_name'];
+                                                          var selectedMember = snapshot
+                                                              .data
+                                                              ?.firstWhere((item) =>
+                                                                  item['id'] ==
+                                                                  newValue)['member'];
+                                                          _selectedItemText =
+                                                              '${selectedMember['first_name']} ${selectedMember['last_name']}';
                                                           mentorID = newValue!;
                                                           _mentorNameController
                                                                   .text =
                                                               _selectedItemText;
-                                                          //_selectedValue = newValue;
                                                         });
                                                       },
                                                     ),

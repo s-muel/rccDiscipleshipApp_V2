@@ -39,6 +39,9 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
       friday = false;
       sunday = false;
       discipleStatus.text = '';
+      lifeEvent.text = "";
+      request.text = "";
+      // Navigator.pop(context);
     });
   }
 
@@ -70,10 +73,8 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
               final int dataLength = data.length;
-              String firstName =
-                  mentor['user']['first_name'] ?? "Name not updated";
-              String lastName =
-                  mentor['user']['last_name'] ?? "Name not updated";
+              String firstName = mentor['user']['first_name'] ?? " ";
+              String lastName = mentor['user']['last_name'] ?? "";
               String disciplerPhoto = mentor['user']['photo'] ??
                   "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
               // Map<String, dynamic> user = data.firstWhere((user) => user['id'] == 6,
@@ -126,7 +127,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                             backgroundImage: NetworkImage(disciplerPhoto),
                           ),
                           title: Text(
-                            '$firstName $lastName',
+                            'Welcome, $firstName',
                             style: const TextStyle(color: Colors.white),
                           ),
                           subtitle: const Text(
@@ -268,13 +269,35 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20, top: 10),
-                      child: Text(
-                        "Disciple List $dataLength",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Disciples",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Lato',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          DecoratedBox(
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 87, 204, 91),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(
+                                ' $dataLength ',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),

@@ -62,7 +62,7 @@ class _LoginFormState extends State<LoginForm> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Home(token: token),
+              builder: (context) => Home(token: token, admin: data),
             ),
           );
         } else {

@@ -120,7 +120,6 @@ class _MyFormState extends State<MyForm> {
     setState(() {
       _isLoading = false;
     });
-    print(_isLoading);
   }
 
 //
@@ -496,23 +495,27 @@ class _MyFormState extends State<MyForm> {
                                 // value: iDValue,
                                 hint: const Text("Select Discipler"),
                                 items: snapshot.data!
-                                    .map((option) => DropdownMenuItem<int>(
+                                    .map(
+                                      (option) => DropdownMenuItem<int>(
                                         value: option['id'],
                                         child: Text(
-                                            option["member"]['first_name'])))
+                                          option["member"]['first_name'] +
+                                              " " +
+                                              option["member"]['last_name'],
+                                        ),
+                                      ),
+                                    )
                                     .toList(),
                                 onChanged: (newValue) {
                                   setState(() {
-                                    _selectedItemText = snapshot.data
+                                    var selectedMember = snapshot.data
                                         ?.firstWhere((item) =>
-                                            item['id'] ==
-                                            newValue)["member"]['first_name'];
+                                            item['id'] == newValue)['member'];
+                                    _selectedItemText =
+                                        '${selectedMember['first_name']} ${selectedMember['last_name']}';
                                     iDValue = newValue!;
                                     _mentorNameController.text =
                                         _selectedItemText;
-                                    _selectedValue = newValue;
-
-                                    print(_selectedItemText);
                                   });
                                 },
                               ),

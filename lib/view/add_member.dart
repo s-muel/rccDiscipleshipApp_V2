@@ -40,6 +40,8 @@ class _AddMemberPageState extends State<AddMemberPage> {
   String _selectedItemText = "";
   dynamic mentorID = null;
 
+  bool _isLoading = false;
+
   //adding pictures functions
   //File _image = File('');
   File? _image = File('');
@@ -133,6 +135,16 @@ class _AddMemberPageState extends State<AddMemberPage> {
         });
       }
     }
+  }
+
+  // loading widget
+  Future<void> _startLoading() async {
+    _isLoading = true;
+    print(_isLoading);
+    await Future.delayed(const Duration(seconds: 4));
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   late String token;
@@ -430,7 +442,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       height: 45,
-                      child: TextField(
+                      child: TextFormField(
                         controller: _dateOfBirthController,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -441,6 +453,12 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                 color: Colors.green),
                             filled: true,
                             fillColor: Colors.grey[200]),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter phone number';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -597,17 +615,18 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                         .toList(),
                                     onChanged: (newValue) {
                                       setState(() {
-                                        _selectedItemText = snapshot.data
-                                                ?.firstWhere((item) =>
-                                                    item['id'] ==
-                                                    newValue)["member"]
-                                            ['first_name'];
+                                        var selectedMember = snapshot.data
+                                            ?.firstWhere((item) =>
+                                                item['id'] ==
+                                                newValue)['member'];
+                                        _selectedItemText =
+                                            '${selectedMember['first_name']} ${selectedMember['last_name']}';
                                         mentorID = newValue!;
                                         _mentorNameController.text =
                                             _selectedItemText;
-                                        //_selectedValue = newValue;
                                       });
                                     },
+                                
                                   ),
                                 ),
                               ),
@@ -846,11 +865,18 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     width: 100,
                     child: ElevatedButton(
                       onPressed: () {
+                        _startLoading();
                         _submitForm();
                       },
                       child: const Text("Submit"),
                     ),
                   ),
+                ),
+              ),
+              Visibility(
+                visible: _isLoading,
+                child: const LinearProgressIndicator(
+                  minHeight: 5,
                 ),
               ),
             ],
