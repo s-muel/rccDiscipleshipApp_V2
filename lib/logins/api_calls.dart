@@ -401,7 +401,7 @@ class ApiCalls {
   }
 
   // stream building
-  Stream<List<Map<String, dynamic>>> stream(String token, String Url) async* {
+  Stream<List<Map<String, dynamic>>> stream(String token, String Url ) async* {
     while (true) {
       final http.Response response = await http.get(
         Uri.parse(Url),
@@ -417,6 +417,32 @@ class ApiCalls {
       } else {
         print(response.statusCode);
         print(response.body);
+        //
+         // ignore: use_build_context_synchronously
+      // showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return AlertDialog(
+      //         title: const Center(
+      //           child: Text(
+      //             'User Registered',
+      //           ),
+      //         ),
+      //         actions: [
+      //           Center(
+      //               child: ElevatedButton(
+      //                   onPressed: () {
+      //                     Navigator.pop(context);
+      //                   },
+      //                   child: const Text("OK"))),
+      //           const SizedBox(height: 10),
+      //           const Center(
+      //             child: Text('We Believe There Is More.',
+      //                 style: TextStyle(fontSize: 10)),
+      //           ),
+      //         ],
+      //       );
+      //     });
         throw Exception('Failed to load Data ');
       }
       await Future.delayed(const Duration(seconds: 5));

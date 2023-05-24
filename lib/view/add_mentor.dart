@@ -131,7 +131,10 @@ class _AddMentorPageState extends State<AddMentorPage> {
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: 
+              Text('Error: ${snapshot.error}')
+              // Text('Error: ${snapshot.error}')
+              ,
             );
           } else {
             return const Center(

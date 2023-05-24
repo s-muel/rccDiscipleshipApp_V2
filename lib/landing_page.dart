@@ -149,10 +149,12 @@ class _LandingPageState extends State<LandingPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: const ListTile(
-                              title: Text("MID-WEEK"),
-                              subtitle: Text("Every Wednesday"),
-                              trailing: Text("6:30PM"),
+                            child: ListTile(
+                              title: const Text("MID-WEEK"),
+                              subtitle: const Text("Every Wednesday"),
+                              trailing: ElevatedButton(
+                                  child: const Text("6:30PM"),
+                                  onPressed: () {}),
                             ),
                           ),
                         ),
@@ -162,10 +164,12 @@ class _LandingPageState extends State<LandingPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: const ListTile(
-                              title: Text("PRAYER SERVICE"),
-                              subtitle: Text("Every Friday"),
-                              trailing: Text("7:00PM"),
+                            child: ListTile(
+                              title: const Text("PRAYER SERVICE"),
+                              subtitle: const Text("Every Friday"),
+                              trailing: ElevatedButton(
+                                  child: const Text("7:00PM"),
+                                  onPressed: () {}),
                             ),
                           ),
                         ),

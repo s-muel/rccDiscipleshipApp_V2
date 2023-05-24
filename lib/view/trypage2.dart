@@ -184,8 +184,10 @@ class _HomeState extends State<Home> {
                   ),
                 );
               } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
+                return const Center(
+                  child: Text("lost connection, double check network")
+                  //  Text('Error: ${snapshot.error}')
+                  ,
                 );
               } else {
                 return const Center(
@@ -445,6 +447,9 @@ class _HomeState extends State<Home> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         _userAvatar(),
         const SizedBox(
           width: 10,
@@ -457,172 +462,172 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 25,
               ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Card(
-                    color: const Color.fromARGB(199, 6, 146, 60),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(children: [
-                        const Text(
-                          "Disciplers",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        DecoratedBox(
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 87, 204, 91),
-                            borderRadius: BorderRadius.all(Radius.circular(2)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              "$dataLength ",
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17),
-                            ),
-                          ),
-                        ),
-                      ]),
-                    ),
-                  ),
-                  Expanded(
-                      child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AllMembersPage(token: token),
-                        ),
-                      );
-                    },
-                    child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 50, left: 10),
-                          child: Card(
-                            color: const Color.fromARGB(199, 6, 146, 60),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "Members",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    DecoratedBox(
-                                      decoration: const BoxDecoration(
-                                        color: Color.fromARGB(255, 87, 204, 91),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(2)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 2),
-                                        child: Text(
-                                          " $dataRange ",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 17),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
-                  // FutureBuilder<List<dynamic>>(
-                  //   future: api.streamFuture(token,
-                  //       "https://rcc-discipleship1.up.railway.app/api/members/"),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.hasData) {
-                  //       final List<dynamic> data = snapshot.data!;
-                  //       final int dataLength = data.length;
-                  //       return Expanded(
-                  //           child: InkWell(
-                  //         onTap: () {
-                  //           Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //               builder: (context) =>
-                  //                   AllMembersPage(token: token),
-                  //             ),
-                  //           );
-                  //         },
-                  //         child: Column(
-                  //           // crossAxisAlignment: CrossAxisAlignment.center,
-                  //           children: [
-                  //             Padding(
-                  //               padding:
-                  //                   const EdgeInsets.only(right: 50, left: 10),
-                  //               child: Card(
-                  //                 color: const Color.fromARGB(199, 6, 146, 60),
-                  //                 child: Padding(
-                  //                   padding: const EdgeInsets.all(8.0),
-                  //                   child: Row(
-                  //                       mainAxisAlignment:
-                  //                           MainAxisAlignment.center,
-                  //                       children: [
-                  //                         const Text(
-                  //                           "Members",
-                  //                           style:
-                  //                               TextStyle(color: Colors.white),
-                  //                         ),
-                  //                         const SizedBox(
-                  //                           width: 4,
-                  //                         ),
-                  //                         DecoratedBox(
-                  //                           decoration: const BoxDecoration(
-                  //                             color: Color.fromARGB(
-                  //                                 255, 87, 204, 91),
-                  //                             borderRadius: BorderRadius.all(
-                  //                                 Radius.circular(2)),
-                  //                           ),
-                  //                           child: Padding(
-                  //                             padding: const EdgeInsets.only(
-                  //                                 left: 2),
-                  //                             child: Text(
-                  //                               "$dataLength ",
-                  //                               style: const TextStyle(
-                  //                                   color: Colors.white,
-                  //                                   fontWeight: FontWeight.w500,
-                  //                                   fontSize: 17),
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                       ]),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ));
-                  //     } else if (snapshot.hasError) {
-                  //       return Card(
-                  //         child: Text('Error: ${snapshot.error}'),
-                  //       );
-                  //     } else {
-                  //       return const Text("");
-                  //     }
-                  //   },
-                  // ),
-                ],
-              )
+              // Row(
+              //   children: [
+              //     const SizedBox(
+              //       width: 4,
+              //     ),
+              //     Card(
+              //       color: const Color.fromARGB(199, 6, 146, 60),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Row(children: [
+              //           const Text(
+              //             "Disciplers",
+              //             style: TextStyle(color: Colors.white),
+              //           ),
+              //           const SizedBox(
+              //             width: 4,
+              //           ),
+              //           DecoratedBox(
+              //             decoration: const BoxDecoration(
+              //               color: Color.fromARGB(255, 87, 204, 91),
+              //               borderRadius: BorderRadius.all(Radius.circular(2)),
+              //             ),
+              //             child: Padding(
+              //               padding: const EdgeInsets.only(left: 2),
+              //               child: Text(
+              //                 "$dataLength ",
+              //                 style: const TextStyle(
+              //                     color: Colors.white,
+              //                     fontWeight: FontWeight.w500,
+              //                     fontSize: 17),
+              //               ),
+              //             ),
+              //           ),
+              //         ]),
+              //       ),
+              //     ),
+              //     Expanded(
+              //         child: InkWell(
+              //       onTap: () {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => AllMembersPage(token: token),
+              //           ),
+              //         );
+              //       },
+              //       child: Column(
+              //         // crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: [
+              //           Padding(
+              //             padding: const EdgeInsets.only(right: 50, left: 10),
+              //             child: Card(
+              //               color: const Color.fromARGB(199, 6, 146, 60),
+              //               child: Padding(
+              //                 padding: const EdgeInsets.all(8.0),
+              //                 child: Row(
+              //                     mainAxisAlignment: MainAxisAlignment.center,
+              //                     children: [
+              //                       const Text(
+              //                         "Members",
+              //                         style: TextStyle(color: Colors.white),
+              //                       ),
+              //                       const SizedBox(
+              //                         width: 4,
+              //                       ),
+              //                       DecoratedBox(
+              //                         decoration: const BoxDecoration(
+              //                           color: Color.fromARGB(255, 87, 204, 91),
+              //                           borderRadius: BorderRadius.all(
+              //                               Radius.circular(2)),
+              //                         ),
+              //                         child: Padding(
+              //                           padding: const EdgeInsets.only(left: 2),
+              //                           child: Text(
+              //                             " $dataRange ",
+              //                             style: const TextStyle(
+              //                                 color: Colors.white,
+              //                                 fontWeight: FontWeight.w500,
+              //                                 fontSize: 17),
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ]),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ))
+              //     // FutureBuilder<List<dynamic>>(
+              //     //   future: api.streamFuture(token,
+              //     //       "https://rcc-discipleship1.up.railway.app/api/members/"),
+              //     //   builder: (context, snapshot) {
+              //     //     if (snapshot.hasData) {
+              //     //       final List<dynamic> data = snapshot.data!;
+              //     //       final int dataLength = data.length;
+              //     //       return Expanded(
+              //     //           child: InkWell(
+              //     //         onTap: () {
+              //     //           Navigator.push(
+              //     //             context,
+              //     //             MaterialPageRoute(
+              //     //               builder: (context) =>
+              //     //                   AllMembersPage(token: token),
+              //     //             ),
+              //     //           );
+              //     //         },
+              //     //         child: Column(
+              //     //           // crossAxisAlignment: CrossAxisAlignment.center,
+              //     //           children: [
+              //     //             Padding(
+              //     //               padding:
+              //     //                   const EdgeInsets.only(right: 50, left: 10),
+              //     //               child: Card(
+              //     //                 color: const Color.fromARGB(199, 6, 146, 60),
+              //     //                 child: Padding(
+              //     //                   padding: const EdgeInsets.all(8.0),
+              //     //                   child: Row(
+              //     //                       mainAxisAlignment:
+              //     //                           MainAxisAlignment.center,
+              //     //                       children: [
+              //     //                         const Text(
+              //     //                           "Members",
+              //     //                           style:
+              //     //                               TextStyle(color: Colors.white),
+              //     //                         ),
+              //     //                         const SizedBox(
+              //     //                           width: 4,
+              //     //                         ),
+              //     //                         DecoratedBox(
+              //     //                           decoration: const BoxDecoration(
+              //     //                             color: Color.fromARGB(
+              //     //                                 255, 87, 204, 91),
+              //     //                             borderRadius: BorderRadius.all(
+              //     //                                 Radius.circular(2)),
+              //     //                           ),
+              //     //                           child: Padding(
+              //     //                             padding: const EdgeInsets.only(
+              //     //                                 left: 2),
+              //     //                             child: Text(
+              //     //                               "$dataLength ",
+              //     //                               style: const TextStyle(
+              //     //                                   color: Colors.white,
+              //     //                                   fontWeight: FontWeight.w500,
+              //     //                                   fontSize: 17),
+              //     //                             ),
+              //     //                           ),
+              //     //                         ),
+              //     //                       ]),
+              //     //                 ),
+              //     //               ),
+              //     //             ),
+              //     //           ],
+              //     //         ),
+              //     //       ));
+              //     //     } else if (snapshot.hasError) {
+              //     //       return Card(
+              //     //         child: Text('Error: ${snapshot.error}'),
+              //     //       );
+              //     //     } else {
+              //     //       return const Text("");
+              //     //     }
+              //     //   },
+              //     // ),
+              //   ],
+              // )
               // _userFollowInfo(dataLength)
             ],
           ),
