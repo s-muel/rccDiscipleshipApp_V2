@@ -67,8 +67,7 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
                     leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
+                      backgroundImage: AssetImage("assets/images/logo.jpg"),
                       radius: 25,
                     ),
                   ),
@@ -117,6 +116,7 @@ class _LandingPageState extends State<LandingPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
+                            color: const Color.fromARGB(255, 235, 245, 235),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -134,6 +134,7 @@ class _LandingPageState extends State<LandingPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
+                            color: const Color.fromARGB(255, 235, 245, 235),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -149,6 +150,7 @@ class _LandingPageState extends State<LandingPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
+                            color: const Color.fromARGB(255, 235, 245, 235),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),

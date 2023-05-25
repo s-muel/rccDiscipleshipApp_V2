@@ -112,8 +112,9 @@ class _LoginFormState extends State<LoginForm> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(80),
                   image: const DecorationImage(
-                    image: NetworkImage(
-                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1682120332/appFeatureImages/RCC_App_tag_Logo_cieaqz.png"),
+                    image: AssetImage("assets/images/login_logo.png"),
+                    //  NetworkImage(
+                    //     "https://res.cloudinary.com/dekhxk5wg/image/upload/v1682120332/appFeatureImages/RCC_App_tag_Logo_cieaqz.png"),
                     fit: BoxFit.cover,
                   ),
                 ),

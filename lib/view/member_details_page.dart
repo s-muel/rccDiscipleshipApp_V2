@@ -37,7 +37,7 @@ class _MyFormState extends State<MyForm> {
   late TextEditingController _languageController;
   late TextEditingController _auxiliaryController;
   late TextEditingController _dateOfBirthController;
-  late bool _isMentor;
+  //late bool _isMentor;
   late String token;
   final TextEditingController _mentorNameController2 = TextEditingController();
   late int mentor;
@@ -147,7 +147,7 @@ class _MyFormState extends State<MyForm> {
         TextEditingController(text: widget.initialData['date_of_birth']);
     // _isMentor =
     //     TextEditingController(text: widget.initialData['is_mentor'].toString());
-    _isMentor = widget.initialData['is_mentor'];
+    // _isMentor = widget.initialData['is_mentor'];
     userImage = widget.initialData['photo'] ??
         "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
     token = widget.token;
@@ -391,7 +391,7 @@ class _MyFormState extends State<MyForm> {
               child: SizedBox(
                 height: 47,
                 child: TextField(
-                    keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.number,
                   controller: _phoneNumberController,
                   decoration: inputDeco(),
                 ),
@@ -503,6 +503,7 @@ class _MyFormState extends State<MyForm> {
                                           option["member"]['first_name'] +
                                               " " +
                                               option["member"]['last_name'],
+                                          style: const TextStyle(fontSize: 12),
                                         ),
                                       ),
                                     )
@@ -697,7 +698,6 @@ class _MyFormState extends State<MyForm> {
             ),
             InkWell(
               onTap: () {
-                print(widget.initialData['date_of_birth']);
                 DatePicker.showDatePicker(
                   context,
                   showTitleActions: true,
@@ -720,18 +720,25 @@ class _MyFormState extends State<MyForm> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 47,
-                    child: TextField(
-                        controller: _dateOfBirthController,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            suffixIcon: const Icon(Icons.calendar_today,
-                                color: Colors.green),
-                            filled: true,
-                            fillColor: Colors.grey[200])),
+                    height: 45,
+                    child: TextFormField(
+                      controller: _dateOfBirthController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          suffixIcon: const Icon(Icons.calendar_today,
+                              color: Colors.green),
+                          filled: true,
+                          fillColor: Colors.grey[200]),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter phone number';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -744,7 +751,7 @@ class _MyFormState extends State<MyForm> {
                 String lastName = _lastNameController.text;
                 String email = _emailController.text;
                 String phoneNumber = _phoneNumberController.text;
-                bool isMentor = _isMentor;
+                //bool isMentor = _isMentor;
                 String mentorName = _mentorNameController2.text;
                 String work = _workController.text;
                 String homeAddress = _homeAddressController.text;
@@ -764,7 +771,7 @@ class _MyFormState extends State<MyForm> {
                     lastName,
                     email,
                     phoneNumber,
-                    isMentor,
+                    //  isMentor,
                     _selectedValue,
                     mentorName,
                     work,
@@ -830,7 +837,7 @@ class _MyFormState extends State<MyForm> {
       String lastName,
       String email,
       String phoneNumber,
-      bool isMentor,
+      //bool isMentor,
       var mentor,
       String mentorName,
       String work,
@@ -849,7 +856,7 @@ class _MyFormState extends State<MyForm> {
       'last_name': lastName,
       'email': email,
       'phone_number': phoneNumber,
-      'is_mentor': isMentor,
+      //'is_mentor': isMentor,
       'mentor': mentor,
       //'mentor_name': mentorName,
       'work': work,
@@ -883,7 +890,7 @@ class _MyFormState extends State<MyForm> {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Update was successfully!')));
       // Handle success, e.g. show a success message to the user
-      print('outside setstate $_isMentor');
+      // print('outside setstate $_isMentor');
       print(jsonData);
     } else {
       print(jsonData);
