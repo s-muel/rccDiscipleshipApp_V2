@@ -391,6 +391,7 @@ class _MyFormState extends State<MyForm> {
               child: SizedBox(
                 height: 47,
                 child: TextField(
+                    keyboardType: TextInputType.number,
                   controller: _phoneNumberController,
                   decoration: inputDeco(),
                 ),

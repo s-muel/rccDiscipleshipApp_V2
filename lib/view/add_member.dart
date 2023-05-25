@@ -483,6 +483,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                   height: 45,
                   child: TextFormField(
                     controller: _phoneNumberController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -626,7 +627,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                             _selectedItemText;
                                       });
                                     },
-                                
                                   ),
                                 ),
                               ),

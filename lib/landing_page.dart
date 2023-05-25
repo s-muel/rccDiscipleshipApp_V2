@@ -47,7 +47,7 @@ class _LandingPageState extends State<LandingPage> {
         children: [
           CustomPaint(
             painter: LogoPainter1(),
-            size: const Size(400, 150),
+            size: const Size(400, 100),
             child: Column(
               children: const [
                 Padding(
@@ -74,7 +74,7 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 5,
                 )
               ],
             ),
@@ -94,7 +94,17 @@ class _LandingPageState extends State<LandingPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(225, 225, 252, 227),
+                      color: Color.fromARGB(223, 20, 20, 20),
+                      //Color.fromARGB(225, 225, 252, 227),
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/green3.gif'),
+                        fit: BoxFit.cover,
+                        // colorFilter: ColorFilter.mode(
+                        //   Colors.white.withOpacity(
+                        //       0.1), // Adjust the opacity value here
+                        //   BlendMode.srcATop,
+                        // ),
+                      ),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
@@ -318,10 +328,10 @@ class LogoPainter1 extends CustomPainter {
         // Color.fromARGB(255, 154, 76, 237),
       ],
     ).createShader(rect);
-    path.lineTo(0, size.height - size.height / 5);
-    path.conicTo(size.width / -5, size.height, size.width,
-        size.height - size.height / 5, 0);
-    path.lineTo(size.width, 0.3);
+    path.lineTo(0, size.height - size.height / 8);
+    path.conicTo(size.width / 1.2, size.height, size.width,
+        size.height - size.height / 8, 9);
+    path.lineTo(size.width, 0);
     path.close();
     canvas.drawShadow(path, const Color.fromARGB(255, 44, 241, 61), 4, false);
     canvas.drawPath(path, paint);
