@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:http/http.dart' as http;
 
 import '../logins/api_calls.dart';
 import 'member_details_page.dart';
@@ -25,6 +27,39 @@ class _AllMembersPageState extends State<AllMembersPage> {
   void initState() {
     super.initState();
     token = widget.token;
+  }
+
+  void deleteMember({
+    required String token,
+    required int memberID,
+    required BuildContext context,
+  }) async {
+    final uri = Uri.parse(
+        'https://rcc-discipleship.up.railway.app/api/members/$memberID/');
+    final response = await http.delete(
+      uri,
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 204) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Member Removed'),
+      //   ),
+      // );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to remove member'),
+        ),
+      );
+      print('Failed to remove member');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+    }
   }
 
   @override
@@ -151,45 +186,71 @@ class _AllMembersPageState extends State<AllMembersPage> {
                             hasImage = false;
                           });
                         }
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, bottom: 8, top: 2),
-                          child: Card(
-                            elevation: 3,
-                            child: ListTile(
-                              title: Text(
-                                  '${item['first_name']} ${item['last_name']}'),
-                              subtitle: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.call,
-                                    color: Colors.green,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '${item['phone_number']}',
-                                    style: const TextStyle(
-                                        fontSize: 13, color: Colors.green),
-                                  ),
-                                ],
-                              ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(imageURL),
-                              ),
-                              trailing: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyForm(
-                                          initialData: item, token: token),
-                                    ),
+                        return Slidable(
+                          key: Key(index.toString()),
+                          startActionPane: ActionPane(
+                            // dismissible: DismissiblePane(onDismissed: () {
+                            //   deleteMember(
+                            //     token: token,
+                            //     memberID: item['id'],
+                            //     context: context,
+                            //   );
+                            // }),
+                            motion: const DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                backgroundColor: Colors.red,
+                                onPressed: (context) {
+                                  deleteMember(
+                                    token: token,
+                                    memberID: item['id'],
+                                    context: context,
                                   );
                                 },
-                                child: const Text("Details"),
+                                icon: Icons.delete,
+                              )
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 8, top: 2),
+                            child: Card(
+                              elevation: 3,
+                              child: ListTile(
+                                title: Text(
+                                    '${item['first_name']} ${item['last_name']}'),
+                                subtitle: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.call,
+                                      color: Colors.green,
+                                      size: 15,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '${item['phone_number']}',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.green),
+                                    ),
+                                  ],
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(imageURL),
+                                ),
+                                trailing: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MyForm(
+                                            initialData: item, token: token),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text("Details"),
+                                ),
                               ),
                             ),
                           ),

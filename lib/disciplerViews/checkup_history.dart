@@ -101,68 +101,163 @@ class _ReportHistoryPageState extends State<ReportHistoryPage> {
                             ((dateTime.difference(firstDayOfMonth).inDays) / 7)
                                 .ceil();
                         return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, bottom: 8, top: 5),
-                          child: Card(
-                            child: ExpansionTile(
-                              title: Row(
-                                children: [
-                                  const Text(
-                                    "Week : ",
-                                    style: TextStyle(color: Colors.green),
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, bottom: 8, top: 5),
+                            child: Card(
+                                elevation: 3,
+                                child: ExpansionTile(
+                                  title: Row(children: [
+                                    const Icon(Icons.date_range,
+                                        color: Colors.green),
+                                    Text(DateFormat.yMMMMd().format(dateTime))
+                                  ]),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('Week: $weekNumber'),
                                   ),
-                                  Text(weekNumber.toString()),
-                                ],
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  const Icon(Icons.date_range,
-                                      color: Colors.green),
-                                  const SizedBox(width: 8),
-                                  Text(DateFormat.yMMMMd().format(dateTime)),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(Icons.access_time,
-                                      color: Colors.green),
-                                  const SizedBox(width: 8),
-                                  Text(DateFormat.jm().format(dateTime)),
-                                  const SizedBox(width: 8),
-                                  const Icon(Icons.keyboard_arrow_down_rounded)
-                                ],
-                              ),
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text("How is disciple doing"),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(disStatus),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                      "significant_life_events_or_challenges"),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(sFE),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text("Request"),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(request),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(Icons.access_time,
+                                          color: Colors.green),
+                                      const SizedBox(width: 8),
+                                      Text(DateFormat.jm().format(dateTime)),
+                                      const SizedBox(width: 8),
+                                      const Icon(
+                                          Icons.keyboard_arrow_down_rounded)
+                                    ],
+                                  ),
+                                  children: [
+                                    const Text("Church Attendance"),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: const [
+                                        Expanded(
+                                          child: Text(
+                                            'Wednesday',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            'Friday',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            'Sunday',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Checkbox(
+                                              value: item[
+                                                  'wednesday_service_attended'],
+                                              // ignore: avoid_types_as_parameter_names
+                                              onChanged: (bool) {}),
+                                        ),
+                                        Expanded(
+                                          child: Checkbox(
+                                              value: item[
+                                                  'friday_service_attended'],
+                                              // ignore: avoid_types_as_parameter_names
+                                              onChanged: (bool) {}),
+                                        ),
+                                        Expanded(
+                                          child: Checkbox(
+                                              value: item[
+                                                  'sunday_service_attended'],
+                                              // ignore: avoid_types_as_parameter_names
+                                              onChanged: (bool) {}),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 25, right: 25, bottom: 30),
+                                      child: TextFormField(
+                                        maxLines: null,
+                                        textAlignVertical:
+                                            TextAlignVertical.top,
+                                        // controller: discipleStatus,
+                                        initialValue: disStatus,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.always,
+                                          labelText: 'How is disciple doing',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          // contentPadding: const EdgeInsets.symmetric(
+                                          //     vertical: 20.0),
+                                        ),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 25, right: 25, bottom: 30),
+                                      child: TextFormField(
+                                        maxLines: null,
+                                        textAlignVertical:
+                                            TextAlignVertical.top,
+                                        // controller: discipleStatus,
+                                        initialValue: sFE,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.always,
+                                          labelText:
+                                              'Significant life events or challenges',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          // contentPadding: const EdgeInsets.symmetric(
+                                          //     vertical: 20.0),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // const Padding(
+                                    //   padding: EdgeInsets.all(8.0),
+                                    //   child: Text("How is disciple doing"),
+                                    // ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 25, right: 25, bottom: 30),
+                                      child: TextFormField(
+                                        maxLines: null,
+                                        textAlignVertical:
+                                            TextAlignVertical.top,
+                                        // controller: discipleStatus,
+                                        initialValue: request,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.always,
+                                          labelText:
+                                              'Discipler discussion/ request',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          // contentPadding: const EdgeInsets.symmetric(
+                                          //     vertical: 20.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )));
                       },
                     ),
                   ),

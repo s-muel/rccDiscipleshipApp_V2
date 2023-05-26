@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
@@ -91,8 +92,8 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
               //   }
               // }
 
-              print(
-                  'The first name of user with ID ${mentor['user']['id']}, ${mentor['user']['first_name']}');
+              // print(
+              //     'The first name of user with ID ${mentor['user']['id']}, ${mentor['user']['first_name']}');
 
               // String? mentorName;
               // if(data['id']==mentor){
@@ -311,50 +312,75 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                           final menteeID = item['id'];
                           final String name =
                               item['first_name'] + " " + item['last_name'];
-                          return InkWell(
-                            onTap: () {
-                              trackerSheet(context, menteeID, name, item);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 8, top: 2),
-                              child: Card(
-                                child: ListTile(
-                                  title: Text(
-                                      "${item['first_name']} ${item['last_name']}"),
-                                  subtitle: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.call,
-                                        color: Colors.green,
-                                        size: 15,
-                                      ),
-                                      Text(
-                                        item['phone_number'],
-                                      ),
-                                    ],
-                                  ),
+                          return Slidable(
+                            key: Key(index.toString()),
+                            startActionPane: ActionPane(
+                              // dismissible: DismissiblePane(onDismissed: () {
+                              //   deleteMember(
+                              //     token: token,
+                              //     memberID: item['id'],
+                              //     context: context,
+                              //   );
+                              // }),
+                              motion: const DrawerMotion(),
+                              children: [
+                                SlidableAction(
+                                  backgroundColor: Colors.green,
+                                  onPressed: (context) {},
+                                  icon: Icons.call,
+                                ),
+                                SlidableAction(
+                                  backgroundColor: Colors.blue,
+                                  onPressed: (context) {},
+                                  icon: Icons.message,
+                                )
+                              ],
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                trackerSheet(context, menteeID, name, item);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 15, bottom: 8, top: 2),
+                                child: Card(
+                                  child: ListTile(
+                                    title: Text(
+                                        "${item['first_name']} ${item['last_name']}"),
+                                    subtitle: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.call,
+                                          color: Colors.green,
+                                          size: 15,
+                                        ),
+                                        Text(
+                                          item['phone_number'],
+                                        ),
+                                      ],
+                                    ),
 
-                                  // Text(item['phone_number'])
+                                    // Text(item['phone_number'])
 
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(item[
-                                            'photo'] ??
-                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(item[
+                                              'photo'] ??
+                                          "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                    ),
+                                    trailing: TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DiscipleDetailsPage(
+                                                      initialData: item,
+                                                      token: token),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text("Details")),
                                   ),
-                                  trailing: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                DiscipleDetailsPage(
-                                                    initialData: item,
-                                                    token: token),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text("Details")),
                                 ),
                               ),
                             ),

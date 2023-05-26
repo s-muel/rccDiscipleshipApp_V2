@@ -605,5 +605,71 @@ class ApiCalls {
     }
   }
 
-  ///
+  //deleting member
+
+  Future<void> deleteMember({
+    required String token,
+    required int memberID,
+    required BuildContext context,
+  }) async {
+    final uri = Uri.parse('${baseURL}members/$memberID/');
+    final response = await http.delete(
+      uri,
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 204) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Member Removed'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to remove member'),
+        ),
+      );
+      print('Failed to remove member');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+    }
+  }
+
+  // Future<void> deleteMember({
+  //   required String token,
+  //   // required int mentor,
+  //   required int memberID,
+  //   required BuildContext context,
+
+  // }) async {
+
+  //   Uri uri = Uri.parse('${baseURL}members/$memberID/');
+  //   http.Response response = await http.delete(
+  //     uri,
+  //     headers: {
+  //       'Authorization': 'Token  $token',
+  //       'Content-Type': 'application/json',
+  //     },
+
+  //   );
+
+  //   if (response.statusCode == 204) {
+  //     print(response.statusCode);
+  //     // ignore: use_build_context_synchronously
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Member Removed'),
+  //       ),
+  //     );
+
+  //   } else {
+
+  //     print(response.statusCode);
+  //     print(response.body);
+  //   }
+  // }
 }
