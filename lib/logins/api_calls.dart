@@ -394,9 +394,9 @@ class ApiCalls {
               ],
             );
           });
-      print(response.statusCode);
+      //print(response.statusCode);
       // print(response.body);
-      print(jsonData);
+    //  print(jsonData);
     }
   }
 

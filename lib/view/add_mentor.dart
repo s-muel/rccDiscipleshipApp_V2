@@ -84,7 +84,9 @@ class _AddMentorPageState extends State<AddMentorPage> {
                         child: Card(
                           child: ListTile(
                             title: Text(
-                                "${item['first_name']} ${item['last_name']}"),
+                                "${item['first_name'].isNotEmpty ? '${item['first_name'][0].toUpperCase()}${item['first_name'].substring(1)}' : ''} "
+                                "${item['last_name'].isNotEmpty ? '${item['last_name'][0].toUpperCase()}${item['last_name'].substring(1)}' : ''}"),
+
                             subtitle: Row(
                               children: [
                                 const Icon(

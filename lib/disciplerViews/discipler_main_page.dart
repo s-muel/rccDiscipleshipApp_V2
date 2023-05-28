@@ -150,7 +150,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                             backgroundImage: NetworkImage(disciplerPhoto),
                           ),
                           title: Text(
-                            'Welcome, $firstName',
+                            'Welcome, ${firstName.isNotEmpty ? '${firstName[0].toUpperCase()}${firstName.substring(1)}' : ''}',
                             style: const TextStyle(color: Colors.white),
                           ),
                           subtitle: const Text(
@@ -337,7 +337,6 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                           return Slidable(
                             key: Key(index.toString()),
                             startActionPane: ActionPane(
-                              
                               motion: const DrawerMotion(),
                               children: [
                                 SlidableAction(
@@ -366,7 +365,9 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                                 child: Card(
                                   child: ListTile(
                                     title: Text(
-                                        "${item['first_name']} ${item['last_name']}"),
+                                        "${item['first_name'].isNotEmpty ? '${item['first_name'][0].toUpperCase()}${item['first_name'].substring(1)}' : ''} "
+                                        "${item['last_name'].isNotEmpty ? '${item['last_name'][0].toUpperCase()}${item['last_name'].substring(1)}' : ''}"),
+
                                     subtitle: Row(
                                       children: [
                                         const Icon(

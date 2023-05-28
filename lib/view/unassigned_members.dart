@@ -73,6 +73,17 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                         final item = data[index];
                         String imageURL = item['photo'] ??
                             "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+
+                        final String firstName = item['first_name'] ?? "";
+                        final String lastName = item['last_name'] ?? "";
+
+                        final String capitalizedFirstName = firstName.isNotEmpty
+                            ? '${firstName[0].toUpperCase()}${firstName.substring(1)}'
+                            : firstName;
+
+                        final String capitalizedLastName = lastName.isNotEmpty
+                            ? '${lastName[0].toUpperCase()}${lastName.substring(1)}'
+                            : lastName;
                         return Padding(
                           padding: const EdgeInsets.only(
                               left: 10, right: 10, bottom: 8, top: 5),
@@ -87,7 +98,7 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                                 backgroundImage: NetworkImage(imageURL),
                               ),
                               title: Text(
-                                  '${item['first_name']} ${item['last_name']}'),
+                                  '$capitalizedFirstName $capitalizedLastName'),
                               subtitle: Row(
                                 children: [
                                   const Icon(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../logins/api_calls.dart';
 import '../view/member_details_page.dart';
@@ -24,6 +26,26 @@ class _DisAllMembersPageState extends State<DisAllMembersPage> {
   void initState() {
     super.initState();
     token = widget.token;
+  }
+
+  void makePhoneCall(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('tel:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('tel:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
+    }
+  }
+
+  void sendSMS(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('sms:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('sms:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
+    }
   }
 
   @override
@@ -140,46 +162,71 @@ class _DisAllMembersPageState extends State<DisAllMembersPage> {
                             hasImage = false;
                           });
                         }
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, bottom: 8, top: 2),
-                          child: Card(
-                            elevation: 3,
-                            child: ListTile(
-                              title: Text(
-                                  '${item['first_name']} ${item['last_name']}'),
-                              subtitle: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.call,
-                                    color: Colors.green,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '${item['phone_number']}',
-                                    style: const TextStyle(
-                                        fontSize: 13, color: Colors.green),
-                                  ),
-                                ],
+                        return Slidable(
+                          key: Key(index.toString()),
+                          startActionPane: ActionPane(
+                            motion: const DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                backgroundColor: Colors.green,
+                                onPressed: (context) {
+                                  makePhoneCall(item['phone_number']);
+                                },
+                                icon: Icons.call,
                               ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(imageURL),
+                              SlidableAction(
+                                backgroundColor: Colors.blue,
+                                onPressed: (context) {
+                                  sendSMS(item['phone_number']);
+                                },
+                                icon: Icons.message,
+                              )
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 8, top: 2),
+                            child: Card(
+                              elevation: 3,
+                              child: ListTile(
+                                title: Text(
+                                  '${item['first_name'].isNotEmpty ? '${item['first_name'][0].toUpperCase()}${item['first_name'].substring(1)}' : ''} '
+                                  '${item['last_name'].isNotEmpty ? '${item['last_name'][0].toUpperCase()}${item['last_name'].substring(1)}' : ''}',
+                                ),
+
+                                subtitle: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.call,
+                                      color: Colors.green,
+                                      size: 15,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '${item['phone_number']}',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.green),
+                                    ),
+                                  ],
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(imageURL),
+                                ),
+                                // trailing: TextButton(
+                                //   onPressed: () {
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //         builder: (context) => MyForm(
+                                //             initialData: item, token: token),
+                                //       ),
+                                //     );
+                                //   },
+                                //   child: const Text("Details"),
+                                // ),
                               ),
-                              // trailing: TextButton(
-                              //   onPressed: () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) => MyForm(
-                              //             initialData: item, token: token),
-                              //       ),
-                              //     );
-                              //   },
-                              //   child: const Text("Details"),
-                              // ),
                             ),
                           ),
                         );

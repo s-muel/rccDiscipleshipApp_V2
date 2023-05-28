@@ -33,6 +33,7 @@ class _HomeState extends State<Home> {
   late String token;
   late Timer _timer;
   late dynamic admin;
+
   @override
   void initState() {
     super.initState();
@@ -110,9 +111,10 @@ class _HomeState extends State<Home> {
                           'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
                     ),
                     title: Text(
-                      'Welcome, ${admin['user']['first_name'] ?? " "}',
+                      'Welcome, ${admin['user']['first_name'] != null && admin['user']['first_name'].isNotEmpty ? '${admin['user']['first_name'][0].toUpperCase()}${admin['user']['first_name'].substring(1)}' : " "}',
                       style: const TextStyle(color: Colors.white),
                     ),
+
                     subtitle: const Text(
                       "Administrator",
                       style: TextStyle(color: Colors.white, fontSize: 10),
@@ -258,6 +260,15 @@ class _HomeState extends State<Home> {
                             mentor['member']['first_name'] ?? "Name";
                         final String lastName =
                             mentor['member']['last_name'] ?? "Not updated";
+
+                        final String capitalizedFirstName = firstName.isNotEmpty
+                            ? '${firstName[0].toUpperCase()}${firstName.substring(1)}'
+                            : firstName;
+
+                        final String capitalizedLastName = lastName.isNotEmpty
+                            ? '${lastName[0].toUpperCase()}${lastName.substring(1)}'
+                            : lastName;
+
                         return Slidable(
                           key: Key(index.toString()),
                           startActionPane: ActionPane(
@@ -298,7 +309,8 @@ class _HomeState extends State<Home> {
                                 child: ListTile(
                                   tileColor:
                                       const Color.fromARGB(255, 255, 255, 255),
-                                  title: Text("$firstName $lastName"),
+                                  title: Text(
+                                      "$capitalizedFirstName $capitalizedLastName"),
                                   subtitle: Row(
                                     children: [
                                       const Icon(

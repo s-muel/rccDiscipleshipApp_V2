@@ -52,8 +52,9 @@ class _AllMembersPageState extends State<AllMembersPage> {
       //   ),
       // );
     } else {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Failed to remove member'),
         ),
       );
@@ -199,6 +200,16 @@ class _AllMembersPageState extends State<AllMembersPage> {
                       itemCount: filteredData.length,
                       itemBuilder: (context, index) {
                         final item = filteredData[index];
+                        final String firstName = item['first_name'] ?? "";
+                        final String lastName = item['last_name'] ?? "";
+
+                        final String capitalizedFirstName = firstName.isNotEmpty
+                            ? '${firstName[0].toUpperCase()}${firstName.substring(1)}'
+                            : firstName;
+
+                        final String capitalizedLastName = lastName.isNotEmpty
+                            ? '${lastName[0].toUpperCase()}${lastName.substring(1)}'
+                            : lastName;
 
                         String imageURL = item['photo'] ??
                             "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
@@ -236,7 +247,7 @@ class _AllMembersPageState extends State<AllMembersPage> {
                               elevation: 3,
                               child: ListTile(
                                 title: Text(
-                                    '${item['first_name']} ${item['last_name']}'),
+                                    '$capitalizedFirstName $capitalizedLastName'),
                                 subtitle: Row(
                                   children: [
                                     const Icon(
