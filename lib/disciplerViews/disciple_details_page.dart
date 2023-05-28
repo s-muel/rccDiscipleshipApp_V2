@@ -324,6 +324,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextField(
+              keyboardType: TextInputType.number,
               controller: _phoneNumberController,
               decoration: const InputDecoration(labelText: 'Phone Number'),
             ),
