@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:reapers_app/logins/firsttry.dart';
 import 'package:reapers_app/view/add_member.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
 import '../logins/api_calls.dart';
@@ -64,6 +66,27 @@ class _HomeState extends State<Home> {
       });
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  // String phoneNumber = '+1234567890';
+  void makePhoneCall(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('tel:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('tel:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
+    }
+  }
+
+  void sendSMS(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('sms:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('sms:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
     }
   }
 
@@ -235,75 +258,98 @@ class _HomeState extends State<Home> {
                             mentor['member']['first_name'] ?? "Name";
                         final String lastName =
                             mentor['member']['last_name'] ?? "Not updated";
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MentorManagementPage(
-                                    token: token, mentor: mentor),
+                        return Slidable(
+                          key: Key(index.toString()),
+                          startActionPane: ActionPane(
+                            motion: const DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                backgroundColor: Colors.green,
+                                onPressed: (context) {
+                                  makePhoneCall(
+                                      mentor['member']['phone_number']);
+                                },
+                                icon: Icons.call,
                               ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 15, bottom: 8, top: 2),
-                            child: Card(
-                              elevation: 3,
-                              child: ListTile(
-                                tileColor:
-                                    const Color.fromARGB(255, 255, 255, 255),
-                                title: Text("$firstName $lastName"),
-                                subtitle: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.call,
-                                      color: Colors.green,
-                                      size: 15,
-                                    ),
-                                    Text(
-                                      mentor['member']['phone_number'] ??
-                                          "not updates",
-                                    ),
-                                  ],
+                              SlidableAction(
+                                backgroundColor: Colors.blue,
+                                onPressed: (context) {
+                                  sendSMS(mentor['member']['phone_number']);
+                                },
+                                icon: Icons.message,
+                              )
+                            ],
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MentorManagementPage(
+                                      token: token, mentor: mentor),
                                 ),
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(mentor['member']
-                                          ['photo'] ??
-                                      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
-                                ),
-                                trailing: Column(
-                                  children: [
-                                    // const Text("Disciplers"),
-                                    // const Icon(Icons.arrow_forward_rounded,
-                                    //     color: Colors.green),
-                                    const SizedBox(height: 10),
-                                    const Icon(Icons.people_outline,
-                                        color: Colors.green, size: 15),
-                                    // adding number of disciplers
-                                    StreamBuilder<List<dynamic>>(
-                                      stream: api.stream(token,
-                                          'https://rcc-discipleship.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          final List<dynamic> data =
-                                              snapshot.data!;
-                                          final int dataLength = data.length;
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 8, top: 2),
+                              child: Card(
+                                elevation: 3,
+                                child: ListTile(
+                                  tileColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  title: Text("$firstName $lastName"),
+                                  subtitle: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.call,
+                                        color: Colors.green,
+                                        size: 15,
+                                      ),
+                                      Text(
+                                        mentor['member']['phone_number'] ??
+                                            "not updates",
+                                      ),
+                                    ],
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(mentor[
+                                            'member']['photo'] ??
+                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                  ),
+                                  trailing: Column(
+                                    children: [
+                                      // const Text("Disciplers"),
+                                      // const Icon(Icons.arrow_forward_rounded,
+                                      //     color: Colors.green),
+                                      const SizedBox(height: 10),
+                                      const Icon(Icons.people_outline,
+                                          color: Colors.green, size: 15),
+                                      // adding number of disciplers
+                                      StreamBuilder<List<dynamic>>(
+                                        stream: api.stream(token,
+                                            'https://rcc-discipleship.up.railway.app/api/mentors/${mentor['id']}/mentees/'),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            final List<dynamic> data =
+                                                snapshot.data!;
+                                            final int dataLength = data.length;
 
-                                          return Text(dataLength.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 10));
-                                        } else {
-                                          return const Text(
-                                            "0",
-                                            style: TextStyle(fontSize: 10),
-                                          );
-                                          // CircularProgressIndicator();
-                                        }
-                                      },
-                                    ),
-                                    //
-                                  ],
+                                            return Text(dataLength.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 10));
+                                          } else {
+                                            return const Text(
+                                              "0",
+                                              style: TextStyle(fontSize: 10),
+                                            );
+                                            // CircularProgressIndicator();
+                                          }
+                                        },
+                                      ),
+                                      //
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

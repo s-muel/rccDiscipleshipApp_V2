@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:reapers_app/disciplerViews/disciple_details_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../logins/api_calls.dart';
 import '../logins/firsttry.dart';
@@ -32,6 +33,27 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
   bool sunday = false;
   final bool _value = false;
   // late String mentorName;
+
+  // String phoneNumber = '+1234567890';
+  void makePhoneCall(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('tel:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('tel:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
+    }
+  }
+
+  void sendSMS(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('sms:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('sms:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
+    }
+  }
 
   //resetting the form
   void resetForm() {
@@ -315,23 +337,21 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                           return Slidable(
                             key: Key(index.toString()),
                             startActionPane: ActionPane(
-                              // dismissible: DismissiblePane(onDismissed: () {
-                              //   deleteMember(
-                              //     token: token,
-                              //     memberID: item['id'],
-                              //     context: context,
-                              //   );
-                              // }),
+                              
                               motion: const DrawerMotion(),
                               children: [
                                 SlidableAction(
                                   backgroundColor: Colors.green,
-                                  onPressed: (context) {},
+                                  onPressed: (context) {
+                                    makePhoneCall(item['phone_number']);
+                                  },
                                   icon: Icons.call,
                                 ),
                                 SlidableAction(
                                   backgroundColor: Colors.blue,
-                                  onPressed: (context) {},
+                                  onPressed: (context) {
+                                    sendSMS(item['phone_number']);
+                                  },
                                   icon: Icons.message,
                                 )
                               ],

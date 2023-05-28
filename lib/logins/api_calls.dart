@@ -548,6 +548,9 @@ class ApiCalls {
                 ),
               ),
               actions: [
+                const Center(
+                    child:
+                        Text("Kindly check your email to verify your account")),
                 Center(
                     child: ElevatedButton(
                         onPressed: () {
@@ -672,4 +675,112 @@ class ApiCalls {
   //     print(response.body);
   //   }
   // }
+
+  //reseting password
+  // adding a registerMember
+  Future<void> resetPassword({
+    required String email,
+    // required String password,
+    // required String confirmPassword,
+    //required int mentor,
+
+    required BuildContext context,
+
+    // required GlobalKey<ScaffoldState> scaffoldKey
+  }) async {
+    // Create a map of the updated data
+    Map<String, dynamic> register = {
+      'email': email,
+      // 'password': password,
+      // 'password_confirm': confirmPassword,
+    };
+
+    // Convert the map to JSON
+    String jsonData = jsonEncode(register);
+
+    // Make an HTTP PUT request to update the data in the API
+    Uri uri = Uri.parse('${baseURL}auth/password/reset');
+    http.Response response = await http.post(
+      uri,
+      headers: {
+        //'Authorization': 'Token  $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    );
+
+    // Check the response status code
+    if (response.statusCode == 200) {
+      // ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Center(
+                child: Text(
+                  'Done',
+                ),
+              ),
+              actions: [
+                const Center(
+                  child: Text(
+                      "Kindly visit your email to complete the reset proccess"),
+                ),
+                const SizedBox(height: 15),
+                Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("OK"))),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text('We Believe There Is More.',
+                      style: TextStyle(fontSize: 10)),
+                ),
+              ],
+            );
+          });
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('User Registered'),
+      //   ),
+      // );
+      print(jsonData);
+
+      // Handle success, e.g. show a success message to the user
+    } else if (response.statusCode >= 400 && response.statusCode <= 499) {
+      // ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Center(
+                child: Center(
+                  child: Text('You have already Registered or Invalid Email',
+                      style: TextStyle(fontSize: 18)),
+                ),
+              ),
+              actions: [
+                Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("OK"))),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text('We Believe There Is More.',
+                      style: TextStyle(fontSize: 10)),
+                ),
+              ],
+            );
+          });
+    } else {
+      // Handle error, e.g. show an error message to the user
+
+      print(response.statusCode);
+      print(response.body);
+    }
+  }
 }

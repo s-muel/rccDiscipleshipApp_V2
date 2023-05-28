@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:reapers_app/logins/api_calls.dart';
 import 'package:reapers_app/logins/mentee_page.dart';
 import 'package:reapers_app/view/admin_main_page.dart';
+import 'package:reapers_app/view/rest_password.dart';
 import 'package:reapers_app/view/sign_up_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
@@ -275,30 +276,53 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 35.0, right: 35.0, top: 8.0, bottom: 0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpPage(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 35),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignUpPage(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
-                    ),
+                      // Divider(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 35),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ResetPassword(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Forget password",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
 
                   Padding(

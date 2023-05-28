@@ -76,7 +76,7 @@ class _MyListViewState extends State<MyListView> {
   void initState() {
     super.initState();
     futureData = fetchData();
-  }
+  }   
 
   @override
   Widget build(BuildContext context) {

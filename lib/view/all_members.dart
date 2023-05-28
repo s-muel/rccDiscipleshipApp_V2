@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../logins/api_calls.dart';
 import 'member_details_page.dart';
@@ -59,6 +60,27 @@ class _AllMembersPageState extends State<AllMembersPage> {
       print('Failed to remove member');
       print('Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
+    }
+  }
+
+  // String phoneNumber = '+1234567890';
+  void makePhoneCall(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('tel:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('tel:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
+    }
+  }
+
+  void sendSMS(String phoneNumber) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch('sms:$phoneNumber')) {
+      // ignore: deprecated_member_use
+      await launch('sms:$phoneNumber');
+    } else {
+      //   throw 'Could not launch $phoneNumber';
     }
   }
 
@@ -189,25 +211,21 @@ class _AllMembersPageState extends State<AllMembersPage> {
                         return Slidable(
                           key: Key(index.toString()),
                           startActionPane: ActionPane(
-                            // dismissible: DismissiblePane(onDismissed: () {
-                            //   deleteMember(
-                            //     token: token,
-                            //     memberID: item['id'],
-                            //     context: context,
-                            //   );
-                            // }),
                             motion: const DrawerMotion(),
                             children: [
                               SlidableAction(
-                                backgroundColor: Colors.red,
+                                backgroundColor: Colors.green,
                                 onPressed: (context) {
-                                  deleteMember(
-                                    token: token,
-                                    memberID: item['id'],
-                                    context: context,
-                                  );
+                                  makePhoneCall(item['phone_number']);
                                 },
-                                icon: Icons.delete,
+                                icon: Icons.call,
+                              ),
+                              SlidableAction(
+                                backgroundColor: Colors.blue,
+                                onPressed: (context) {
+                                  sendSMS(item['phone_number']);
+                                },
+                                icon: Icons.message,
                               )
                             ],
                           ),
