@@ -41,6 +41,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
   dynamic mentorID = null;
 
   bool _isLoading = false;
+  dynamic BOD = null;
 
   //adding pictures functions
   //File _image = File('');
@@ -453,12 +454,16 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                 color: Colors.green),
                             filled: true,
                             fillColor: Colors.grey[200]),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter phone number';
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     setState(() {
+                        //       _dateOfBirthController.value = BOD;
+                        //     });
+
+                        //     // return 'Please enter phone number';
+                        //   }
+                        //   return null;
+                        // },
                       ),
                     ),
                   ),

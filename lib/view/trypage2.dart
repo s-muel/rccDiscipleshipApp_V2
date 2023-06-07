@@ -31,6 +31,10 @@ class _HomeState extends State<Home> {
   List<Map<String, dynamic>> _data2 = [];
   int dataRange2 = 0;
 
+  
+  List<Map<String, dynamic>> _data3 = [];
+  int dataRange3 = 0;
+
   int total = 0;
   late String token;
   late Timer _timer;
@@ -60,12 +64,18 @@ class _HomeState extends State<Home> {
 
       List<Map<String, dynamic>> result2 = await api.streamFuture(
           widget.token, "https://rcc-discipleship.up.railway.app/api/mentors/");
+          
+      List<Map<String, dynamic>> result3 = await api.streamFuture(
+          widget.token, "https://rcc-discipleship.up.railway.app/api/mentors/");
       setState(() {
         _data = result;
         dataRange = _data.length;
 
         _data2 = result2;
         dataRange2 = _data2.length;
+
+         _data3 = result3;
+        dataRange3 = _data3.length;
       });
     } catch (e) {
       print(e.toString());

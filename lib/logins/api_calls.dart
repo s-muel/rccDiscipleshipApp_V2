@@ -24,6 +24,7 @@ class ApiCalls {
       // final int id = data['user']['id'] as int;
       final bool isDiscipler = data['user']['is_staff'] as bool;
       print('api call $isDiscipler');
+      print(data);
       return data;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -39,7 +40,7 @@ class ApiCalls {
 
   Future<List<Map<String, dynamic>>> streamFuture(
       String token, String Url) async {
-    final http.Response response = await http.get(
+    final http.Response response =  await http.get(
       Uri.parse(Url),
       headers: <String, String>{
         'Authorization': 'Token  $token',
@@ -94,7 +95,7 @@ class ApiCalls {
     required String language,
     required String auxiliary,
     required bool baptized,
-    String? dateOfBirth,
+    dynamic dateOfBirth,
     required BuildContext context,
     String? photo,
 
@@ -163,6 +164,7 @@ class ApiCalls {
 
       // Handle success, e.g. show a success message to the user
     } else {
+      print(jsonData);
       // Handle error, e.g. show an error message to the user
 // ignore: use_build_context_synchronously
       showDialog(
@@ -396,7 +398,7 @@ class ApiCalls {
           });
       //print(response.statusCode);
       // print(response.body);
-    //  print(jsonData);
+      //  print(jsonData);
     }
   }
 

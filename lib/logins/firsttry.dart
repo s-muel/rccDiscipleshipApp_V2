@@ -11,6 +11,8 @@ import 'package:reapers_app/view/rest_password.dart';
 import 'package:reapers_app/view/sign_up_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
 
+import '../disciplerViews/user_view/user_page.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
 
@@ -46,6 +48,7 @@ class _LoginFormState extends State<LoginForm> {
         final String token = data['token'] as String;
         final int id = data['user']['id'] as int;
         final bool isDiscipler = data['user']['is_staff'];
+        final bool isUser = data['user']['is_mentor'];
 
         //
         // Navigator.push(
@@ -66,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
               builder: (context) => Home(token: token, admin: data),
             ),
           );
-        } else {
+        } else if (isDiscipler!) {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
           // ignore: use_build_context_synchronously
@@ -77,7 +80,30 @@ class _LoginFormState extends State<LoginForm> {
                   DisciplerMainPage(token: token, mentor: data),
             ),
           );
+        } else if (isUser == false) {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserPage(token: token, mentor: data),
+            ),
+          );
         }
+
+        // else {
+        //   // ignore: use_build_context_synchronously
+        //   Navigator.pop(context);
+        //   // ignore: use_build_context_synchronously
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) =>
+        //           DisciplerMainPage(token: token, mentor: data),
+        //     ),
+        //   );
+        // }
         // Do something with the token, such as save it to shared preferences
       } catch (e) {
         print('Failed to login: $e');

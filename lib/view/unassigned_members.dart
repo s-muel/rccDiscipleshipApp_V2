@@ -71,8 +71,13 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final item = data[index];
+                        bool isMentor = item['is_mentor'] ?? false;
                         String imageURL = item['photo'] ??
                             "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+
+                        if (isMentor) {
+                          return SizedBox.shrink();
+                        }
 
                         final String firstName = item['first_name'] ?? "";
                         final String lastName = item['last_name'] ?? "";
