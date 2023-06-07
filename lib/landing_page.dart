@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reapers_app/logins/firsttry.dart';
 
+import 'notifications/notify.dart';
 import 'view/trypage2.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:overlapped_carousel/overlapped_carousel.dart';
@@ -38,6 +39,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     ),
   );
+  NotificationService notificationService = NotificationService();
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -126,6 +128,9 @@ class _LandingPageState extends State<LandingPage> {
                               trailing: ElevatedButton(
                                   child: const Text("8:00AM"),
                                   onPressed: () {
+                                    notificationService.showNotification(
+                                        title: "Welcome",
+                                        body: "We Believe There Is More");
                                     // print(screenHeight);
                                   }),
                             ),

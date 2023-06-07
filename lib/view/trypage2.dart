@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
 import '../logins/api_calls.dart';
+import '../notifications/notify.dart';
 import 'add_mem.dart';
 import 'add_mentor.dart';
 import 'admin_mentor.dart';
@@ -23,6 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   ApiCalls api = ApiCalls();
+  NotificationService notificationService = NotificationService();
   List<Map<String, dynamic>> _data = [];
   int dataRange = 0;
 
@@ -91,8 +93,23 @@ class _HomeState extends State<Home> {
     }
   }
 
+// adding notification
+  void showNotification() {
+    final now = DateTime.now();
+    DateTime newDate = DateTime(2023, 05, 28, 20, 03, 00, 922, 879);
+    final currentMonth = now.month;
+    final current = now.month;
+    // if (currentMonth == current) {
+    //   notificationService.showNotification(
+    //       title: "first test", body: "this is body");
+    // }
+
+    //print(now);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // showNotification();
     return Scaffold(
         body: Column(children: [
           CustomPaint(

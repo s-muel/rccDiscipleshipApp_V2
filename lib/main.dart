@@ -13,7 +13,10 @@ import 'package:reapers_app/view/trypage2.dart';
 import 'Pages/landpage.dart';
 import 'Screen/home.dart';
 import 'logins/firsttry.dart';
+import 'notifications/notify.dart';
 import 'socialMedia/splash_screen.dart';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -26,8 +29,10 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 void main() {
-  HttpOverrides.global = new MyHttpOverrides();
-  runApp(MyApp());
+  HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
+  runApp(const MyApp());
 }
 
 // void main() {
@@ -45,7 +50,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: SplashScreen()
+        home: const LoginForm()
+        //SplashScreen()
         // const LoginForm(),
 
         );
@@ -76,7 +82,7 @@ class _MyListViewState extends State<MyListView> {
   void initState() {
     super.initState();
     futureData = fetchData();
-  }   
+  }
 
   @override
   Widget build(BuildContext context) {
