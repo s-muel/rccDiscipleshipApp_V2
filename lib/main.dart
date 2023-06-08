@@ -50,8 +50,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: const LoginForm()
-        //SplashScreen()
+        home:
+            //const LoginForm()
+            SplashScreen()
         // const LoginForm(),
 
         );

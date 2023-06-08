@@ -47,8 +47,8 @@ class _LoginFormState extends State<LoginForm> {
 
         final String token = data['token'] as String;
         final int id = data['user']['id'] as int;
-        final bool isDiscipler = data['user']['is_staff'];
-        final bool isUser = data['user']['is_mentor'];
+        final bool isStaff = data['user']['is_staff'];
+        final bool isMentor = data['user']['is_mentor'];
 
         //
         // Navigator.push(
@@ -59,7 +59,7 @@ class _LoginFormState extends State<LoginForm> {
         // );
         //
         // ignore: use_build_context_synchronously
-        if (isDiscipler) {
+        if (isStaff) {
           //  ignore: use_build_context_synchronously
           Navigator.pop(context);
           // ignore: use_build_context_synchronously
@@ -69,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
               builder: (context) => Home(token: token, admin: data),
             ),
           );
-        } else if (isDiscipler!) {
+        } else if (isStaff == false && isMentor == true) {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
           // ignore: use_build_context_synchronously
@@ -80,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                   DisciplerMainPage(token: token, mentor: data),
             ),
           );
-        } else if (isUser == false) {
+        } else if (isMentor == false) {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
           // ignore: use_build_context_synchronously
