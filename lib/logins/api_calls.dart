@@ -40,7 +40,7 @@ class ApiCalls {
 
   Future<List<Map<String, dynamic>>> streamFuture(
       String token, String Url) async {
-    final http.Response response =  await http.get(
+    final http.Response response = await http.get(
       Uri.parse(Url),
       headers: <String, String>{
         'Authorization': 'Token  $token',
@@ -85,7 +85,7 @@ class ApiCalls {
     required String token,
     required String firstName,
     required String lastName,
-    required String email,
+    dynamic? email,
     required String phoneNumber,
     required bool isMentor,
     //required int mentor,

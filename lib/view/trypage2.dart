@@ -31,9 +31,11 @@ class _HomeState extends State<Home> {
   List<Map<String, dynamic>> _data2 = [];
   int dataRange2 = 0;
 
-  
   List<Map<String, dynamic>> _data3 = [];
   int dataRange3 = 0;
+
+  List<Map<String, dynamic>> _data4 = [];
+  int dataRange4 = 0;
 
   int total = 0;
   late String token;
@@ -64,9 +66,13 @@ class _HomeState extends State<Home> {
 
       List<Map<String, dynamic>> result2 = await api.streamFuture(
           widget.token, "https://rcc-discipleship.up.railway.app/api/mentors/");
-          
+
       List<Map<String, dynamic>> result3 = await api.streamFuture(
           widget.token, "https://rcc-discipleship.up.railway.app/api/mentors/");
+
+      List<Map<String, dynamic>> result4 = await api.streamFuture(widget.token,
+          "https://rcc-discipleship.up.railway.app/api/unassigned-members/");
+
       setState(() {
         _data = result;
         dataRange = _data.length;
@@ -74,8 +80,16 @@ class _HomeState extends State<Home> {
         _data2 = result2;
         dataRange2 = _data2.length;
 
-         _data3 = result3;
+        _data3 = result3;
         dataRange3 = _data3.length;
+
+        int count = 0;
+        for (var result4 in result4) {
+          if (result4["is_mentor"] == false) {
+            count++;
+          }
+        }
+        dataRange4 = count;
       });
     } catch (e) {
       print(e.toString());
@@ -571,7 +585,7 @@ class _HomeState extends State<Home> {
                     children: [
                       const Text(
                         'All members',
-                        style: const TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: 10),
                       ),
                       const SizedBox(width: 4),
                       DecoratedBox(
@@ -594,16 +608,39 @@ class _HomeState extends State<Home> {
                   )),
               const Spacer(),
               InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return UnassignedMembersPage(
-                        token: token,
-                      );
-                    }));
-                  },
-                  child:
-                      const Text("Unassigned", style: TextStyle(fontSize: 10))),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return UnassignedMembersPage(
+                      token: token,
+                    );
+                  }));
+                },
+                child: Row(
+                  children: [
+                    DecoratedBox(
+                      decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 87, 204, 91),
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          ' ${dataRange4} ',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      "Unassigned",
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ],
+                ),
+              ),
               IconButton(
                   icon: const Icon(
                     Icons.person_add_disabled,
@@ -694,7 +731,7 @@ class _HomeState extends State<Home> {
           flex: 1,
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               _userPersonalInfo(),

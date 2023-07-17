@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
         ),
         home:
             //const LoginForm()
-            SplashScreen()
-        // const LoginForm(),
+           // SplashScreen()
+         const LoginForm(),
 
         );
   }

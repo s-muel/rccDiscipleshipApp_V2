@@ -106,29 +106,40 @@ class _AddMemberPageState extends State<AddMemberPage> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
+        String? emailValue =
+            _emailController.text.isEmpty ? null : _emailController.text;
+        String? dateOfBirthValue = _dateOfBirthController.text.isEmpty
+            ? null
+            : _dateOfBirthController.text;
+
         await api.addMember(
-            context: context,
-            token: token,
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-            email: _emailController.text,
-            phoneNumber: _phoneNumberController.text,
-            mentorName: _mentorNameController.text,
-            //mentor: mentorID,
-            work: _workController.text,
-            homeAddress: _homeAddressController.text,
-            language: _languageController.text,
-            auxiliary: _auxiliaryController.text,
-            dateOfBirth: _dateOfBirthController.text,
-            baptized: _selectedValue,
-            isMentor: _isMentor,
-            photo: _imageURL);
+          context: context,
+          token: token,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          email: emailValue,
+          phoneNumber: _phoneNumberController.text,
+          mentorName: _mentorNameController.text,
+          //mentor: mentorID,
+          work: _workController.text,
+          homeAddress: _homeAddressController.text,
+          language: _languageController.text,
+          auxiliary: _auxiliaryController.text,
+          dateOfBirth: dateOfBirthValue,
+          baptized: _selectedValue,
+          isMentor: _isMentor,
+          photo: _imageURL,
+        );
+
         setState(() {
           _successMessage = 'Data updated successfully';
           _errorMessage = '';
+          //_formKey.currentState?.reset();
+          _firstNameController.clear();
+          _lastNameController.clear();
+           
+
         });
-        // _firstNameController.clear();
-        // _lastNameController.clear();
       } catch (error) {
         setState(() {
           _errorMessage = 'Failed to update data: $error';
@@ -785,24 +796,18 @@ class _AddMemberPageState extends State<AddMemberPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  height: 45,
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
+                    height: 45,
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Colors.grey[200]),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Please enter email';
-                    //   }
-                    //   return null;
-                    // },
-                  ),
-                ),
+                        fillColor: Colors.grey[200],
+                      ),
+                    )),
               ),
               //const SizedBox(height: 10),
               const Padding(
