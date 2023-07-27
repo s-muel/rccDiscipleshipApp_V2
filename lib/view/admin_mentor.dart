@@ -27,6 +27,18 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
     mentor = widget.mentor;
   }
 
+  // showing Fullimage
+  void showFullImageDialog(String imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.network(imageURL),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +58,21 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
               mentor['member']['last_name']),
           actions: [
             Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  mentor['member']['photo'] ??
-                      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png",
+              padding: const EdgeInsets.all(2.0),
+              child: InkWell(
+                onTap: () {
+                  showFullImageDialog(
+                    mentor['member']['photo'] ??
+                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png",
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    mentor['member']['photo'] ??
+                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png",
+                  ),
+                  radius: 40,
                 ),
-                radius: 50,
               ),
             )
           ],
@@ -99,10 +119,16 @@ class _MentorManagementPageState extends State<MentorManagementPage> {
                                       Text(item['phone_number']),
                                     ],
                                   ),
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(item[
-                                            'photo'] ??
-                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                  leading: InkWell(
+                                    onTap: () {
+                                      showFullImageDialog(item['photo'] ??
+                                          "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png");
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(item[
+                                              'photo'] ??
+                                          "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                    ),
                                   ),
                                   trailing: TextButton(
                                       onPressed: () {

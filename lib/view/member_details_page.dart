@@ -172,6 +172,29 @@ class _MyFormState extends State<MyForm> {
     super.dispose();
   }
 
+  // showing Fullimage
+  void showFullImageDialog(File imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.file(imageURL),
+        );
+      },
+    );
+  }
+
+  void showFullImageDialog2(String imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.network(imageURL),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,9 +208,14 @@ class _MyFormState extends State<MyForm> {
               visible: isUploadImage,
               child: Stack(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: FileImage(_image!),
-                    radius: 50,
+                  InkWell(
+                    onTap: () {
+                      showFullImageDialog(_image!);
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: FileImage(_image!),
+                      radius: 50,
+                    ),
                   ),
                   Positioned(
                     top: 70,
@@ -250,10 +278,15 @@ class _MyFormState extends State<MyForm> {
               visible: !isUploadImage,
               child: Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    // backgroundColor: Color.fromARGB(255, 163, 240, 167),
-                    backgroundImage: NetworkImage(userImage),
+                  InkWell(
+                    onTap: () {
+                      showFullImageDialog2(userImage);
+                    },
+                    child: CircleAvatar(
+                      radius: 50,
+                      // backgroundColor: Color.fromARGB(255, 163, 240, 167),
+                      backgroundImage: NetworkImage(userImage),
+                    ),
                   ),
                   Positioned(
                     top: 70,
@@ -510,6 +543,7 @@ class _MyFormState extends State<MyForm> {
                                     .toList(),
                                 onChanged: (newValue) {
                                   setState(() {
+                                    _selectedValue = newValue;
                                     var selectedMember = snapshot.data
                                         ?.firstWhere((item) =>
                                             item['id'] == newValue)['member'];
@@ -518,6 +552,7 @@ class _MyFormState extends State<MyForm> {
                                     iDValue = newValue!;
                                     _mentorNameController.text =
                                         _selectedItemText;
+                                    print(_selectedItemText);
                                   });
                                 },
                               ),
@@ -746,10 +781,17 @@ class _MyFormState extends State<MyForm> {
             ElevatedButton(
               onPressed: () {
                 _startLoading();
+                print(_selectedValue);
+                dynamic emailValue = _emailController.text.isEmpty
+                    ? null
+                    : _emailController.text;
+                dynamic dateOfBirthValue = _dateOfBirthController.text.isEmpty
+                    ? null
+                    : _dateOfBirthController.text;
 // Update the data in the API with the values from the form
                 String firstName = _firstNameController.text;
                 String lastName = _lastNameController.text;
-                String email = _emailController.text;
+                dynamic email = emailValue;
                 String phoneNumber = _phoneNumberController.text;
                 //bool isMentor = _isMentor;
                 String mentorName = _mentorNameController2.text;
@@ -758,9 +800,11 @@ class _MyFormState extends State<MyForm> {
                 String language = _languageController.text;
                 String auxiliary = _auxiliaryController.text;
                 bool baptized = widget.initialData['baptised'];
-                String dateOfBirth = _dateOfBirthController.text;
+                dynamic dateOfBirth = dateOfBirthValue;
                 int memberID = widget.initialData['id'];
                 String tokenz = token;
+
+                //life saver
 
                 print('this is before function $memberID');
 // Update the API with the new values
@@ -835,7 +879,7 @@ class _MyFormState extends State<MyForm> {
       String photo,
       String firstName,
       String lastName,
-      String email,
+      dynamic email,
       String phoneNumber,
       //bool isMentor,
       var mentor,
@@ -845,7 +889,7 @@ class _MyFormState extends State<MyForm> {
       String language,
       String auxiliary,
       bool baptized,
-      String dateOfBirth,
+      dynamic dateOfBirth,
       int memberID,
       String token) async {
     // Create a map of the updated data

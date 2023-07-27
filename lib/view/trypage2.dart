@@ -131,6 +131,18 @@ class _HomeState extends State<Home> {
     //print(now);
   }
 
+  // showing Fullimage
+  void showFullImageDialog(String imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.network(imageURL),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // showNotification();
@@ -365,10 +377,17 @@ class _HomeState extends State<Home> {
                                       ),
                                     ],
                                   ),
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(mentor[
-                                            'member']['photo'] ??
-                                        "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                  leading: InkWell(
+                                    onTap: () {
+                                      showFullImageDialog(mentor['member']
+                                              ['photo'] ??
+                                          "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png");
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(mentor[
+                                              'member']['photo'] ??
+                                          "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                    ),
                                   ),
                                   trailing: Column(
                                     children: [

@@ -48,6 +48,18 @@ class _DisAllMembersPageState extends State<DisAllMembersPage> {
     }
   }
 
+  // showing Fullimage
+  void showFullImageDialog(String imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.network(imageURL),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,8 +223,11 @@ class _DisAllMembersPageState extends State<DisAllMembersPage> {
                                     ),
                                   ],
                                 ),
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(imageURL),
+                                leading: InkWell(
+                                  onTap: () => showFullImageDialog(imageURL),
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(imageURL),
+                                  ),
                                 ),
                                 // trailing: TextButton(
                                 //   onPressed: () {

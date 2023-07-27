@@ -25,6 +25,18 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
     token = widget.token;
   }
 
+  // showing Fullimage
+  void showFullImageDialog(String imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.network(imageURL),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,9 +110,14 @@ class _UnassignedMembersPageState extends State<UnassignedMembersPage> {
                               // collapsedBackgroundColor:
                               //     const Color.fromARGB(31, 41, 151, 21),
                               collapsedIconColor: Colors.green,
-                              leading: CircleAvatar(
-                                radius: 20,
-                                backgroundImage: NetworkImage(imageURL),
+                              leading: InkWell(
+                                onTap: () {
+                                  showFullImageDialog(imageURL);
+                                },
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: NetworkImage(imageURL),
+                                ),
                               ),
                               title: Text(
                                   '$capitalizedFirstName $capitalizedLastName'),

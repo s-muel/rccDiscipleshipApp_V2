@@ -76,6 +76,36 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
     // mentorName = "loading";
   }
 
+  // showing Fullimage
+  void showFullImageDialog(String imageURL) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Image.network(imageURL),
+        );
+      },
+    );
+  }
+
+  dynamic allMembers;
+
+  //https://rcc-discipleship.up.railway.app/api/readonly-members/
+
+  //displaying image
+  Future<void> _fetchData() async {
+    try {
+      List<Map<String, dynamic>> members = await api.streamFuture(widget.token,
+          "https://rcc-discipleship.up.railway.app/api/readonly-members/");
+
+      setState(() {
+        members = allMembers;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +129,10 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
               String firstName = mentor['user']['first_name'] ?? " ";
               String lastName = mentor['user']['last_name'] ?? "";
               String disciplerPhoto = mentor['user']['photo'] ??
-                  "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+                  "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg";
+              // Displaying pictures
+              String email = mentor['user']['email'];
+
               // Map<String, dynamic> user = data.firstWhere((user) => user['id'] == 6,
               //     orElse: () => Map<String, dynamic>());
 
@@ -383,10 +416,15 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
 
                                     // Text(item['phone_number'])
 
-                                    leading: CircleAvatar(
-                                      backgroundImage: NetworkImage(item[
+                                    leading: InkWell(
+                                      onTap: () => showFullImageDialog(item[
                                               'photo'] ??
                                           "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(item[
+                                                'photo'] ??
+                                            "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png"),
+                                      ),
                                     ),
                                     trailing: TextButton(
                                         onPressed: () {

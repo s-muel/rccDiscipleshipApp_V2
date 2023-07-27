@@ -137,8 +137,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
           //_formKey.currentState?.reset();
           _firstNameController.clear();
           _lastNameController.clear();
-           
-
         });
       } catch (error) {
         setState(() {
@@ -414,6 +412,34 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       return null;
                     },
                   ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Location",
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  height: 45,
+                  child: TextFormField(
+                      controller: _homeAddressController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200])),
                 ),
               ),
               const Padding(
@@ -810,34 +836,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     )),
               ),
               //const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Home Address",
-                    style: TextStyle(
-                        fontSize: 17,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 45,
-                  child: TextFormField(
-                      controller: _homeAddressController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200])),
-                ),
-              ),
+
               // const SizedBox(height: 10),
               const Padding(
                 padding: EdgeInsets.only(left: 10),
