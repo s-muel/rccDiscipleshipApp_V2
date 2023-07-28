@@ -104,12 +104,17 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
+        String? emailValue =
+            _emailController.text.isEmpty ? null : _emailController.text;
+        String? dateOfBirthValue = _dateOfBirthController.text.isEmpty
+            ? null
+            : _dateOfBirthController.text;
         await api.addMember(
             context: context,
             token: token,
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
-            email: _emailController.text,
+            email: emailValue,
             phoneNumber: _phoneNumberController.text,
             mentorName: _mentorNameController.text,
             //mentor: mentorID,
@@ -117,7 +122,7 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
             homeAddress: _homeAddressController.text,
             language: _languageController.text,
             auxiliary: _auxiliaryController.text,
-            dateOfBirth: _dateOfBirthController.text,
+            dateOfBirth: dateOfBirthValue,
             baptized: _selectedValue,
             isMentor: _isMentor,
             photo: _imageURL);

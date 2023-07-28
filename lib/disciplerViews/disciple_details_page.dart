@@ -477,10 +477,17 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
             ElevatedButton(
               onPressed: () {
                 _startLoading();
+
+                dynamic emailValue = _emailController.text.isEmpty
+                    ? null
+                    : _emailController.text;
+                dynamic dateOfBirthValue = _dateOfBirthController.text.isEmpty
+                    ? null
+                    : _dateOfBirthController.text;
 // Update the data in the API with the values from the form
                 String firstName = _firstNameController.text;
                 String lastName = _lastNameController.text;
-                String email = _emailController.text;
+                dynamic email = emailValue;
                 String phoneNumber = _phoneNumberController.text;
                 // bool isMentor = _isMentor;
                 String mentorName = _mentorNameController2.text;
@@ -489,7 +496,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
                 String language = _languageController.text;
                 String auxiliary = _auxiliaryController.text;
                 bool baptized = widget.initialData['baptised'];
-                String dateOfBirth = _dateOfBirthController.text;
+                dynamic dateOfBirth = dateOfBirthValue;
                 int memberID = widget.initialData['id'];
                 String tokenz = token;
 
@@ -554,7 +561,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
       String photo,
       String firstName,
       String lastName,
-      String email,
+      dynamic email,
       String phoneNumber,
       // bool isMentor,
       //   int mentor,
@@ -564,7 +571,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
       String language,
       String auxiliary,
       bool baptized,
-      String dateOfBirth,
+      dynamic dateOfBirth,
       int memberID,
       String token) async {
     // Create a map of the updated data
