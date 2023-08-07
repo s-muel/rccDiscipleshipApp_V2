@@ -11,6 +11,7 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:image_picker/image_picker.dart';
 import '../logins/api_calls.dart';
 import 'dart:io';
+import 'dart:typed_data';
 //import 'package:intl/intl.dart';
 
 class DiscipleDetailsPage extends StatefulWidget {
@@ -55,24 +56,40 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
 
   bool _isLoading = false;
 
+  String _imageURLWeb =
+      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+
+  late Uint8List image;
+
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
     apiKey: '295462655464473',
     cloudName: 'dekhxk5wg',
     apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
   );
+
   //function for uploading
-  Future _uploadImage(File imageFile) async {
-    final response = await cloudinary.uploadResource(CloudinaryUploadResource(
-      filePath: imageFile.path,
-    ));
+  //function for uploading
+  Future _uploadImage(Uint8List fileBytes) async {
+    // Create a CloudinaryUploadResource object
+    final cloudinaryUploadResource = CloudinaryUploadResource(
+      // filebytes: fileBytes,
+      fileBytes: fileBytes,
+    );
+
+    // Upload the image to Cloudinary
+    final response = await cloudinary.uploadResource(cloudinaryUploadResource);
+
     setState(() {
-      _imageURL = response.secureUrl;
-      userImage = response.secureUrl!;
+      _imageURLWeb = response.secureUrl!;
+      userImage = _imageURLWeb;
     });
+    // Check if the upload is successful
     if (response.isSuccessful) {
-      print('Get your image from with ${response.secureUrl}');
+      // Print the secure URL of the file
+      print(response.secureUrl);
     } else {
+      // Print the error message
       print(response.error);
     }
   }
@@ -80,33 +97,42 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
   final picker = ImagePicker();
 
   Future getImageFromCamera() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
 
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
   }
 
   Future getImageFromGallery() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
   }
+  //
 
   //
   // loading widget
@@ -185,7 +211,7 @@ class _DiscipleDetailsPageState extends State<DiscipleDetailsPage> {
               child: Stack(
                 children: [
                   CircleAvatar(
-                    backgroundImage: FileImage(_image!),
+                    backgroundImage: NetworkImage(_imageURLWeb),
                     radius: 50,
                   ),
                   Positioned(

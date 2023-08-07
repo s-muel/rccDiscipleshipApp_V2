@@ -14,6 +14,7 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:typed_data';
 
 class MyForm extends StatefulWidget {
   final Map<String, dynamic> initialData; // Initial data from API
@@ -57,6 +58,10 @@ class _MyFormState extends State<MyForm> {
   bool _isLoading = true;
   bool isLoading2 = false;
 
+  String _imageURLWeb =
+      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+
+  late Uint8List image;
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
     apiKey: '295462655464473',
@@ -64,17 +69,27 @@ class _MyFormState extends State<MyForm> {
     apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
   );
   //function for uploading
-  Future _uploadImage(File imageFile) async {
-    final response = await cloudinary.uploadResource(CloudinaryUploadResource(
-      filePath: imageFile.path,
-    ));
+  //function for uploading
+  Future _uploadImage(Uint8List fileBytes) async {
+    // Create a CloudinaryUploadResource object
+    final cloudinaryUploadResource = CloudinaryUploadResource(
+      // filebytes: fileBytes,
+      fileBytes: fileBytes,
+    );
+
+    // Upload the image to Cloudinary
+    final response = await cloudinary.uploadResource(cloudinaryUploadResource);
+
     setState(() {
-      _imageURL = response.secureUrl;
-      userImage = response.secureUrl!;
+      _imageURLWeb = response.secureUrl!;
+      userImage = _imageURLWeb;
     });
+    // Check if the upload is successful
     if (response.isSuccessful) {
-      print('Get your image from with ${response.secureUrl}');
+      // Print the secure URL of the file
+      print(response.secureUrl);
     } else {
+      // Print the error message
       print(response.error);
     }
   }
@@ -82,29 +97,37 @@ class _MyFormState extends State<MyForm> {
   final picker = ImagePicker();
 
   Future getImageFromCamera() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
 
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
   }
 
   Future getImageFromGallery() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     final pickedFile =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
@@ -213,7 +236,7 @@ class _MyFormState extends State<MyForm> {
                       showFullImageDialog(_image!);
                     },
                     child: CircleAvatar(
-                      backgroundImage: FileImage(_image!),
+                      backgroundImage: NetworkImage(_imageURLWeb),
                       radius: 50,
                     ),
                   ),
@@ -559,26 +582,7 @@ class _MyFormState extends State<MyForm> {
                             ),
                           ),
                         );
-                        // DropdownButtonFormField<String>(
-                        //   items: snapshot.data!.map((option) {
-                        //     return DropdownMenuItem<String>(
-                        //       value: option['id']
-                        //           .toString(), // Assuming 'mentor_name' is the field name for mentor name in the API response
-                        //       child: Text(option[
-                        //           'username']), // Assuming 'mentor_name' is the field name for mentor name in the API response
-                        //     );
-                        //   }).toList(),
-                        //   onChanged: (value) {
-                        //     _mentorNameController2.text = value!;
-                        //     mentor = value as int;
-
-                        //     print(_mentorNameController2.text);
-                        //   },
-                        //   decoration: InputDecoration(
-                        //     labelText: 'Select a mentor',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // );
+                        
                       } else if (snapshot.hasError) {
                         return Center(
                           child: Text('Error: ${snapshot.error}'),

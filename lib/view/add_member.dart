@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:reapers_app/logins/api_calls.dart';
@@ -48,7 +50,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
   File? _image = File('');
   XFile? _DBimage;
   String? _imageURL;
+  String _imageURLWeb =
+      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
   bool isUploadImage = false;
+
+  late Uint8List image;
 
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
@@ -57,16 +63,25 @@ class _AddMemberPageState extends State<AddMemberPage> {
     apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
   );
   //function for uploading
-  Future _uploadImage(File imageFile) async {
-    final response = await cloudinary.uploadResource(CloudinaryUploadResource(
-      filePath: imageFile.path,
-    ));
+  Future _uploadImage(Uint8List fileBytes) async {
+    // Create a CloudinaryUploadResource object
+    final cloudinaryUploadResource = CloudinaryUploadResource(
+      // filebytes: fileBytes,
+      fileBytes: fileBytes,
+    );
+
+    // Upload the image to Cloudinary
+    final response = await cloudinary.uploadResource(cloudinaryUploadResource);
+
     setState(() {
-      _imageURL = response.secureUrl;
+      _imageURLWeb = response.secureUrl!;
     });
+    // Check if the upload is successful
     if (response.isSuccessful) {
-      print('Get your image from with ${response.secureUrl}');
+      // Print the secure URL of the file
+      print(response.secureUrl);
     } else {
+      // Print the error message
       print(response.error);
     }
   }
@@ -74,29 +89,37 @@ class _AddMemberPageState extends State<AddMemberPage> {
   final picker = ImagePicker();
 
   Future getImageFromCamera() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
 
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
   }
 
   Future getImageFromGallery() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
@@ -128,7 +151,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
           dateOfBirth: dateOfBirthValue,
           baptized: _selectedValue,
           isMentor: _isMentor,
-          photo: _imageURL,
+          photo: _imageURLWeb,
         );
 
         setState(() {
@@ -207,7 +230,10 @@ class _AddMemberPageState extends State<AddMemberPage> {
                   child: Stack(
                     children: [
                       CircleAvatar(
-                        backgroundImage: FileImage(_image!),
+                        backgroundImage: NetworkImage(_imageURLWeb)
+
+                        // FileImage(_image!),
+                        ,
                         radius: 50,
                       ),
                       Positioned(
@@ -316,11 +342,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                             leading: const Icon(Icons.image),
                                             title: const Text(
                                                 'Choose from gallery'),
-                                            onTap: () async {
-                                              await getImageFromGallery();
-                                              // ignore: use_build_context_synchronously
-                                              Navigator.pop(context, _image);
-                                            },
+                                            // onTap: () async {
+                                            //   await getImageFromGallery();
+                                            //   // ignore: use_build_context_synchronously
+                                            //   Navigator.pop(context, _image);
+                                            // },
                                           ),
                                         ],
                                       ),

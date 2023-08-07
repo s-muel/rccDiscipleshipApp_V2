@@ -12,8 +12,13 @@ import 'dis_all_members.dart';
 
 class DisciplerMainPage extends StatefulWidget {
   final String token;
-  final dynamic mentor;
-  const DisciplerMainPage({super.key, required this.token, this.mentor});
+  final int mentor;
+  final String name;
+  const DisciplerMainPage(
+      {super.key,
+      required this.token,
+      required this.mentor,
+      required this.name});
 
   @override
   State<DisciplerMainPage> createState() => _DisciplerMainPageState();
@@ -26,6 +31,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
   final lifeEvent = TextEditingController();
   final request = TextEditingController();
   late String token;
+  late String name;
   late dynamic mentor;
   late int mentorID = mentor;
   bool wednesday = false;
@@ -73,6 +79,7 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
     super.initState();
     token = widget.token;
     mentor = widget.mentor;
+    name = widget.name;
     // mentorName = "loading";
   }
 
@@ -126,12 +133,12 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
             if (snapshot.hasData) {
               final List<dynamic> data = snapshot.data!;
               final int dataLength = data.length;
-              String firstName = mentor['user']['first_name'] ?? " ";
-              String lastName = mentor['user']['last_name'] ?? "";
-              String disciplerPhoto = mentor['user']['photo'] ??
+              // String firstName = mentor['user']['first_name'] ?? " ";
+              // String lastName = mentor['user']['last_name'] ?? "";
+              String disciplerPhoto =
                   "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg";
               // Displaying pictures
-              String email = mentor['user']['email'];
+              // String email = mentor['user']['email'];
 
               // Map<String, dynamic> user = data.firstWhere((user) => user['id'] == 6,
               //     orElse: () => Map<String, dynamic>());
@@ -183,8 +190,9 @@ class _DisciplerMainPageState extends State<DisciplerMainPage> {
                             backgroundImage: NetworkImage(disciplerPhoto),
                           ),
                           title: Text(
-                            'Welcome, ${firstName.isNotEmpty ? '${firstName[0].toUpperCase()}${firstName.substring(1)}' : ''}',
-                            style: const TextStyle(color: Colors.white),
+                            'Welcome, $name'.toUpperCase(),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 13),
                           ),
                           subtitle: const Text(
                             "Discipler",

@@ -163,9 +163,14 @@ class _HomeState extends State<Home> {
                       backgroundImage: NetworkImage(
                           'https://res.cloudinary.com/dekhxk5wg/image/upload/v1681573495/logo_tkpxbk.jpg'),
                     ),
+                    // title: Text(
+                    //   'Welcome, ${admin['user']['first_name'] != null && admin['user']['first_name'].isNotEmpty ? '${admin['user']['first_name'][0].toUpperCase()}${admin['user']['first_name'].substring(1)}' : " "}',
+                    //   style: const TextStyle(color: Colors.white),
+                    // ),
+
                     title: Text(
-                      'Welcome, ${admin['user']['first_name'] != null && admin['user']['first_name'].isNotEmpty ? '${admin['user']['first_name'][0].toUpperCase()}${admin['user']['first_name'].substring(1)}' : " "}',
-                      style: const TextStyle(color: Colors.white),
+                      'Welcome, $admin'.toUpperCase(),
+                      style: const TextStyle(color: Colors.white, fontSize: 13),
                     ),
 
                     subtitle: const Text(

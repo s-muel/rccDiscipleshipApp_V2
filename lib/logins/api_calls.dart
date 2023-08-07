@@ -1,6 +1,9 @@
+//import 'dart:js';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:reapers_app/logins/firsttry.dart';
 
 class ApiCalls {
   final String baseURL = "https://rcc-discipleship.up.railway.app/api/";
@@ -52,9 +55,21 @@ class ApiCalls {
       List<Map<String, dynamic>> result =
           data.map((e) => e as Map<String, dynamic>).toList();
       return result;
-    } else {
+    }
+    //else if (response.statusCode == 401) {
+
+    //   Navigator.push(
+    //     context as BuildContext,
+    //     MaterialPageRoute(
+    //       builder: (context) => LoginForm(),
+    //     ),
+    //   );
+    //     return null;
+    // }
+    else {
       print(token);
       print(response.body);
+      print(response.statusCode);
       throw Exception('Failed to load data');
     }
   }

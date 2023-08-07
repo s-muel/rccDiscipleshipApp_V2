@@ -10,6 +10,7 @@ import 'package:reapers_app/view/admin_main_page.dart';
 import 'package:reapers_app/view/rest_password.dart';
 import 'package:reapers_app/view/sign_up_page.dart';
 import 'package:reapers_app/view/trypage2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../disciplerViews/user_view/user_page.dart';
 
@@ -28,6 +29,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
   bool loginIndicator = false;
   bool _isLoading = false;
+  bool _obscureText = true;
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
@@ -49,15 +51,28 @@ class _LoginFormState extends State<LoginForm> {
         final int id = data['user']['id'] as int;
         final bool isStaff = data['user']['is_staff'];
         final bool isMentor = data['user']['is_mentor'];
+        final String name = data['user']['first_name'];
 
-        //
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => DisciplerMainPage(token: token, mentor: id),
-        //   ),
-        // );
-        //
+        //9 hours token expiry
+        int expirationDuration = 9 * 60 * 60 * 1000; // 9 hours in milliseconds
+        // 30min trial
+        // int expirationDuration = 30 * 60 * 1000;
+        // Calculate expiration timestamp
+        int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+        int expirationTimestamp = currentTimestamp + expirationDuration;
+
+        // String jsonData = jsonEncode(data);
+
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token);
+        prefs.setInt('userId', id);
+        prefs.setBool('isStaff', isStaff);
+        prefs.setBool('isMentor', isMentor);
+        prefs.setString('token', token);
+        prefs.setString('name', name);
+        prefs.setInt('tokenExpiration', expirationTimestamp);
+        //prefs.setString('data', jsonData);
+
         // ignore: use_build_context_synchronously
         if (isStaff) {
           //  ignore: use_build_context_synchronously
@@ -66,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Home(token: token, admin: data),
+              builder: (context) => Home(token: token, admin: name),
             ),
           );
         } else if (isStaff == false && isMentor == true) {
@@ -77,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  DisciplerMainPage(token: token, mentor: data),
+                  DisciplerMainPage(token: token, mentor: id, name: name),
             ),
           );
         } else if (isMentor == false) {
@@ -91,20 +106,6 @@ class _LoginFormState extends State<LoginForm> {
             ),
           );
         }
-
-        // else {
-        //   // ignore: use_build_context_synchronously
-        //   Navigator.pop(context);
-        //   // ignore: use_build_context_synchronously
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) =>
-        //           DisciplerMainPage(token: token, mentor: data),
-        //     ),
-        //   );
-        // }
-        // Do something with the token, such as save it to shared preferences
       } catch (e) {
         print('Failed to login: $e');
       }
@@ -230,10 +231,20 @@ class _LoginFormState extends State<LoginForm> {
                         }
                         return null;
                       },
-                      obscureText: true,
+                      obscureText: _obscureText, // Add this line
                       decoration: InputDecoration(
                         hintText: '●●●●●●',
-                        suffixIcon: const Icon(Icons.remove_red_eye),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText; // Toggle the value
+                            });
+                          },
+                          icon: Icon(_obscureText
+                              ? Icons.remove_red_eye
+                              : Icons
+                                  .remove_red_eye_outlined), // Change icon based on obscureText
+                        ),
                         hintStyle: const TextStyle(
                           fontSize: 20,
                         ),
@@ -248,6 +259,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
                   ),
+
                   const SizedBox(
                     height: 10,
                   ),

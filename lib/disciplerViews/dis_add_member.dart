@@ -5,6 +5,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'discipler_main_page.dart';
 
@@ -48,6 +49,10 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
   bool isUploadImage = false;
   bool _isLoading = false;
 
+  late Uint8List image;
+  String _imageURLWeb =
+      "https://res.cloudinary.com/dekhxk5wg/image/upload/v1681630522/placeholder_ewiwh7.png";
+
   //sending image to cloud storage
   final cloudinary = Cloudinary.full(
     apiKey: '295462655464473',
@@ -55,16 +60,26 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
     apiSecret: 'dPVVBpBhkyCEBSw9SHtObedz4nI',
   );
   //function for uploading
-  Future _uploadImage(File imageFile) async {
-    final response = await cloudinary.uploadResource(CloudinaryUploadResource(
-      filePath: imageFile.path,
-    ));
+//function for uploading
+  Future _uploadImage(Uint8List fileBytes) async {
+    // Create a CloudinaryUploadResource object
+    final cloudinaryUploadResource = CloudinaryUploadResource(
+      // filebytes: fileBytes,
+      fileBytes: fileBytes,
+    );
+
+    // Upload the image to Cloudinary
+    final response = await cloudinary.uploadResource(cloudinaryUploadResource);
+
     setState(() {
-      _imageURL = response.secureUrl;
+      _imageURLWeb = response.secureUrl!;
     });
+    // Check if the upload is successful
     if (response.isSuccessful) {
-      print('Get your image from with ${response.secureUrl}');
+      // Print the secure URL of the file
+      print(response.secureUrl);
     } else {
+      // Print the error message
       print(response.error);
     }
   }
@@ -72,33 +87,42 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
   final picker = ImagePicker();
 
   Future getImageFromCamera() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
 
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
   }
 
   Future getImageFromGallery() async {
+    // final pickedFile =
+    //     await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    final fileBytes = await pickedFile!.readAsBytes();
     if (pickedFile != null) {
-      await _uploadImage(File(pickedFile.path));
+      await _uploadImage(fileBytes);
     }
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = fileBytes;
+        // _image = File(pickedFile.path);
         isUploadImage = true;
       }
     });
   }
+  //
   //
 
   Future<void> _submitForm() async {
@@ -125,7 +149,7 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
             dateOfBirth: dateOfBirthValue,
             baptized: _selectedValue,
             isMentor: _isMentor,
-            photo: _imageURL);
+            photo: _imageURLWeb);
         setState(() {
           _successMessage = 'Data updated successfully';
           _errorMessage = '';
@@ -206,7 +230,7 @@ class _DisAddMemberPageState extends State<DisAddMemberPage> {
                   child: Stack(
                     children: [
                       CircleAvatar(
-                        backgroundImage: FileImage(_image!),
+                        backgroundImage: NetworkImage(_imageURLWeb),
                         radius: 50,
                       ),
                       Positioned(
