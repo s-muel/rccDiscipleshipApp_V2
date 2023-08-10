@@ -119,7 +119,7 @@ class _MyFormState extends State<MyForm> {
     // final pickedFile =
     //     await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     final pickedFile =
-        await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     final fileBytes = await pickedFile!.readAsBytes();
     if (pickedFile != null) {
       await _uploadImage(fileBytes);
@@ -533,9 +533,7 @@ class _MyFormState extends State<MyForm> {
                         final List<dynamic> data = snapshot.data!;
 
                         final int dataLength = data.length;
-                        //int iDValue = widget.initialData['mentor'];
-
-                        int iDValue = widget.initialData['mentor'] ?? 1;
+                        dynamic iDValue = widget.initialData['mentor'];
 
                         return Expanded(
                           child: Card(
@@ -549,40 +547,51 @@ class _MyFormState extends State<MyForm> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: DropdownButton<int>(
-                                // value: iDValue,
+                                value: _selectedValue,
                                 hint: const Text("Select Discipler"),
-                                items: snapshot.data!
-                                    .map(
-                                      (option) => DropdownMenuItem<int>(
-                                        value: option['id'],
-                                        child: Text(
-                                          option["member"]['first_name'] +
-                                              " " +
-                                              option["member"]['last_name'],
-                                          style: const TextStyle(fontSize: 12),
-                                        ),
+                                items: [
+                                  const DropdownMenuItem<int>(
+                                    value:
+                                        null, // Set the value to null for the default item
+                                    child: Text(
+                                        'Unassign'), // Change this to your desired default text
+                                  ),
+                                  ...snapshot.data!.map(
+                                    (option) => DropdownMenuItem<int>(
+                                      value: option['id'],
+                                      child: Text(
+                                        option["member"]['first_name'] +
+                                            " " +
+                                            option["member"]['last_name'],
+                                        style: const TextStyle(fontSize: 12),
                                       ),
-                                    )
-                                    .toList(),
+                                    ),
+                                  )
+                                ],
                                 onChanged: (newValue) {
                                   setState(() {
                                     _selectedValue = newValue;
-                                    var selectedMember = snapshot.data
-                                        ?.firstWhere((item) =>
-                                            item['id'] == newValue)['member'];
-                                    _selectedItemText =
-                                        '${selectedMember['first_name']} ${selectedMember['last_name']}';
-                                    iDValue = newValue!;
+                                    if (newValue == null) {
+                                      _selectedItemText = '';
+                                      iDValue =
+                                          null; // Set the ID value to null for the default item
+                                    } else {
+                                      var selectedMember = snapshot.data
+                                          ?.firstWhere((item) =>
+                                              item['id'] == newValue)['member'];
+                                      _selectedItemText =
+                                          '${selectedMember['first_name']} ${selectedMember['last_name']}';
+                                      iDValue = newValue;
+                                    }
                                     _mentorNameController.text =
                                         _selectedItemText;
-                                    print(_selectedItemText);
+                                    //print(_selectedItemText);
                                   });
                                 },
                               ),
                             ),
                           ),
                         );
-                        
                       } else if (snapshot.hasError) {
                         return Center(
                           child: Text('Error: ${snapshot.error}'),
@@ -939,9 +948,9 @@ class _MyFormState extends State<MyForm> {
           const SnackBar(content: Text('Update was successfully!')));
       // Handle success, e.g. show a success message to the user
       // print('outside setstate $_isMentor');
-      print(jsonData);
+      // print(jsonData);
     } else {
-      print(jsonData);
+      // print(jsonData);
       // throw Exception('Failed to load data');
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -949,7 +958,7 @@ class _MyFormState extends State<MyForm> {
               style: const TextStyle(
                 color: Colors.red,
               ))));
-      print('this is in error $memberID');
+      //print('this is in error $memberID');
 
       // Handle error, e.g. show an error message to the user
     }

@@ -342,11 +342,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                             leading: const Icon(Icons.image),
                                             title: const Text(
                                                 'Choose from gallery'),
-                                            // onTap: () async {
-                                            //   await getImageFromGallery();
-                                            //   // ignore: use_build_context_synchronously
-                                            //   Navigator.pop(context, _image);
-                                            // },
+                                            onTap: () async {
+                                              await getImageFromGallery();
+                                              // ignore: use_build_context_synchronously
+                                              Navigator.pop(context, _image);
+                                            },
                                           ),
                                         ],
                                       ),
